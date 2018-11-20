@@ -1,0 +1,45 @@
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">{{nombreEmpresa}}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ path('user_inicio') }}">Inicio</a>
+          </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Clientes</a>
+                        <div class="dropdown-menu">
+                            <a href="{{ path('cliente_lista') }}" class="dropdown-item"><i class="fa fa-list"></i> Listado</a>
+                            <a href="{{ path('cliente_nuevo') }}" class="dropdown-item"><i class="fa fa-user-plus"></i> Añadir nuevo</a>
+                            <a href="#" class="dropdown-item"><i class="fa fa-file"></i> Informe mensual</a>
+                            
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Trabajadores</a>
+                        <div class="dropdown-menu">
+                            <a href="{{ path('trabajadores_lista') }}" class="dropdown-item"><i class="fa fa-list"></i> Listado</a>
+                            <a href="{{ path('trabajadores_nuevo') }}" class="dropdown-item"><i class="fa fa-user-plus"></i> Añadir nuevo</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Partes</a>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item"><i class="fa fa-eye"></i> Ver actividad</a>
+                            <a href="#" class="dropdown-item"><i class="fa fa-low-vision"></i> Ver incidencias</a>
+                            <a href="#" class="dropdown-item"><i class="fa fa-list"></i> Listado Partes</a>
+                        </div>
+                    </li>
+        </ul>
+        {% if accionBuscar|length >0 %}
+        <form class="form-inline my-2 my-lg-0" action="{{accionBuscar}}" method='POST'>
+          <input class="form-control mr-sm-2" type="text" placeholder="buscar" name="CadenaBusqueda">
+          <button class="btn btn-primary my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+         {% endif %}
+      </div>
+    </nav>
+</div>

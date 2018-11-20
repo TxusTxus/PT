@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Parte</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ parte.id }}</td>
+            </tr>
+            <tr>
+                <th>Empresa</th>
+                <td>{{ parte.empresa }}</td>
+            </tr>
+            <tr>
+                <th>Cliente</th>
+                <td>{{ parte.cliente }}</td>
+            </tr>
+            <tr>
+                <th>Trabajador</th>
+                <td>{{ parte.trabajador }}</td>
+            </tr>
+            <tr>
+                <th>Fechaparte</th>
+                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fechaentrada</th>
+                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fechasalida</th>
+                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Tiempo</th>
+                <td>{{ parte.tiempo }}</td>
+            </tr>
+            <tr>
+                <th>Material</th>
+                <td>{% if parte.material %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Firma</th>
+                <td>{{ parte.firma }}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ parte.observaciones }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('partes_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('partes_edit', { 'id': parte.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

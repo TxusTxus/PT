@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cliente</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ cliente.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ cliente.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ cliente.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Poblacion</th>
+                <td>{{ cliente.poblacion }}</td>
+            </tr>
+            <tr>
+                <th>Provincia</th>
+                <td>{{ cliente.provincia }}</td>
+            </tr>
+            <tr>
+                <th>Codigopostal</th>
+                <td>{{ cliente.codigoPostal }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ cliente.email }}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ cliente.observaciones }}</td>
+            </tr>
+            <tr>
+                <th>Empresa</th>
+                <td>{{ cliente.empresa }}</td>
+            </tr>
+            <tr>
+                <th>Baja</th>
+                <td>{% if cliente.baja %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cliente_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('cliente_edit', { 'id': cliente.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

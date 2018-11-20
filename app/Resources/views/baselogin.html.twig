@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Control Partes{% endblock %}</title>
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block stylesheets %}
+            <link href="{{ asset('public/css/spacelab/bootstrap.min.css') }}" rel="stylesheet">
+            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+            <!-- Custom styles for this template -->
+            <link href="{{ asset('public/css/pricing.css') }}" rel="stylesheet">
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('public/js/jquery.js')}}"></script>
+            <script src="{{ asset('public/js/bootstrap.min.js')}}"></script>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,43 @@
+{% extends 'baselogin.html.twig' %}
+
+{% block body %}
+
+<div class="parallax">
+   
+    <div class="parallaxcontenido">
+        <h1 class="parallaxtitulo">Control Partes trabajo</h1>
+    </div>    
+    <div class="parallaxcontenido">
+        <div class="card border-secondary mb-3 inline" style="max-width: 25rem;">
+            <div class="card-header">Inicio sesión</div>
+            <div class="card-body">                             
+              <h4 class="card-title"></h4>
+                    {% if error %}
+                        {% if error.messageKey|trans(error.messageData, 'security') =='Invalid credentials.' %}
+                            <div class="form_row"><b>Nombre de usuario o contraseña incorrectos</b></div>
+                        {% endif %}
+                    {% endif %}
+                    <h1 >  {{cadena}}</h1>
+                    <form action="{{ path('login') }}" method="post" >
+                        <div class="form_row">
+                          <label for="username">Usuario:</label>
+                          <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control mr-sm-2" />
+                        </div>
+                        <div class="form_row">
+                            <label for="password">Contraseña:</label>
+                            <input type="password" id="password" name="_password" class="form-control mr-sm-2"/>
+                        </div>
+                        <div>
+                            <hr>
+
+                            <input type="hidden" name="_target_path" value="/login" />
+
+                            <center><button type="submit" class="btn btn-primary">Entrar</button></center>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

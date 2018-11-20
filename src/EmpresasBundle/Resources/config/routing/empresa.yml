@@ -1,0 +1,24 @@
+empresa_index:
+    path:     /
+    defaults: { _controller: "EmpresasBundle:Empresa:index" }
+    methods:  GET
+
+empresa_show:
+    path:     /{id}/mostrar
+    defaults: { _controller: "EmpresasBundle:Empresa:show" }
+    methods:  GET
+
+empresa_nueva:
+    path:     /nueva
+    defaults: { _controller: "EmpresasBundle:Empresa:nueva" }
+    methods:  [GET, POST]
+
+empresa_edit:
+    path:     /{id}/modificar
+    defaults: { _controller: "EmpresasBundle:Empresa:edit" }
+    methods:  [GET, POST]
+
+empresa_delete:
+    path:     /{id}/borrar
+    defaults: { _controller: "EmpresasBundle:Empresa:delete" }
+    methods:  DELETE

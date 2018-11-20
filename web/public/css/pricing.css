@@ -1,0 +1,68 @@
+
+
+
+.parallax { 
+    /* The image used */
+    background-image: url("/imagenes/controlpartesfondo.jpg");
+    background-color: rgba(0, 0, 0, 0.5);
+
+    /* Set a specific height */
+    height: 600px; 
+
+    /* Create the parallax scrolling effect */
+    opacity: 0.8;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    
+    padding: 50px;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.parallaxtitulo { 
+    color: #FFFFFF !important;
+    text-shadow: 2px 2px 2px #aaa!important;
+}
+
+.cajaregistro {
+    justify-content: center;
+    align-items: center;
+}
+
+.parallaxcontenido {
+
+ 
+  /*IMPORTANTE*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.barrasuperior {
+
+ 
+  /*IMPORTANTE*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  padding-left: 10px;
+  padding-right: 10px;
+  
+}
+
+.datos-barra {
+    float: left !important;
+}
+.datos-barra-usuario {
+    float: right !important;
+}
+
+.my-flex-card > div > div.card {
+    height: calc(100% - 15px);
+    margin-bottom: 1opx;
+    display: flex;
+}

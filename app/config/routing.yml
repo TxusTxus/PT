@@ -1,0 +1,27 @@
+usuarios:
+    resource: "@UsuariosBundle/Controller/"
+    type:     annotation
+
+partes:
+    resource: "@PartesBundle/Resources/config/routing.yml"
+    prefix:   /partes
+
+trabajadores:
+    resource: "@TrabajadoresBundle/Resources/config/routing.yml"
+    prefix:   /trabajadores
+
+clientes:
+    resource: "@ClientesBundle/Resources/config/routing.yml"
+    prefix:   /clientes
+
+empresas:
+    resource: "@EmpresasBundle/Resources/config/routing.yml"
+    prefix:   /empresas
+
+#usuarios:
+#    resource: "@UsuariosBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

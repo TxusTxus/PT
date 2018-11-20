@@ -1,0 +1,16 @@
+<script>
+    /* 
+     * Activa la opción de perder cambios al salir de la página
+    */
+
+    function marcaCambio(){
+        window.onbeforeunload = saliendo;
+    }
+    function desmarcaCambio(){
+        window.onbeforeunload = null;
+    }    
+    function saliendo(){
+        return 'saliendo';
+    }
+    
+</script>

@@ -1,0 +1,34 @@
+cliente_lista:
+    path:     /
+    defaults: { _controller: "ClientesBundle:Cliente:index" }
+    methods:  GET
+
+cliente_show:
+    path:     /{id}/muestraCliente/{ficha}
+    defaults: { _controller: "ClientesBundle:Cliente:show" }
+    methods:  GET
+
+cliente_nuevo:
+    path:     /nuevoCliente
+    defaults: { _controller: "ClientesBundle:Cliente:new" }
+    methods:  [GET, POST]
+
+cliente_edit:
+    path:     /{id}/modificaCliente
+    defaults: { _controller: "ClientesBundle:Cliente:edit" }
+    methods:  [GET, POST]
+
+cliente_delete:
+    path:     /{id}/borrarCliente
+    defaults: { _controller: "ClientesBundle:Cliente:delete" }
+    methods:  DELETE
+
+cliente_baja:
+    path:     /{id}/borrarCliente
+    defaults: { _controller: "ClientesBundle:Cliente:delete" }
+    methods:  [POST]
+    
+cliente_busca:
+    path:     /buscaCliente
+    defaults: { _controller: "ClientesBundle:Cliente:buscaClienteNombre" }
+    methods:  [POST]

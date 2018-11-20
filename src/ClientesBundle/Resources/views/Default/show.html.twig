@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+                {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Cliente 
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+        {% if btnAnt>0 %}
+            <a href="{{ path('cliente_show', { 'id': btnPri, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Primero" id="enlacePrimero"><i class="fa fa-fast-backward"></i></a>
+            <a href="{{ path('cliente_show', { 'id': btnAnt, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Anterior" id="enlaceAnterior"><i class="fa fa-caret-left"></i></a>
+        {% else %}
+            <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-fast-backward"></i></a>
+            <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-caret-left"></i></a>
+        {% endif %}
+        <a href="" class="btn page-link btn-sm" style="width:200px;" title="Nombre cliente"><i class="fa fa-user"></i> {{ cliente.nombre }}</a>
+        {% if btnPost>0 %}
+            <a href="{{ path('cliente_show', { 'id': btnPost, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Siguiente" id="enlaceSiguiente"><i class="fa fa-caret-right"></i></a>
+            <a href="{{ path('cliente_show', { 'id': btnUlt, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Último" id="enlaceUltimo"><i class="fa fa-fast-forward"></i></a>
+        {% else %}
+            <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-caret-right"></i> </a>
+            <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-fast-forward"></i></a>
+        {% endif %}
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+
+            <a href="{{ path('cliente_edit', { 'id': cliente.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos cliente"><i class="fa fa-edit"></i></a>
+            <a href="{{ path('cliente_baja', { 'id': cliente.id }) }}" class="btn btn-primary btn-sm" title="Eliminar cliente"><i class="fa fa-eraser"></i></a>
+
+        </div>
+    </h1>
+    {# Pestañas #}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            {% if ficha=='ficha' %}
+                <a class="nav-link active show" data-toggle="tab" href="#Ficha" onclick="javascript:cambiaEnlaceElementos('tab1');"><i class="fa fa-address-card"></i> </a>
+            {% else %}
+                <a class="nav-link" data-toggle="tab" href="#Ficha" onclick="javascript:cambiaEnlaceElementos('tab1');"><i class="fa fa-address-card"></i> </a>
+            {% endif %}
+        </li>
+      <li class="nav-item">
+            {% if ficha=='partes' %}
+                <a class="nav-link  active show" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab2');">Partes</a>
+            {% else %}
+                <a class="nav-link" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab2');">Partes</a>
+            {% endif %}
+        </li>     
+      </li>
+      <li class="nav-item">
+            {% if ficha=='incidencias' %}
+                <a class="nav-link active show" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab3');">Incidencias</a>
+            {% else %}
+                <a class="nav-link" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab3');">Incidencias</a>
+            {% endif %}
+      </li>
+    </ul>
+<div id="myTabContent" class="tab-content">
+    {% if ficha=='ficha' %}
+        <div class="tab-pane fade active show" id="Ficha">
+    {% else %}
+        <div class="tab-pane fade" id="Ficha">
+    {% endif %}
+  
+      {#<div class="card border-secondary mb-3" style="width:40%; float:left;">#}
+    <div class="container" style="margin-top: 20px;">
+        <div class="row my-flex-card" style="">  
+            <div class="col-lg-6">
+                <div class="card border-info">
+                    <div class="card-header">{{ cliente.nombre }}</div>
+                    <div class="card-body">
+                        <ul style="list-style:none;">
+                            <li><i class="fa fa-user-circle"></i> {{ cliente.contacto }}</li>
+                            <li><i class="fa fa-at"></i> {{ cliente.email }}</li>
+                            <li><i class="fa fa-phone"></i> {{ cliente.telefono }}</li>
+                            <li> 
+                                {% if cliente.baja %}
+                                   <i class="fa fa-low-vision"></i> Inactivo
+                                {% else %}
+                                   <i class="fa fa-eye"></i> Activo
+                                {% endif %}
+
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6">            
+                <div class="card border-info">
+                    <div class="card-header"><i class="fa fa-map-marker"></i> Dirección</div>
+                    <div class="card-body">
+                        <ul style="list-style:none;">
+                            <li><i class="fa fa-map"></i> {{ cliente.direccion }}</li>
+                            <li> {{ cliente.codigoPostal }} - {{ cliente.poblacion }}</li>
+                            <li> {{ cliente.provincia }}</li>
+                        </ul>
+                        </div>                       
+                    </div>
+
+                </div>
+        </div>
+        <div class="row">  
+            <div class="col-lg-12">            
+                <div class="card border-info">
+                    <div class="card-header"><i class="fa fa-edit"></i> Observaciones</div>
+                    <div class="card-body">
+                            {{ cliente.observaciones }}
+                    </div>                       
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+  </div>
+    {% if ficha=='partes' %}
+        <div class="tab-pane fade active show" id="Partes">
+    {% else %}
+        <div class="tab-pane fade" id="Partes">
+    {% endif %}
+    <p>Listado de Partes</p>
+  </div>
+    {% if ficha=='incidencias' %}
+        <div class="tab-pane fade active show" id="Incidencias">
+    {% else %}
+        <div class="tab-pane fade" id="Incidencias">
+    {% endif %}
+    <p>Listado de incidencias</p>
+  </div>
+</div>
+
+<script>
+    /* 
+     * Cambia los enlaces según la ficha en la que se encuetre
+    */
+    function cambiaEnlaceElementos(cadena) {
+        cambiaEnlace(cadena,"enlacePrimero");
+        cambiaEnlace(cadena,"enlaceAnterior");
+        cambiaEnlace(cadena,"enlaceSiguiente");
+        cambiaEnlace(cadena,"enlaceUltimo");  
+    }   
+    
+    function cambiaEnlace(cadena,btn_cambio){
+        var elemento = document.getElementById(btn_cambio);
+        var enlace = elemento.href;
+        var posicion = enlace.indexOf('muestraCliente');
+        enlace = enlace.substr(0,posicion+15);
+        switch(cadena) {
+            case "tab1":
+                var nuevoEnlace = enlace + 'ficha';
+                break;
+            case "tab2":
+                var nuevoEnlace = enlace + 'partes';
+                break;
+            case "tab3":
+                var nuevoEnlace = enlace + 'incidencias';
+                break;
+        }
+        
+        elemento.href = nuevoEnlace;
+    }
+
+</script>
+{% endblock %}

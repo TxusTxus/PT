@@ -1,0 +1,3 @@
+usuarios_inicio:
+    path:     /
+    defaults: { _controller: UsuariosBundle:Usuarios:index }

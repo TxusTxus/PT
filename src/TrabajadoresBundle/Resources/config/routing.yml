@@ -1,0 +1,7 @@
+trabajadores_trabajadores:
+    resource: "@TrabajadoresBundle/Resources/config/routing/trabajadores.yml"
+    prefix:   /
+
+trabajadores_inicio:
+    path:     /
+    defaults: { _controller: TrabajadoresBundle:Default:index }

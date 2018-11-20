@@ -1,0 +1,29 @@
+trabajadores_lista:
+    path:     /
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:index" }
+    methods:  GET
+
+trabajadores_show:
+    path:     /{id}/muestraTrabajador/{ficha}
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:show" }
+    methods:  GET
+
+trabajadores_nuevo:
+    path:     /new
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:new" }
+    methods:  [GET, POST]
+
+trabajadores_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:edit" }
+    methods:  [GET, POST]
+
+trabajadores_baja:
+    path:     /{id}/delete
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:delete" }
+    methods:  DELETE
+
+trabajadores_busca:
+    path:     /buscaTrabajador
+    defaults: { _controller: "TrabajadoresBundle:Trabajadores:buscaTrabajadorNombre" }
+    methods:  [POST]

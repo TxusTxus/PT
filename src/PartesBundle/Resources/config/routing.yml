@@ -1,0 +1,7 @@
+partes_partes:
+    resource: "@PartesBundle/Resources/config/routing/partes.yml"
+    prefix:   /partes
+
+partes_inicio:
+    path:     /
+    defaults: { _controller: PartesBundle:Default:index }
