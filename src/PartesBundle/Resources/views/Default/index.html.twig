@@ -2,35 +2,46 @@
 
 {% block body %}
     
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">BtoClick</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+         {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Listado de partes</h1>
 
-  <div class="collapse navbar-collapse" id="navbarColor01">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Inicio </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Clientes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Trabajadores</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Partes</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="buscar">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">buscar</button>
-    </form>
-  </div>
-</nav>
-
-Hello World!
-desde partes
-
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Trabajador</th>
+                <th>Fecha</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Tiempo</th>
+                <th>Material</th>
+                <th>Observaciones</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for parte in partes %}
+            <tr>
+                <td>{{ parte.id }}</td>
+                <td>{{ parte.cliente }}</td>
+                <td>{{ parte.trabajador }}</td>
+                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
+                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
+                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
+                <td>{{ parte.tiempo }}</td>
+                <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
+ {#               <td>{{ parte.firma }}</td>#}
+                <td>{{ parte.observaciones }}</td>
+                <td>
+                     <div class="btn-group mr-2" role="group" aria-label="Second group">
+                       <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
+                       <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
+                     </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {#Muestra la barra superior#}
+    {% embed "barranavegacion.html.twig" %}{% endembed %}
     <h1>Parte</h1>
 
     <table>
@@ -22,16 +24,16 @@
                 <td>{{ parte.trabajador }}</td>
             </tr>
             <tr>
-                <th>Fechaparte</th>
-                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <th>Fecha</th>
+                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Fechaentrada</th>
-                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <th>Entrada</th>
+                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Fechasalida</th>
-                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <th>Salida</th>
+                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Tiempo</th>
@@ -39,7 +41,7 @@
             </tr>
             <tr>
                 <th>Material</th>
-                <td>{% if parte.material %}Yes{% else %}No{% endif %}</td>
+                <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
             </tr>
             <tr>
                 <th>Firma</th>
@@ -53,9 +55,6 @@
     </table>
 
     <ul>
-        <li>
-            <a href="{{ path('partes_index') }}">Back to the list</a>
-        </li>
         <li>
             <a href="{{ path('partes_edit', { 'id': parte.id }) }}">Edit</a>
         </li>

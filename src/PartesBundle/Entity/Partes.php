@@ -40,23 +40,23 @@ class Partes
     private $trabajador;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fechaParte", type="datetime")
+     * @ORM\Column(name="fechaParte", type="date")
      */
     private $fechaParte;
 
     /**
-     * @var \DateTime
+     * @var \Time
      *
-     * @ORM\Column(name="fechaEntrada", type="datetime")
+     * @ORM\Column(name="fechaEntrada", type="time")
      */
     private $fechaEntrada;
 
     /**
-     * @var \DateTime
+     * @var \Time
      *
-     * @ORM\Column(name="fechaSalida", type="datetime")
+     * @ORM\Column(name="fechaSalida", type="time")
      */
     private $fechaSalida;
 

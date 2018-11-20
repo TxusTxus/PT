@@ -19,11 +19,13 @@ class PartesController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+        $empresa = $this->dameEmpresaUsuario();
         $partes = $em->getRepository('PartesBundle:Partes')->findAll();
 
-        return $this->render('partes/index.html.twig', array(
+        return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes' => $partes,
+            'accionBuscar'  => '',
+            'nombreEmpresa' => $empresa->getNombre()
         ));
     }
 
@@ -34,6 +36,7 @@ class PartesController extends Controller
     public function newAction(Request $request)
     {
         $parte = new Parte();
+        $empresa = $this->dameEmpresaUsuario();
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
@@ -45,9 +48,11 @@ class PartesController extends Controller
             return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
         }
 
-        return $this->render('partes/new.html.twig', array(
+        return $this->render('PartesBundle:Default:new.html.twig', array(
             'parte' => $parte,
             'form' => $form->createView(),
+            'accionBuscar'  => '',
+            'nombreEmpresa' => $empresa->getNombre()
         ));
     }
 
@@ -58,10 +63,12 @@ class PartesController extends Controller
     public function showAction(Partes $parte)
     {
         $deleteForm = $this->createDeleteForm($parte);
-
-        return $this->render('partes/show.html.twig', array(
+        $empresa = $this->dameEmpresaUsuario();
+        return $this->render('PartesBundle:Default:show.html.twig', array(
             'parte' => $parte,
             'delete_form' => $deleteForm->createView(),
+            'accionBuscar'  => '',
+            'nombreEmpresa' => $empresa->getNombre()
         ));
     }
 
@@ -74,17 +81,19 @@ class PartesController extends Controller
         $deleteForm = $this->createDeleteForm($parte);
         $editForm = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $editForm->handleRequest($request);
-
+        $empresa = $this->dameEmpresaUsuario();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('partes_edit', array('id' => $parte->getId()));
         }
 
-        return $this->render('partes/edit.html.twig', array(
+        return $this->render('PartesBundle:Default:edit.html.twig', array(
             'parte' => $parte,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'accionBuscar'  => '',
+            'nombreEmpresa' => $empresa->getNombre()
         ));
     }
 
@@ -120,5 +129,11 @@ class PartesController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+    
+    private function dameEmpresaUsuario(){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $empresa = $user->getEmpresa();
+        return $empresa;
     }
 }

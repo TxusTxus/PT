@@ -1,10 +1,10 @@
-partes_index:
+partes_listado:
     path:     /
     defaults: { _controller: "PartesBundle:Partes:index" }
     methods:  GET
 
 partes_show:
-    path:     /{id}/show
+    path:     /{id}/muestraParte
     defaults: { _controller: "PartesBundle:Partes:show" }
     methods:  GET
 
@@ -22,3 +22,8 @@ partes_delete:
     path:     /{id}/delete
     defaults: { _controller: "PartesBundle:Partes:delete" }
     methods:  DELETE
+#
+#partes_busca:
+#    path:     /buscaParte
+#    defaults: { _controller: "PartesBundle:Partes:buscaParteNombre" }
+#    methods:  [POST]

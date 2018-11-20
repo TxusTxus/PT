@@ -249,6 +249,10 @@ class UsuariosController extends Controller
             // 002 -> Nuevo Usuario
             //        Código Accion - Nombre trabajador
             //     -> devuelve datos trabajador.
+            // 003 -> Nuevo Parte
+            //        Código acción - Código trabajador - Código Cliente
+            //        Fecha - Entrada - Salida - Material - 
+            //        Comentario
         $cadenaEncriptada = funciones::Enmascara($action='encripta',$cadena);
         print_r($cadenaEncriptada);
         $cadenaEncriptada = funciones::Enmascara($action='encripta','00212');

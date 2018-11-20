@@ -1,6 +1,6 @@
 partes_partes:
     resource: "@PartesBundle/Resources/config/routing/partes.yml"
-    prefix:   /partes
+    prefix:   /
 
 partes_inicio:
     path:     /

@@ -367,5 +367,10 @@ class Cliente
     {
         return $this->baja;
     }
+    
+    function __toString()
+    {
+        return $this->nombre;
+    }
 }
 
