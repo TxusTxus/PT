@@ -10,4 +10,46 @@ namespace PartesBundle\Repository;
  */
 class PartesRepository extends \Doctrine\ORM\EntityRepository
 {
+    
+    /* 
+    * Obtiene el listado de los partes de una empresa en una fecha dada
+    */
+    public function damePartesEmpresa($empresa,$fecha){
+            // Listado completo de trabajadores
+
+            $consulta = $this->getQueryBuilder();
+            
+            $consulta->Where("p.empresa =:empresa") 
+                    ->setParameter('empresa', $empresa);
+            $consulta->andWhere("p.fechaParte =:fecha")
+                    ->setParameter('fecha', $fecha);
+            $consulta->orderby('p.fechaParte', 'ASC')
+            ->getQuery();
+
+            return $consulta->getQuery()->getResult();
+    }
+    
+    public function damePartesEntreFechas($inicio, $fin){
+        $consulta = $this->getQueryBuilder();
+        $consulta->Where("p.empresa =:empresa") 
+                ->setParameter('empresa', $empresa)
+                ->andWhere('p.fecha BETWEEN :inicio AND :fin') 
+                ->setParameter('inicio', $inicio) 
+                ->setParameter('fin', $fin);
+           
+        $consulta->orderby('p.fechaParte', 'ASC')
+            ->getQuery(); 
+
+    return $consulta;   
+    }
+    
+    private function getQueryBuilder()
+    {
+        $em = $this->getEntityManager();
+
+        $qb = $em->getRepository('PartesBundle:Partes')
+            ->createQueryBuilder('p');
+
+        return $qb;
+    }
 }

@@ -1,0 +1,81 @@
+
+
+    {% if fecha|length==0 %}        
+        {% set fecha = "now"|date("U") %}
+    {% endif %}
+    {% set mes = fecha|date('m') %}
+    {% set anyo = fecha|date('Y') %}
+    {% set startDow = fecha|date('F 1\\s\\t Y')|date('w')-1 %}
+    {% set daysInMonth = fecha|date('t') %}
+    {% set dow = startDow %}
+
+        <div class="btn-group" role="group" aria-label="Second group" style="text-align: center;">
+             {#  Mes anterior #}
+                {% set fechaAnterior= fecha|date_modify("-1 month")|date("d-m-Y") %} 
+                <a href="{{ path('partes_diario', { 'fecha': fechaAnterior}) }}" class="btn btn-primary btn-sm" title="Mes anterior"><i class="fa fa-caret-left"></i></a>
+             {#  Nombre mes#}
+                <a href="" class="btn page-link btn-sm" style="width:100%;" title="Nombre cliente"><i class="fa fa-calendar"></i>
+                    {{ fecha|date('F - Y')|replace({
+                        'January'  : 'Enero',
+                        'February' : 'Febrero',
+                        'March' : 'Marzo',
+                        'April' : 'Abril',
+                        'May' : 'Mayo',
+                        'June'  : 'Junio',
+                        'July' : 'Julio',
+                        'August' : 'Agosto',
+                        'September' : 'Septiembre',
+                        'October' : 'Octubre',
+                        'November' : 'Noviembre',
+                        'December' : 'Diciembre',
+
+                    }) }}
+                
+                </a>
+             {#  Mes Siguiente#}
+                {% set fechaPosterior= fecha|date_modify("+1 month")|date("d-m-Y") %} 
+                <a href="{{ path('partes_diario', { 'fecha': fechaPosterior}) }}" class="btn btn-primary btn-sm" title="Mes posterior"><i class="fa fa-caret-right"></i></a>
+        </div>
+    <table id="calendario">
+        <thead>
+            
+            <tr>
+                <th>Lun</th><th>Mar</th><th>Mie</th><th>Jue</th><th>Vie</th><th>Sab</th><th>Dom</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+            {% for day in range(1,daysInMonth) %}
+                    {% if loop.first and startDow != 0 %}
+                            <td colspan="{{ startDow }}"></td>
+                    {% endif %}
+                    <td>
+                            <div>
+                                    {% set fechaMomento = day~'-'~mes~'-'~anyo %}
+                                    {% if day == fecha|date('d') %}
+
+                                        <div style="background: #1b507e; color:#FFF;"><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-primary btn-sm" title="Ver día">{{ "%02d" | format(day) }}</a></div>
+                                    {%else %}
+                                        <div><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-secondary btn-sm" title="Ver día">{{ "%02d" | format(day) }}</a></div>
+                                    {% endif %}
+
+                                    <div>
+                                     {# day content here #}
+                                    </div>
+                            </div>
+                    </td>
+                    {% if loop.last and dow != 6 %}
+                            <td colspan="{{ 6 - dow }}">&nbsp;</td>
+                    {% endif %}
+                    {% if dow == 6 %}
+                            {% set dow = 0 %}
+                    </tr>
+                    <tr>
+                    {% else %}
+                            {% set dow = dow + 1 %}
+                    {% endif %}
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>

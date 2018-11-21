@@ -22,6 +22,11 @@ partes_delete:
     path:     /{id}/delete
     defaults: { _controller: "PartesBundle:Partes:delete" }
     methods:  DELETE
+    
+partes_diario:
+    path:     /{fecha}/muestraPartes
+    defaults: { _controller: "PartesBundle:Partes:diarioPartes" }
+    methods:  GET
 #
 #partes_busca:
 #    path:     /buscaParte

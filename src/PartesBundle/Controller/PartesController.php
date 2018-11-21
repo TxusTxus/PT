@@ -13,22 +13,44 @@ use Symfony\Component\HttpFoundation\Request;
 class PartesController extends Controller
 {
     /**
-     * Lists all parte entities.
+     * Listado de todos los partes.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->dameEmpresaUsuario();
-        $partes = $em->getRepository('PartesBundle:Partes')->findAll();
-
+        // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
+        $fecha = new \DateTime;
+        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$fecha->format('Y-m-d'));
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes' => $partes,
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre()
+            'nombreEmpresa' => $empresa->getNombre(),
+            'fecha'         => ''
         ));
     }
 
+     /**
+     * Listado de todos los partes de una fecha dada.
+     *
+     */
+    public function diarioPartesAction($fecha)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $empresa = $this->dameEmpresaUsuario();
+        // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
+        $fechaConsulta = $this->convierteFecha($fecha);
+
+        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$fechaConsulta);
+        return $this->render('PartesBundle:Default:index.html.twig', array(
+            'partes'        => $partes,
+            'accionBuscar'  => '',
+            'nombreEmpresa' => $empresa->getNombre(),
+            'fecha'         => $fecha
+        ));
+    }
     /**
      * Creates a new parte entity.
      *
@@ -135,5 +157,11 @@ class PartesController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $empresa = $user->getEmpresa();
         return $empresa;
+    }
+    
+    private function convierteFecha(String $fecha){
+        
+        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),intval(substr($fecha,0,2)),intval(substr($fecha,6,4))));
+        
     }
 }

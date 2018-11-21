@@ -4,44 +4,54 @@
     
          {#Muestra la barra superior#}
                 {% embed "barranavegacion.html.twig" %}{% endembed %}
-    <h1>Listado de partes</h1>
-
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Cliente</th>
-                <th>Trabajador</th>
-                <th>Fecha</th>
-                <th>Entrada</th>
-                <th>Salida</th>
-                <th>Tiempo</th>
-                <th>Material</th>
-                <th>Observaciones</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for parte in partes %}
-            <tr>
-                <td>{{ parte.id }}</td>
-                <td>{{ parte.cliente }}</td>
-                <td>{{ parte.trabajador }}</td>
-                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
-                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
-                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
-                <td>{{ parte.tiempo }}</td>
-                <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
- {#               <td>{{ parte.firma }}</td>#}
-                <td>{{ parte.observaciones }}</td>
-                <td>
-                     <div class="btn-group mr-2" role="group" aria-label="Second group">
-                       <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
-                       <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
-                     </div>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <h1>Listado de partes
+        {% if fecha|length>0 %}
+            del día {{fecha }}
+        {% endif %}
+    </h1>
+    <div class="row">
+        <div style="margin-left: 20px; text-align: center;" class="card border-info">
+            {% embed "calendario.html.twig" %}{% endembed %}
+        </div>
+        <div style="margin-left: 20px;" class="card border-info">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Cliente</th>
+                        <th>Trabajador</th>
+                        <th>Fecha</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Tiempo</th>
+                        <th>Material</th>
+                        <th>Observaciones</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for parte in partes %}
+                    <tr>
+                        <td>{{ parte.id }}</td>
+                        <td>{{ parte.cliente }}</td>
+                        <td>{{ parte.trabajador }}</td>
+                        <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
+                        <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
+                        <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
+                        <td>{{ parte.tiempo }}</td>
+                        <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
+         {#               <td>{{ parte.firma }}</td>#}
+                        <td>{{ parte.observaciones }}</td>
+                        <td>
+                             <div class="btn-group mr-2" role="group" aria-label="Second group">
+                               <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
+                               <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
+                             </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
