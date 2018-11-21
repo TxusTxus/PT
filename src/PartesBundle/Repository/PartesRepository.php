@@ -42,6 +42,48 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
 
     return $consulta;   
     }
+
+    
+    /* 
+     * Obtiene el listado de los partes de una empresa 
+     * de un cliente determinado y entre las fechas dadas
+     */    
+    public function damePartesClienteEntreFechas($inicio, $fin, $cliente){
+        $consulta = $this->getQueryBuilder();
+        $consulta->Where("p.empresa =:empresa") 
+                ->setParameter('empresa', $empresa)
+                ->andWhere("p.cliente =:cliente") 
+                ->setParameter('cliente', $cliente)
+                ->andWhere('p.fecha BETWEEN :inicio AND :fin') 
+                ->setParameter('inicio', $inicio) 
+                ->setParameter('fin', $fin);
+           
+        $consulta->orderby('p.fechaParte', 'ASC')
+            ->getQuery(); 
+
+    return $consulta;   
+    }
+
+    /* 
+     * Obtiene el listado de los partes de una empresa 
+     * de un trabajador determinado y entre las fechas dadas
+     */ 
+    public function damePartesTrabajadorEntreFechas($inicio, $fin, $trabajador){
+        $consulta = $this->getQueryBuilder();
+        $consulta->Where("p.empresa =:empresa") 
+                ->setParameter('empresa', $empresa)
+                ->andWhere("p.trabajador =:trabajador") 
+                ->setParameter('trabajador', $trabajador)
+                ->andWhere('p.fecha BETWEEN :inicio AND :fin') 
+                ->setParameter('inicio', $inicio) 
+                ->setParameter('fin', $fin);
+           
+        $consulta->orderby('p.fechaParte', 'ASC')
+            ->getQuery(); 
+
+    return $consulta;   
+    }
+
     
     private function getQueryBuilder()
     {

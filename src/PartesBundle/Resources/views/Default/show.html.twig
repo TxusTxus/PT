@@ -5,62 +5,53 @@
     {% embed "barranavegacion.html.twig" %}{% endembed %}
     <h1>Parte</h1>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ parte.id }}</td>
-            </tr>
-            <tr>
-                <th>Empresa</th>
-                <td>{{ parte.empresa }}</td>
-            </tr>
-            <tr>
-                <th>Cliente</th>
-                <td>{{ parte.cliente }}</td>
-            </tr>
-            <tr>
-                <th>Trabajador</th>
-                <td>{{ parte.trabajador }}</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Entrada</th>
-                <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Salida</th>
-                <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Tiempo</th>
-                <td>{{ parte.tiempo }}</td>
-            </tr>
-            <tr>
-                <th>Material</th>
-                <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Firma</th>
-                <td>{{ parte.firma }}</td>
-            </tr>
-            <tr>
-                <th>Observaciones</th>
-                <td>{{ parte.observaciones }}</td>
-            </tr>
-        </tbody>
-    </table>
+      <div class="container" style="margin-top: 20px;">
+        <div class="row my-flex-card" style="">  
+            <div class="col-lg-6">
+                <div class="card border-info">
+                    <div class="card-header">Parte: {{ parte.id }} </div>
+                    <div class="card-body">
+                        <ul style="list-style:none;">
+                            <li><i class="fa fa-user-circle"></i> {{ parte.trabajador }}</li>
+                            <li><i class="fa fa-at"></i> {{ parte.cliente }}</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>  
+            <div class="col-lg-6">            
+                <div class="card border-info">
+                    <div class="card-header"><i class="fa fa-map-marker"></i> Horario</div>
+                    <div class="card-body">
+                        <ul style="list-style:none;">
+                            <li><i class="fa fa-calendar"></i> {% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</li>
+                            <li><i class="fa fa-hourglass-start"></i> {% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</li>
+                            <li><i class="fa fa-hourglass-end"></i> {% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</li>
+                            <li><i class="fa fa-clock-o"></i> {{ parte.tiempo }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">            
+                <div class="card border-info">
+                    <div class="card-header"><i class="fa fa-map-marker"></i> Observaciones</div>
+                    <div class="card-body">
+                        <ul style="list-style:none;">
+                            <li><i class="fa fa-people-carry"></i> {% if parte.material %}Requiere material{% else %}No requiere material{% endif %}</li>
+                            <li><i class="fa fa-times-circle"></i> {{ parte.observaciones }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>                        
+
 
     <ul>
         <li>
-            <a href="{{ path('partes_edit', { 'id': parte.id }) }}">Edit</a>
+            <a href="{{ path('partes_edit', { 'id': parte.id }) }}">Modificar</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+                <input type="submit" value="Borrar">
             {{ form_end(delete_form) }}
         </li>
     </ul>
