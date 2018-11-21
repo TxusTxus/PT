@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Parte edit</h1>
+    {#Muestra la barra superior#}
+    {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Modificar Parte</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
@@ -9,9 +11,6 @@
     {{ form_end(edit_form) }}
 
     <ul>
-        <li>
-            <a href="{{ path('partes_index') }}">Back to the list</a>
-        </li>
         <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">

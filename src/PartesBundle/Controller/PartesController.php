@@ -112,7 +112,7 @@ class PartesController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('partes_index');
+        return $this->redirectToRoute('partes_listado');
     }
 
     /**
