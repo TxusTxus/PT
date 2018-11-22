@@ -5,6 +5,8 @@ namespace UsuariosBundle\Controller;
 use UsuariosBundle\Controller\librerias\funciones;
 
 use UsuariosBundle\Entity\User;
+use TrabajadoresBundle\Entity\Trabajadores;
+use ClientesBundle\Entity\Cliente;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -253,37 +255,34 @@ class UsuariosController extends Controller
             //        Código acción - Código trabajador - Código Cliente
             //        Fecha - Entrada - Salida - Material - 
             //        Comentario
-        $cadenaEncriptada = funciones::Enmascara($action='encripta',$cadena);
-        print_r($cadenaEncriptada);
-        $cadenaEncriptada = funciones::Enmascara($action='encripta','00212');
-        print_r('<br>'.$this->codigoActivacion());
-        die();
-        $cadenaEncriptada = funciones::Enmascara($action='desencripta',$cadena);
+
+        // ->  para posterior uso
+        // $cadenaEncriptada = funciones::Enmascara($action='desencripta',$cadena);
+        // -> $accionSeleccionada = substr($cadenaEncriptada,0,3);
         
-        $accionSeleccionada = substr($cadenaEncriptada,0,3);
+        $accionSeleccionada = substr($cadena,0,3);
          switch ($accionSeleccionada) {
             case '001':
                 
-                $trabajador = substr($cadenaEncriptada,3);
+                $codigoTrabajador = substr($cadena,3,9);
 
-                $usuario = $this->getDoctrine()->getRepository(User::class)
-                ->findOneByEmail($email);
-                if ($usuario) {
-                    $usuario->setValidado(true);
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->flush();
-                    $Ocultado = $usuario->getId()*23;
-                    return $this->redirectToRoute('restablece', array('usuario' => $Ocultado));
+                $trabajador = $this->getDoctrine()->getRepository(Trabajadores::class)->findOneBy(array('codigoActivacion' => $codigoTrabajador));
+                if ($trabajador) {
+                    $clientes=$this->getDoctrine()->getRepository(Cliente::class)->dameListaClientes($trabajador->getEmpresa());
+                    return json_encode($clientes);
+
+
                 } else {
-                    $error = 'No existe ninguna cuenta con esta dirección de correo electrónico. Por favor, diríjase a "Nuevo usuario"';
+                    print_R('Acceso NOOO OK');
                 }
+                die();
                 break;
             case '002':
 
                 
                 break;
             case '003':
-
+                print json_encode($error);
                 
                 break;
             case '004':
@@ -296,7 +295,8 @@ class UsuariosController extends Controller
                  
                 break;
         }       
-        
+       return true; 
     }
+    
 
 }

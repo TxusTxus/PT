@@ -52,6 +52,25 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
             }
             return $datos;
     }
+
+
+    /* 
+    * Obtiene el listado de los clientes de una empresa
+    */
+    public function dameListaClientes($empresa){
+            // Listado completo de clientes
+
+            $consulta = $this->getQueryBuilder();
+            $consulta->select('c.id','c.nombre');
+            $consulta->Where("c.baja IS NULL") ;
+            $consulta->andWhere("c.empresa =:empresa")
+                    ->setParameter('empresa', $empresa);
+            $consulta->orderby('c.nombre', 'ASC')
+            ->getQuery();
+             
+
+            return $consulta->getQuery()->getResult();
+    }
     
     /* 
     * Obtiene el listado de los clientes de una empresa
