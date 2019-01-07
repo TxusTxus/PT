@@ -116,19 +116,24 @@ class DireccionController extends Controller
         } else {
             $datos = $this->dameFechas(null,null,null);
         }
-            dump($datos);
+            
 
         $listado = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionEntreFechas($datos['inicio'], $datos['fin']);
+        $listadoIncidencias = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionIncidenciasEntreFechas($datos['inicio'], $datos['fin']);
+        
+        
         $listadoAnteriores = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionEntreFechas($inicio, $datos['inicio']);
+        dump($listadoIncidencias);
         return $this->render('ClientesBundle:distritos:listado.html.twig', array(
-            'form_buscar'   => $buscarForm->createView(),
-            'listado'   => $listado,
-            'anteriores'    => $listadoAnteriores,
+            'form_buscar'       => $buscarForm->createView(),
+            'listado'           => $listado,
+            'listadoIncidencias'=> $listadoIncidencias,
+            'anteriores'        => $listadoAnteriores,
 //            'cliente'       => $cliente,
-            'fechaInicio'   => $datos['inicio'],
-            'fechaFin'      => $datos['fin'],
-            'empresa'       => $empresa,
-            'accionBuscar'  => 'cliente_busca'
+            'fechaInicio'       => $datos['inicio'],
+            'fechaFin'          => $datos['fin'],
+            'empresa'           => $empresa,
+            'accionBuscar'      => 'cliente_busca'
         ));
     }
     private function dameFechas($mes,$inicio,$fin){

@@ -79,6 +79,34 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
 
             return $lista;
     }
+
+    public function dameDistritoDireccionIncidenciasEntreFechas($inicio, $fin){
+            // Devuelve los campos para el listado de dirtritos
+
+            $consulta = $this->getQueryBuilder();
+            
+            $consulta->select('d.direccion',
+                            'd.telefono',
+                            'd.observaciones',
+                            'dist.distrito',
+                            'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo')
+                    ->leftJoin('d.cliente', 'c')
+                    ->leftJoin('d.incidencia', 'i')
+                    ->leftJoin('d.producto', 'p')
+                    ->leftJoin('d.distrito', 'dist')
+                    ->Where('i.fecha BETWEEN :inicio AND :fin')
+                    ->andWhere('i.fechaResuelta IS NULL')
+                    ->setParameter('inicio', $inicio) 
+                    ->setParameter('fin', $fin);
+            $consulta->orderby('d.distrito', 'ASC')
+                     ->addOrderBy('i.fecha', 'DESC')
+                     ->getQuery();
+            
+
+            $lista= $consulta->getQuery()->getResult();
+
+            return $lista;
+    }
     
     private function getQueryBuilder()
     {

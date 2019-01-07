@@ -21,45 +21,61 @@
             </table>
         {{ form_end(form_buscar) }}   
         <hr>
-    <table class="table table-hover" style="line-height: 0.5;">
-        <thead>
-            <tr>
-                <th>Recambio</th>
-                <th>Period.</th>
-                <th>Distrito </th>
-                <th>Modelo </th>
-                <th>Cliente </th>
-                <th>Direccion </th>
-                <th>Teléfono </th>
-            </tr>
-        </thead>
-        <tbody>
-            {% set direccionAnterior = '' %}
-        {% for direccion in listado %}
-            {% if direccion.modelo|length > 0 %}
-                <tr>
-                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
-                        {% if direccion.premium %}
-                            <i class="fas fa-award"></i>
-                        {% endif %}
-                    </td>
-                    <td>{{ direccion.periodicidad}}</td>
-                    <td>{{ direccion.distrito }}</td>
-                    {% if direccionAnterior == direccion.direccion %}
-                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
-                    {% else %}
-                        <td>{{ direccion.modelo }}</td>
-                        <td>{{ direccion.nombre }}</td>
-                        <td>{{ direccion.direccion }}</td>
-                        <td>{{ direccion.telefono }}</td>
-                    {% endif %}
+        {#    Listado de revisiones pendientes en la fecha   #}
+         <div class="container">
+             <div class="row">Ver revisiones
+                <div  style="text-align:center;">
 
-                </tr>
-            {% endif %}
-            {% set direccionAnterior = direccion.direccion %}
-        {% endfor %}
-        </tbody>
-    </table>
+                    <img src="../imagenes/up.png" width=16px; id="FlechasActivas-up" class="imgcolexp"/>
+                    <img src="../imagenes/down.png"  width=16px; id="FlechasActivas-down" class="imgcolexp"/>
+                </div>
+             </div>
+            <div id="RevisionesActivas"> 
+                <div>      
+
+                         
+                    <table class="table table-hover" style="line-height: 0.5;">
+                        <thead>
+                            <tr>
+                                <th>Recambio</th>
+                                <th>Period.</th>
+                                <th>Distrito </th>
+                                <th>Modelo </th>
+                                <th>Cliente </th>
+                                <th>Direccion </th>
+                                <th>Teléfono </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set direccionAnterior = '' %}
+                        {% for direccion in listado %}
+                            {% if direccion.modelo|length > 0 %}
+                                <tr>
+                                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                                        {% if direccion.premium %}
+                                            <i class="fas fa-award"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ direccion.periodicidad}}</td>
+                                    <td>{{ direccion.distrito }}</td>
+                                    {% if direccionAnterior == direccion.direccion %}
+                                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
+                                    {% else %}
+                                        <td>{{ direccion.modelo }}</td>
+                                        <td>{{ direccion.nombre }}</td>
+                                        <td>{{ direccion.direccion }}</td>
+                                        <td>{{ direccion.telefono }}</td>
+                                    {% endif %}
+
+                                </tr>
+                            {% endif %}
+                            {% set direccionAnterior = direccion.direccion %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+         </div> 
         <hr>
         Listado de fechas anteriores
     <table class="table table-hover" style="line-height: 0.5;">
@@ -118,4 +134,35 @@
     }
 
 </script>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function(){
+        // Ofertas Activas
+        // oculta la segunda flecha y las ofertas. Estado inicial
+        
+	$("#FlechasActivas-up").css("display","none");
+        $("#FlechasActivas-down").css("display","block");
+        $("#RevisionesActivas").hide();
+
+        
+	$("#FlechasActivas-up,#FlechasActivas-down").click(function () {
+		$("#RevisionesActivas").slideToggle("slow");
+
+		if($("#FlechasActivas-up").css("display") == "block")
+		{
+			$("#FlechasActivas-up").css("display","none");
+			$("#FlechasActivas-down").css("display","block");
+		}
+		else
+		{
+			$("#FlechasActivas-up").css("display","block");
+			$("#FlechasActivas-down").css("display","none");
+		}
+	});
+
+});
+</script>
+
 {% endblock %}

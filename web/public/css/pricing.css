@@ -81,3 +81,8 @@
 .btn-esquina:not(:disabled):not(.disabled) {
     cursor: pointer;
 }
+
+.imgcolexp{
+    height: 20px;
+    width:20px;
+}
