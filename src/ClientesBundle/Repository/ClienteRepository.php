@@ -17,11 +17,13 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
     * Obtiene el listado de los clientes de una empresa
     */
     public function dameClientesEmpresa($empresa){
-            // Listado completo de clientes
+            // Listado completo de clientes con todas direcciones
 
             $consulta = $this->getQueryBuilder();
             
-            $consulta->Where("c.baja IS NULL") ;
+            $consulta ->select('c','d')
+                    ->leftJoin('c.direcciones', 'd')
+                    ->Where("c.baja IS NULL");
             $consulta->andWhere("c.empresa =:empresa")
                     ->setParameter('empresa', $empresa);
             $consulta->orderby('c.nombre', 'ASC')
@@ -30,7 +32,38 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
             return $consulta->getQuery()->getResult();
     }
 
+    public function dameClientesEmpresaDireccionPrincipal($empresa){
+            // Listado completo de clientes con la dirección principal
 
+            $consulta = $this->getQueryBuilder();
+            
+            $consulta ->select('c','d')
+                    ->leftJoin('c.direcciones', 'd')
+                    ->Where("c.baja IS NULL");
+            $consulta->andWhere("d.principal =true")
+                    ->andWhere("c.empresa =:empresa")
+                    ->setParameter('empresa', $empresa);
+            $consulta->orderby('c.nombre', 'ASC')
+            ->getQuery();
+
+            return $consulta->getQuery()->getResult();
+    }
+
+    public function dameDireccionesCliente($cliente){
+            // consulta las direcciones de un cliente determinado
+
+            $consulta = $this->getQueryBuilder();
+            
+            $consulta ->select('c','d')
+                    ->leftJoin('c.direcciones', 'd')
+                    ->Where("c.baja IS NULL");
+            $consulta->andWhere("c.id =:cliente")
+                    ->setParameter('cliente', $cliente);
+            $consulta->getQuery();
+
+            return $consulta->getQuery()->getResult();
+    }
+    
     /* 
     * Obtiene el listado de los clientes de una empresa
     */
@@ -81,18 +114,27 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
 
         
             $consulta = $this->getQueryBuilder();
-            $consulta->Where("c.baja IS NULL") 
+            $consulta ->leftJoin('c.direcciones', 'd')
+                    ->leftJoin('d.provincia', 'p')
+                    ->leftJoin('d.distrito', 'dis')
+                    ->Where("c.baja IS NULL") 
                     ->andWhere("c.empresa =:empresa")
                     ->setParameter('empresa', $empresa);
                     $criterio = Criteria::create()
                     ->andwhere(Criteria::expr()->ORX(
                             Criteria::expr()->contains('c.nombre',$cadena),
-                            Criteria::expr()->contains('c.contacto',$cadena),
-                            Criteria::expr()->contains('c.direccion',$cadena),
-                            Criteria::expr()->contains('c.poblacion',$cadena)
+                            Criteria::expr()->contains('d.contacto',$cadena),
+                            Criteria::expr()->contains('d.observaciones',$cadena),
+                            Criteria::expr()->contains('c.observaciones',$cadena),
+                            Criteria::expr()->contains('d.direccion',$cadena),
+                            Criteria::expr()->contains('d.poblacion',$cadena),
+                            Criteria::expr()->contains('p.provincia',$cadena),
+                            Criteria::expr()->contains('dis.distrito',$cadena),
+                            Criteria::expr()->contains('d.telefono',$cadena)
                             )); 
                     $consulta->addCriteria($criterio);
             $consulta->getQuery();
+            dump($consulta);
 
             return $consulta->getQuery()->getResult();
     }    

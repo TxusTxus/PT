@@ -34,7 +34,7 @@ class UsuariosController extends Controller
                             $em = $this->getDoctrine()->getManager();
                             $users = $em->getRepository('UsuariosBundle:User')->findAll();
                             return $this->render('UsuariosBundle:Default:listadoUsuarios.html.twig', array(
-                                'users' => $users,
+                                'users'     => $users,
                             ));
                     break;
                 case 'ROLE_USER':
@@ -72,6 +72,8 @@ class UsuariosController extends Controller
 
         } else {
             // Opción NO LOGEADO
+            dump($error);
+
             return $this->render('UsuariosBundle:Default:index.html.twig', array(
               'last_username' => $lastUsername,
               'error'         => $error,
@@ -146,13 +148,12 @@ class UsuariosController extends Controller
     {
         // Mira al usuario que está logeado
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        
         $empresa = $user->getEmpresa();
-        
+
         return $this->render('UsuariosBundle:Default:inicioEmpresa.html.twig', array(
-            'user' => $user,
-            'nombreEmpresa'  => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaTotal'
+            'user'          => $user,
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca'
         ));
     }    
     /**
@@ -164,11 +165,12 @@ class UsuariosController extends Controller
     public function showAction($usuario)
     {
         $user = $this->getDoctrine()->getRepository('UsuariosBundle:User')->find($usuario/23);
-     
+        $empresa = $user->getEmpresa();
         $deleteForm = $this->createDeleteForm($user);
 
         return $this->render('UsuariosBundle:Default:show.html.twig', array(
             'user' => $user,
+            'empresa'       => $empresa,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -182,6 +184,7 @@ class UsuariosController extends Controller
     public function editAction(Request $request,$usuario)
     {
         $user = $this->getDoctrine()->getRepository('UsuariosBundle:User')->find($usuario/23);
+        $empresa = $user->getEmpresa();
         $deleteForm = $this->createDeleteForm($user);
         $editForm = $this->createForm('UsuariosBundle\Form\UserType', $user);
         $editForm->handleRequest($request);
@@ -194,6 +197,7 @@ class UsuariosController extends Controller
 
         return $this->render('UsuariosBundle:Default:edit.html.twig', array(
             'user' => $user,
+            'empresa'       => $empresa,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -234,69 +238,5 @@ class UsuariosController extends Controller
             ->getForm()
         ;
     }
-    
-    
-    /**
-    * @Route("/accion/{cadena}", name="accion", requirements={"cadena"=".+"})
-    * @Method({"GET"})
-    */
-    public function accionAction($cadena)
-    {
-            // Acciones
-            // 001 -> Inicia conexión
-            //        Código Accion - Código trabajador  
-            //     -> devuelve la lista de Clientes.
-            //     -> devuelve ¿partes? opción módulo gestión de partes.
-            // 
-            // 002 -> Nuevo Usuario
-            //        Código Accion - Nombre trabajador
-            //     -> devuelve datos trabajador.
-            // 003 -> Nuevo Parte
-            //        Código acción - Código trabajador - Código Cliente
-            //        Fecha - Entrada - Salida - Material - 
-            //        Comentario
-
-        // ->  para posterior uso
-        // $cadenaEncriptada = funciones::Enmascara($action='desencripta',$cadena);
-        // -> $accionSeleccionada = substr($cadenaEncriptada,0,3);
-        
-        $accionSeleccionada = substr($cadena,0,3);
-         switch ($accionSeleccionada) {
-            case '001':
-                
-                $codigoTrabajador = substr($cadena,3,9);
-
-                $trabajador = $this->getDoctrine()->getRepository(Trabajadores::class)->findOneBy(array('codigoActivacion' => $codigoTrabajador));
-                if ($trabajador) {
-                    $clientes=$this->getDoctrine()->getRepository(Cliente::class)->dameListaClientes($trabajador->getEmpresa());
-                    return json_encode($clientes);
-
-
-                } else {
-                    print_R('Acceso NOOO OK');
-                }
-                die();
-                break;
-            case '002':
-
-                
-                break;
-            case '003':
-                print json_encode($error);
-                
-                break;
-            case '004':
-
-                break;
-            case '005':
-
-                break;
-            case '006':
-                 
-                break;
-        }       
-       return true; 
-    }
-    
 
 }

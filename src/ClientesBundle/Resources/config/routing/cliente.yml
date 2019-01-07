@@ -12,10 +12,20 @@ cliente_nuevo:
     path:     /nuevoCliente
     defaults: { _controller: "ClientesBundle:Cliente:new" }
     methods:  [GET, POST]
+    
+cliente_nuevaDireccion:
+    path:     /{id}/nuevaDireccion
+    defaults: { _controller: "ClientesBundle:Cliente:nuevaDireccion" }
+    methods:  [GET, POST]
 
 cliente_edit:
     path:     /{id}/modificaCliente
     defaults: { _controller: "ClientesBundle:Cliente:edit" }
+    methods:  [GET, POST]
+    
+cliente_editar_direccion:
+    path:     /{id}/modificaDireccion
+    defaults: { _controller: "ClientesBundle:Direccion:editaDireccion" }
     methods:  [GET, POST]
 
 cliente_delete:
@@ -32,3 +42,19 @@ cliente_busca:
     path:     /buscaCliente
     defaults: { _controller: "ClientesBundle:Cliente:buscaClienteNombre" }
     methods:  [POST]
+    
+    
+direccion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ClientesBundle:Direccion:delete" }
+    methods:  DELETE
+    
+actualiza_direccion_principal:
+    path:     /{id}/{id2}/actualiza
+    defaults: { _controller: "ClientesBundle:Direccion:actualizaDireccionPrincipal" }
+    methods:  [GET, POST]
+    
+listado_distritos:
+    path:     /distritos
+    defaults: { _controller: "ClientesBundle:Direccion:listadoDistritos" }
+    methods:  [GET, POST]

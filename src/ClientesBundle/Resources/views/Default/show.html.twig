@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-
+{% set numDirecciones=0 %}
+{% set direccionPrincipal=0 %}
 {% block body %}
                 {#Muestra la barra superior#}
                 {% embed "barranavegacion.html.twig" %}{% endembed %}
@@ -24,6 +25,8 @@
         <div class="btn-group mr-2" role="group" aria-label="Second group">
 
             <a href="{{ path('cliente_edit', { 'id': cliente.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos cliente"><i class="fa fa-edit"></i></a>
+            <a href="{{ path('cliente_nuevaDireccion', { 'id': cliente.id }) }}" class="btn btn-primary btn-sm" title="Añadir dirección cliente"><i class="fa fa-map-marker"></i></a>
+            <a href="{{ path('producto_new', { 'cliente': cliente.id }) }}" class="btn btn-primary btn-sm" title="Añadir producto cliente"><i class="fa fa-cogs"></i></a>
             <a href="{{ path('cliente_baja', { 'id': cliente.id }) }}" class="btn btn-primary btn-sm" title="Eliminar cliente"><i class="fa fa-eraser"></i></a>
 
         </div>
@@ -38,18 +41,26 @@
             {% endif %}
         </li>
       <li class="nav-item">
-            {% if ficha=='partes' %}
-                <a class="nav-link  active show" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab2');">Partes</a>
+            {% if ficha=='productos' %}
+                <a class="nav-link  active show" data-toggle="tab" href="#Productos" onclick="javascript:cambiaEnlaceElementos('tab2');">Productos</a>
             {% else %}
-                <a class="nav-link" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab2');">Partes</a>
+                <a class="nav-link" data-toggle="tab" href="#Productos" onclick="javascript:cambiaEnlaceElementos('tab2');">Productos</a>
+            {% endif %}
+        </li>     
+      </li>
+      <li class="nav-item">
+            {% if ficha=='partes' %}
+                <a class="nav-link  active show" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab3');">Partes</a>
+            {% else %}
+                <a class="nav-link" data-toggle="tab" href="#Partes" onclick="javascript:cambiaEnlaceElementos('tab3');">Partes</a>
             {% endif %}
         </li>     
       </li>
       <li class="nav-item">
             {% if ficha=='incidencias' %}
-                <a class="nav-link active show" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab3');">Incidencias</a>
+                <a class="nav-link active show" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab4');">Incidencias</a>
             {% else %}
-                <a class="nav-link" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab3');">Incidencias</a>
+                <a class="nav-link" data-toggle="tab" href="#Incidencias" onclick="javascript:cambiaEnlaceElementos('tab4');">Incidencias</a>
             {% endif %}
       </li>
     </ul>
@@ -62,15 +73,27 @@
   
       {#<div class="card border-secondary mb-3" style="width:40%; float:left;">#}
     <div class="container" style="margin-top: 20px;">
+        {#  Muestra los datos y la direccion principal  #}
         <div class="row my-flex-card" style="">  
             <div class="col-lg-6">
                 <div class="card border-info">
                     <div class="card-header">{{ cliente.nombre }}</div>
                     <div class="card-body">
                         <ul style="list-style:none;">
-                            <li><i class="fa fa-user-circle"></i> {{ cliente.contacto }}</li>
-                            <li><i class="fa fa-at"></i> {{ cliente.email }}</li>
-                            <li><i class="fa fa-phone"></i> {{ cliente.telefono }}</li>
+                        {% for direcciones in cliente.direcciones %}
+                            {% if direcciones.principal==true %}
+                                {% if cliente.razonSocial|length > 0 %}
+                                    <li><i class="fa fa-address-card" title="Razón social"></i> {{ cliente.razonSocial }}</li>
+                                {% endif %}
+                                <li><i class="fa fa-user-circle"></i> {{ direcciones.contacto }}</li>
+                                <li><i class="fa fa-at"></i> {{ direcciones.email }}</li>
+                                <li><i class="fa fa-phone"></i> {{ direcciones.telefono }}</li>
+                                {% set direccionPrincipal=direcciones.id %}
+                            {% else %}
+                                {% set numDirecciones=numDirecciones+1 %}
+                            {% endif %}
+                        {% endfor %}
+
                             <li> 
                                 {% if cliente.baja %}
                                    <i class="fa fa-low-vision"></i> Inactivo
@@ -84,24 +107,74 @@
 
                 </div>
             </div>
-            <div class="col-lg-6">            
-                <div class="card border-info">
-                    <div class="card-header"><i class="fa fa-map-marker"></i> Dirección</div>
-                    <div class="card-body">
-                        <ul style="list-style:none;">
-                            <li><i class="fa fa-map"></i> {{ cliente.direccion }}</li>
-                            <li> {{ cliente.codigoPostal }} - {{ cliente.poblacion }}</li>
-                            <li> {{ cliente.provincia }}</li>
-                        </ul>
-                        </div>                       
-                    </div>
+            {% for direcciones in cliente.direcciones %}
+                {% if direcciones.principal==true %}
+                    <div class="col-lg-6">            
+                        <div class="card border-info">
+                            <div class="card-header">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <a href="{{ path('cliente_editar_direccion', { 'id': direcciones.id }) }}" class="btn-esquina"><span aria-hidden="true"><i class="fa fa-edit"></i></span></a>
+                                Dirección
+                            </div>
+                            <div class="card-body">                    
 
-                </div>
+                                <ul>
+                                    <li><i class="fas fa-map"></i> {{ direcciones.direccion }}</li>
+                                    <li> {{ direcciones.codigoPostal }} - {{ direcciones.poblacion }}</li>
+                                    <li> {{ direcciones.provincia }}</li> 
+                                    <li> <i class="fas fa-crosshairs" title="Distrito"></i> {{ direcciones.distrito }}</li> 
+                                </ul>
+                            - {{ direcciones.observaciones }}
+
+                            </div>                       
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
-        <div class="row">  
+
+            {# Muestra otras direcciones si las hay #}
+            {% if numDirecciones >=1 %}
+                <div class="row" >  
+                    {% for direcciones in cliente.direcciones %}
+                        {% if direcciones.principal==false %}
+                            {% if numDirecciones >=3 %}
+                                <div class="col-lg-4">  
+                            {% else %}
+                                <div class="col-lg-6">
+                            {% endif %}
+                                    <div class="card border-info">
+                                        <div class="card-header">
+
+                                            <a href="{{ path('cliente_editar_direccion', { 'id': direcciones.id }) }}" class="btn-esquina" title="Editar"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-edit"></i></span></a>
+                                            <a href="{{ path('actualiza_direccion_principal', { 'id': direcciones.id,'id2': direccionPrincipal }) }}" class="btn-esquina" title="Establecer dirección principal"><span aria-hidden="true"><i class="fa fa-map-marker"></i></span></a>
+                                            <i class="fas fa-user-circle"></i> {{ direcciones.contacto }} - <i class="fas fa-phone"></i> {{ direcciones.telefono }}
+                                        </div>
+                                        <div class="card-body">
+                                            <ul style="list-style:none;">
+                                            <li><i class="fas fa-at"></i> {{ direcciones.email }}</li>
+                                            <li><i class="fas fa-map"></i> {{ direcciones.direccion }}</li>
+                                            <ul style="list-style:none;">
+                                            <li> {{ direcciones.codigoPostal }} - {{ direcciones.poblacion }}</li>
+                                            <li> {{ direcciones.provincia }}</li> 
+                                            <li> <i class="fas fa-crosshairs" title="Distrito"></i> {{ direcciones.distrito }}</li>
+                                            </ul></ul> 
+                                            - {{ direcciones.observaciones }}
+                                        </div>                       
+                                    </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}            
+                    
+        <div class="row"  style="margin-top: 20px;">  
             <div class="col-lg-12">            
                 <div class="card border-info">
-                    <div class="card-header"><i class="fa fa-edit"></i> Observaciones</div>
+                    <div class="card-header">
+                        <a href="{{ path('cliente_edit', { 'id': cliente.id }) }}" class="close" title="Editar"><span aria-hidden="true"><i class="fa fa-edit"></i></span></a>
+                        <i class="fa fa-edit"></i> Observaciones
+                    </div>
                     <div class="card-body">
                             {{ cliente.observaciones }}
                     </div>                       
@@ -111,23 +184,105 @@
 
         </div>
     </div>
-  </div>
-    {% if ficha=='partes' %}
-        <div class="tab-pane fade active show" id="Partes">
-    {% else %}
-        <div class="tab-pane fade" id="Partes">
-    {% endif %}
-    <p>Listado de Partes</p>
-  </div>
-    {% if ficha=='incidencias' %}
-        <div class="tab-pane fade active show" id="Incidencias">
-    {% else %}
-        <div class="tab-pane fade" id="Incidencias">
-    {% endif %}
-    <p>Listado de incidencias</p>
-  </div>
-</div>
+    </div> {# cierra el TAB -> ficha #}
 
+    {% if ficha=='productos' %}
+        <div class="tab-pane fade active show" id="Productos">
+    {% else %}
+        <div class="tab-pane fade" id="Productos">
+    {% endif %}
+            <div class="container" style="margin-top: 20px;">
+                <p>Listado de Productos</p>
+            {#      Muestra los datos y la direccion principal  #}
+                <div class="row my-flex-card" style="">  
+                    {% for producto in cliente.productos %}
+                        <div class="col-lg-6">
+                            <div class="card border-info">
+                            
+                                <div class="card-header"> 
+                                    <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': cliente.id }) }}" class="btn-esquina" title="Editar"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-edit"></i></span></a>
+                                    <a href="{{ path('incidencia_nueva', { 'cliente': cliente.id, 'direccion': producto.direccion.id, 'producto': producto.id  }) }}" class="btn-esquina" title="Incidencia"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-ambulance"></i></span></a>
+                                    {{ producto.modelo }}
+                                </div>
+                                <div class="card-body">
+                                    <ul style="list-style:none;">
+                                        <li>Fecha Instalación: {{ producto.instalacion|date('d-m-y') }}</li>
+                                        <li>Pediodo de mantenimiento (días); {{ producto.periodicidad }}</li>
+                                        <li>Fecha último mantenimiento: {{ producto.fechaMantenimiento|date('d-m-y') }}</li>
+                                        <li>Fecha próximo mantenimiento:<b> {{ producto.FechaNuevoMantenimiento|date('d-m-y') }}</b></li>
+                                        <li>Observaciones: {{ producto.observaciones }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>                               
+                        {% for direcciones in cliente.direcciones %}
+                           {% if direcciones.id==producto.direccion.id  %}
+                               <div class="col-lg-6">
+                                    <div class="card border-info">
+                                        <div class="card-header">
+                                            Dirección <i class="fa fa-crosshairs" title="Distrito"></i> {{ direcciones.distrito }}
+                                        </div>
+                                        <div class="card-body">
+                                            <ul style="list-style:none;">
+                                                <li><i class="fa fa-user-circle"></i> {{ direcciones.contacto }} </li>
+                                                <li><i class="fa fa-phone"></i> {{ direcciones.telefono }}</li>
+                                                <li><i class="fa fa-at"></i> {{ direcciones.email }}</li>
+                                                <li><i class="fa fa-map"></i> {{ direcciones.direccion }}</li>
+                                                <ul style="list-style:none;">
+                                                <li> {{ direcciones.codigoPostal }} - {{ direcciones.poblacion }}</li>
+                                                <li> {{ direcciones.provincia }}</li> 
+                                                </ul></ul> 
+                                            - {{ direcciones.observaciones }}
+                                        </div>                       
+                                    </div>
+                               </div>
+                            {% endif %}
+                        {% endfor %}                                   
+                    {% endfor %}
+
+
+                        
+                </div>
+            </div>    
+        </div> {# cierra el TAB -> productos #}
+
+        {% if ficha=='partes' %}
+            <div class="tab-pane fade active show" id="Partes">
+                <p>Listado de Partes</p>
+            </div>
+        {% else %}
+            <div class="tab-pane fade" id="Partes">
+                <p>Listado de Partes</p>
+            </div> {# cierra el TAB -> partes #}
+        {% endif %}
+
+        {% if ficha=='incidencias' %}
+            <div class="tab-pane fade active show" id="Incidencias">
+        {% else %}
+            <div class="tab-pane fade" id="Incidencias">
+        {% endif %}
+                <div class="container" style="margin-top: 20px;">
+                    <p>Listado de incidencias</p>
+                    <table width="100%"><tr>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Importe</th>
+                            <th>Producto</th>
+                            <th>Fecha Resuelta</th>
+                        </tr>
+                      {% for incidencia in cliente.incidencias %}
+                        <tr>
+                            <td>{{ incidencia.fecha|date('d-m-Y')}}</td>
+                            <td>{{ incidencia.descripcion}}</td>
+                            <td align="rigth">{{ incidencia.importe}} €</td>
+                            <td>{{ incidencia.producto}}</td>
+                            <td>{{ incidencia.fechaResuelta|date('d-m-Y')}}</td>
+                        </tr>
+                      {% endfor %}
+                    </table>
+                </div>
+            </div> {# cierra el TAB -> incidencias #}
+    </div> {# Cierra el contenedor de fichas #}
 <script>
     /* 
      * Cambia los enlaces según la ficha en la que se encuetre
@@ -149,9 +304,12 @@
                 var nuevoEnlace = enlace + 'ficha';
                 break;
             case "tab2":
-                var nuevoEnlace = enlace + 'partes';
+                var nuevoEnlace = enlace + 'productos';
                 break;
             case "tab3":
+                var nuevoEnlace = enlace + 'partes';
+                break;
+            case "tab4":
                 var nuevoEnlace = enlace + 'incidencias';
                 break;
         }

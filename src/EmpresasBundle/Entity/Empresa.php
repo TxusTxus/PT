@@ -36,12 +36,29 @@ class Empresa
     private $imagen;
     
      /**
-     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="Empresa")
+     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="empresa")
      * @ORM\JoinColumn(name="estado", referencedColumnName="id")
      */
     private $estado;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\User", mappedBy="empresa")
+     */
+    private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ClientesBundle\Entity\Cliente", mappedBy="empresa")
+     */
+    private $cliente;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TrabajadoresBundle\Entity\Trabajadores", mappedBy="empresa")
+     */
+    private $trabajadores;
+
+
+    
+    
     /**
      * Get id
      *
@@ -124,6 +141,7 @@ class Empresa
     {
         return $this->estado;
     }
+    
     
     function __toString()
     {

@@ -1,0 +1,5 @@
+comunicacion_accion:
+    path:     /{cadena}
+    defaults: { _controller: ComunicacionBundle:Default:index }
+    methods:   [GET, POST]
+    

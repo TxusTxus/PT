@@ -8,14 +8,17 @@
             "UsuariosBundle\\": "src/UsuariosBundle",
             "EmpresasBundle\\": "src/EmpresasBundle",
             "ClientesBundle\\": "src/ClientesBundle",
+            "ProductosBundle\\": "src/ProductosBundle",
             "TrabajadoresBundle\\": "src/TrabajadoresBundle",
             "PartesBundle\\": "src/PartesBundle",
-            "ComunicacionBundle\\": "src/ComunicacionBundle"
+            "ComunicacionBundle\\": "src/ComunicacionBundle",
+            "IncidenciasBundle\\": "src/IncidenciasBundle"
         },
         "classmap": [
             "app/AppKernel.php",
             "app/AppCache.php"
-        ]
+        ],
+        "files": ["src/Libreria.php"]
     },
     "autoload-dev": {
         "psr-4": {

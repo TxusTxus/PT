@@ -8,42 +8,14 @@
         <h1>Modificar Cliente</h1>
 
         {{ form_start(edit_form) }}
-        <div class="row" style="margin-bottom: 20px;">  
-            
+        <div class="row" style="margin-bottom: 20px;">             
             <div class="col-lg-6">
                 <b><i class="fa fa-user"></i> {{ form_label(edit_form.nombre) }}</b>
                 {{ form_widget(edit_form.nombre) }}
             </div>
-            <div class="col-lg-3">
-                <b><i class="fa fa-phone"></i> {{ form_label(edit_form.telefono) }}</b>
-                {{ form_widget(edit_form.telefono) }}
-            </div>
             <div class="col-lg-6">
-                <b><i class="fa fa-at"></i> {{ form_label(edit_form.email) }}</b>
-                {{ form_widget(edit_form.email) }}
-            </div>
-            <div class="col-lg-6">
-                <b><i class="fa fa-user-circle"></i> {{ form_label(edit_form.contacto) }}</b>
-                {{ form_widget(edit_form.contacto) }}
-            </div>
-        </div>
-            
-        <div class="row" style="margin-bottom: 20px;">  
-            <div class="col-lg-10">
-                <b><i class="fa fa-map-marker"></i> {{ form_label(edit_form.direccion) }}</b>
-                {{ form_widget(edit_form.direccion) }}
-            </div>
-            <div class="col-lg-3">
-                <b>{{ form_label(edit_form.codigoPostal) }}</b>
-                {{ form_widget(edit_form.codigoPostal) }}
-            </div>
-            <div class="col-lg-4">
-                <b>{{ form_label(edit_form.poblacion) }}</b>
-                {{ form_widget(edit_form.poblacion) }}
-            </div>
-            <div class="col-lg-4">
-                <b>{{ form_label(edit_form.provincia) }}</b>
-                {{ form_widget(edit_form.provincia) }}
+                <b> {{ form_label(edit_form.razonSocial) }}</b>
+                {{ form_widget(edit_form.razonSocial) }}
             </div>
         </div>
         <div class="row" style="margin-bottom: 20px;">  
@@ -55,10 +27,11 @@
         <input type="submit" value="Guardar cambios" onclick="desmarcaCambio()" class="btn btn-primary" />
         {{ form_end(edit_form) }}
            
-                {{ form_start(delete_form) }}
-                    <input type="submit" value="Dar de baja" class="btn btn-primary">
-                {{ form_end(delete_form) }}
-
+        {{ form_start(delete_form) }}
+            <input type="submit" value="Dar de baja" class="btn btn-primary">
+            <a class="btn btn-primary" href="javascript:window.history.go(-1);">Volver a la página anterior</a>
+        {{ form_end(delete_form) }}
+                
     </div>
                 
 {# 

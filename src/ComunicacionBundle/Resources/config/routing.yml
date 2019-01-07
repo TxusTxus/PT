@@ -1,3 +1,7 @@
+comunicacion_comunicacion:
+    resource: "@ComunicacionBundle/Resources/config/routing/comunicacion.yml"
+    prefix:   /
+    
 comunicacion_homepage:
     path:     /
     defaults: { _controller: ComunicacionBundle:Default:index }

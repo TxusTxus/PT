@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+{# Muestra la barra superior #}
+{% embed "barranavegacion.html.twig" %}{% endembed %}
+
+<div class="container">                  
+    <h1>Modificar dirección</h1>
+    <div class="container" style="margin-top: 20px;">
+        {{ form_start(edit_form) }}
+
+        <div class="row" style="margin-bottom: 20px;">  
+            <div class="col-lg-8">
+                <b><i class="fa fa-map-marker"></i> {{ form_label(edit_form.direccion) }}</b>
+                {{ form_widget(edit_form.direccion) }}
+            </div>
+            <div class="col-lg-3">
+                <b>{{ form_label(edit_form.codigoPostal) }}</b>
+                {{ form_widget(edit_form.codigoPostal) }}
+            </div>
+            <div class="col-lg-4">
+                <b>{{ form_label(edit_form.poblacion) }}</b>
+                {{ form_widget(edit_form.poblacion) }}
+            </div>
+            <div class="col-lg-4">
+                <b>{{ form_label(edit_form.provincia) }}</b>
+                {{ form_widget(edit_form.provincia) }}
+            </div>
+            <div id="desplegableNuevaDireccion" class="col-lg-4" >
+                <b>{{ form_label(edit_form.distrito) }}</b> <a href="" class="nuevoDistrito">Nuevo</a>
+                {{ form_widget(edit_form.distrito) }}
+
+            </div>
+            <div id="campoNuevaDireccion" class="col-lg-4" style>
+                <b>{{ form_label(edit_form.Ndistrito) }}</b> 
+                 {{ form_widget(edit_form.Ndistrito) }}
+
+            </div>
+                 
+                <script type="text/javascript">
+                    document.getElementById("campoNuevaDireccion").style.display ='none';
+                    // Inserta un nuevo distrito en el select y posteriormente en la tabla de distritos.
+                    jQuery(document).ready(function () {
+                        jQuery('.nuevoDistrito').click(function (e) {
+                            e.preventDefault();
+                            var distrito = prompt("Introduzca nuevo distrito:", "distrito...");
+                            if (distrito == null || distrito == "") {
+                              distrito = "";
+                            } else {
+                                document.getElementById("clientesbundle_direccion_Ndistrito").value = distrito;
+                                document.getElementById("campoNuevaDireccion").style.display ='block';
+                                document.getElementById("desplegableNuevaDireccion").style.display ='none';
+                         }
+                        });
+                    });
+                </script>
+        </div>
+        <div class="row" style="margin-bottom: 20px;">  
+            <div class="col-lg-3">
+                <b><i class="fa fa-phone"></i> {{ form_label(edit_form.telefono) }}</b>
+                {{ form_widget(edit_form.telefono) }}
+            </div>
+            <div class="col-lg-6">
+                <b><i class="fa fa-at"></i> {{ form_label(edit_form.email) }}</b>
+                {{ form_widget(edit_form.email) }}
+            </div>
+            <div class="col-lg-4">
+                <b><i class="fa fa-user-circle"></i> {{ form_label(edit_form.contacto) }}</b>
+                {{ form_widget(edit_form.contacto) }}
+            </div>
+        </div>
+            
+
+        <div class="row" style="margin-bottom: 20px;">  
+            <div class="col-lg-12">
+                <b>{{ form_label(edit_form.observaciones) }}</b>
+                {{ form_widget(edit_form.observaciones) }}
+            </div>
+        </div>
+        <input type="submit" value="Guardar" onclick="desmarcaCambio()" class="btn btn-primary" />
+        
+             <a href="{{ path('cliente_show', { 'id': cliente, 'ficha':'ficha'}) }}" class="btn btn-primary" title="Volver a la ficha">Volver</a>
+    {{ form_end(edit_form) }}
+    </div>   
+</div>    
+{# 
+Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página
+#}
+{% embed "marcarcambios.html.twig" %}{% endembed %}
+
+{% endblock %}

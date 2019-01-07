@@ -21,10 +21,17 @@ class Partes
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="EmpresasBundle\Entity\Empresa", inversedBy="parte")
-     * @ORM\JoinColumn(name="empresa", referencedColumnName="id")
-     */
+//    /**
+//     * @ORM\ManyToOne(targetEntity="EmpresasBundle\Entity\Empresa", inversedBy="parte")
+//     * @ORM\JoinColumn(name="empresa", referencedColumnName="id")
+//     */
+//    private $empresa;
+    
+     /**
+     * @var int
+     *
+     * @ORM\Column(name="empresa", type="integer")
+     */   
     private $empresa;
 
     /**
@@ -89,6 +96,13 @@ class Partes
     private $observaciones;
 
 
+     /**
+     * @var bool
+     *
+     * @ORM\Column(name="terminado", type="boolean", nullable=true)
+     */
+    private $terminado;
+    
     /**
      * Get id
      *

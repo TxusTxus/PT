@@ -1,0 +1,21 @@
+direccion_index:
+    path:     /
+    defaults: { _controller: "ClientesBundle:Direccion:index" }
+    methods:  GET
+
+direccion_show:
+    path:     /{id}/show
+    defaults: { _controller: "ClientesBundle:Direccion:show" }
+    methods:  GET
+
+direccion_new:
+    path:     /new
+    defaults: { _controller: "ClientesBundle:Direccion:new" }
+    methods:  [GET, POST]
+
+direccion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ClientesBundle:Direccion:edit" }
+    methods:  [GET, POST]
+
+

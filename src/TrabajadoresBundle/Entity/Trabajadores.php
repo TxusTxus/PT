@@ -54,6 +54,11 @@ class Trabajadores
      */
     private $empresa;
 
+     /**
+     * @ORM\OneToMany(targetEntity="\IncidenciasBundle\Entity\Incidencia", mappedBy="trabajadores")
+     */
+    private $incidencias;    
+    
     /**
      * @var bool
      *
@@ -67,6 +72,18 @@ class Trabajadores
      * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
     private $observaciones;
+    
+    
+    
+    
+     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->incidencias = new \Doctrine\Common\Collections\ArrayCollection(); 
+    }
+    
     
     /**
      * Get id
@@ -242,6 +259,41 @@ class Trabajadores
     {
         return $this->baja;
     }
+    
+    
+     /**
+     * Add image
+     *
+     * @param Image $incidencias
+     *
+     * @return Post
+     */
+    public function addIncidencias(\IncidenciasBundle\Entity\Incidencia $incidencias)
+    {
+        $this->incidencias->add($incidencias);
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $incidencias
+     */
+    public function removeIncidencias(\IncidenciasBundle\Entity\Incidencia $incidencias)
+    {
+        $this->incidencias->removeElement($incidencias);
+    }
+
+    /**
+     * Get incidencias
+     *
+     * @return ArrayCollection
+     */
+    public function getIncidencias()
+    {
+        return $this->incidencias;
+    }  
     
     function __toString()
     {

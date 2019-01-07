@@ -1,0 +1,7 @@
+productos_producto:
+    resource: "@ProductosBundle/Resources/config/routing/producto.yml"
+    prefix:   /
+
+productos_homepage:
+    path:     /
+    defaults: { _controller: ProductosBundle:Producto:index }

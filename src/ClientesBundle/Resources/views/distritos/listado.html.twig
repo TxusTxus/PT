@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+                {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Listado por distritos desde {{fechaInicio|date('d-m-Y')}} hasta {{fechaFin|date('d-m-Y')}}</h1>
+       {{ form_start(form_buscar)}}
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Fecha desde</th>
+                        <td>{{ form_widget(form_buscar.fechaDesde) }}</td>
+                        <th>Fecha hasta</th>
+                        <td>{{ form_widget(form_buscar.fechaHasta) }}</td>
+                        <th>Mes</th>
+                        <td>{{ form_widget(form_buscar.mes) }}</td>
+                        <td><button type="submit" class="btn btn-primary btn-flat"><i class="fas fa-filter"></i> filtrar por fecha</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        {{ form_end(form_buscar) }}   
+        <hr>
+    <table class="table table-hover" style="line-height: 0.5;">
+        <thead>
+            <tr>
+                <th>Recambio</th>
+                <th>Period.</th>
+                <th>Distrito </th>
+                <th>Modelo </th>
+                <th>Cliente </th>
+                <th>Direccion </th>
+                <th>Teléfono </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set direccionAnterior = '' %}
+        {% for direccion in listado %}
+            {% if direccion.modelo|length > 0 %}
+                <tr>
+                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                        {% if direccion.premium %}
+                            <i class="fas fa-award"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ direccion.periodicidad}}</td>
+                    <td>{{ direccion.distrito }}</td>
+                    {% if direccionAnterior == direccion.direccion %}
+                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
+                    {% else %}
+                        <td>{{ direccion.modelo }}</td>
+                        <td>{{ direccion.nombre }}</td>
+                        <td>{{ direccion.direccion }}</td>
+                        <td>{{ direccion.telefono }}</td>
+                    {% endif %}
+
+                </tr>
+            {% endif %}
+            {% set direccionAnterior = direccion.direccion %}
+        {% endfor %}
+        </tbody>
+    </table>
+        <hr>
+        Listado de fechas anteriores
+    <table class="table table-hover" style="line-height: 0.5;">
+        <thead>
+            <tr>
+                <th>Recambio</th>
+                <th>Period.</th>
+                <th>Distrito </th>
+                <th>Modelo </th>
+                <th>Cliente </th>
+                <th>Direccion </th>
+                <th>Teléfono </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set direccionAnterior = '' %}
+        {% for direccion in anteriores %}
+            {% if direccion.modelo|length > 0 %}
+                <tr>
+                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                        {% if direccion.premium %}
+                            <i class="fas fa-award"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ direccion.periodicidad}}</td>
+                    <td>{{ direccion.distrito }}</td>
+                    {% if direccionAnterior == direccion.direccion %}
+                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
+                    {% else %}
+                        <td>{{ direccion.modelo }}</td>
+                        <td>{{ direccion.nombre }}</td>
+                        <td>{{ direccion.direccion }}</td>
+                        <td>{{ direccion.telefono }}</td>
+                    {% endif %}
+
+                </tr>
+            {% endif %}
+            {% set direccionAnterior = direccion.direccion %}
+        {% endfor %}
+        </tbody>
+    </table>
+<script>
+    /* 
+     * Activa la opción de perder cambios al salir de la página
+    */
+
+    function actualizaFechas(){
+        // Actualiza los valores de los campos de fechas según el mes seleccionado
+        var date = new Date();
+        var mes = ($("#clientesbundle_cliente_mes").val())-1;
+        var primerDia = new Date(date.getFullYear(), mes, 1);
+        var ultimoDia = new Date(date.getFullYear(), mes + 1, 0);
+        document.getElementById("clientesbundle_cliente_fechaDesde").value = primerDia.getFullYear()+"-"+(("0" + (primerDia.getMonth() + 1)).slice(-2))+"-"+(("0" + primerDia.getDate()).slice(-2));
+        document.getElementById("clientesbundle_cliente_fechaHasta").value = ultimoDia.getFullYear()+"-"+(("0" + (ultimoDia.getMonth() + 1)).slice(-2))+"-"+(("0" + ultimoDia.getDate()).slice(-2));
+        //document.getElementById("clientesbundle_cliente_mes").value;
+    }
+
+</script>
+{% endblock %}

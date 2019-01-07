@@ -3,23 +3,29 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Control Partes{% endblock %}</title>
-
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% if empresa.imagen|length > 0 %}
+            {% set fav = '/imagenes/logo/fav_'~empresa.imagen %}
+            <link rel="icon" type="image/x-icon" href="{{ asset(fav) }}" />
+        {% else %}
+            <link rel="icon" type="image/x-icon" href="{{ asset('/imagenes/logo/fav_logo_btoclick.jpg') }}" />
+        {% endif %}
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
         {% block stylesheets %}
             <link href="{{ asset('public/css/spacelab/bootstrap.min.css') }}" rel="stylesheet">
-            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-            <!-- Custom styles for this template -->
+          {#  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">#}
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">            <!-- Custom styles for this template -->
             <link href="{{ asset('public/css/pricing.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
+
         <!-- barra superor -->
             <div id="page-container">
 
                 <div id="top-header">
                     <div class=" barrasuperior">
                         <div >
-                            <a href="tel:609 640 018"><span><i class="fa fa-phone"></i> (+34) 609 640 018</span></a>
+                            <a href="tel:609 640 018"><span><i class="fas fa-phone"></i> (+34) 609 640 018</span></a>
                             <a href="mailto:jclemente@btoclick.com"><span><i class="fa fa-envelope"></i> jclemente@btoclick.com</span></a> 
                         </div> 
 

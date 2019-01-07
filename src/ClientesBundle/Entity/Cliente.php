@@ -31,50 +31,82 @@ class Cliente
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=25)
+     * @ORM\Column(name="razonSocial", type="string", length=255, nullable=true)
      */
-    private $telefono;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="contacto", type="string", length=255, nullable=true)
-     */
-    private $contacto;
+    private $razonSocial;
     
-    /**
-     * @var string
+     /**
+     * @var ArrayCollection
      *
-     * @ORM\Column(name="direccion", type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="Direccion", inversedBy="cliente", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="cliente_direccion",
+     *                      joinColumns={@ORM\JoinColumn(name="cliente_id", referencedColumnName="id")},
+     *                      inverseJoinColumns={@ORM\JoinColumn(name="direccion_id", referencedColumnName="id")})
      */
-    private $direccion;
+    private $direcciones;
 
-    /**
-     * @var int
+     /**
+     * @var ArrayCollection
      *
-     * @ORM\Column(name="poblacion", type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="\ProductosBundle\Entity\Producto", inversedBy="cliente", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="cliente_producto",
+     *                      joinColumns={@ORM\JoinColumn(name="cliente_id", referencedColumnName="id")},
+     *                      inverseJoinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")})
      */
-    private $poblacion;
+    private $productos;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="\IncidenciasBundle\Entity\Incidencia", mappedBy="cliente")
+     */
+    private $incidencias;
+//
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="telefono", type="string", length=25)
+//     */
+//    private $telefono;
+//
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="contacto", type="string", length=255, nullable=true)
+//     */
+//    private $contacto;
+//    
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="direccion", type="string", length=255)
+//     */
+//    private $direccion;
+//
+//    /**
+//     * @var int
+//     *
+//     * @ORM\Column(name="poblacion", type="string", length=255)
+//     */
+//    private $poblacion;
+//
+//    /**
+//     * @ORM\ManytoOne(targetEntity="Provincia", inversedBy="cliente")
+//     * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")
+//     */
+//    private $provincia;
+//
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="codigoPostal", type="string", length=10)
+//     */
+//    private $codigoPostal;
 
-    /**
-     * @ORM\ManytoOne(targetEntity="Provincia", inversedBy="cliente")
-     * @ORM\JoinColumn(name="provincia_id", referencedColumnName="id")
-     */
-    private $provincia;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="codigoPostal", type="string", length=10)
-     */
-    private $codigoPostal;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
-    private $email;
+//    /**
+//     * @var string
+//     *
+//     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+//     */
+//    private $email;
     
     /**
      * @var string
@@ -97,6 +129,16 @@ class Cliente
     private $baja;
 
 
+     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection(); 
+        $this->productos = new \Doctrine\Common\Collections\ArrayCollection(); 
+        $this->incidencias = new \Doctrine\Common\Collections\ArrayCollection(); 
+    }
+    
     /**
      * Get id
      *
@@ -132,76 +174,132 @@ class Cliente
     }
 
      /**
-     * Set telefono
+     * Set razonSocial
      *
-     * @param string $telefono
+     * @param string razonSocial
      *
      * @return Cliente
      */
-    public function setTelefono($telefono)
+    public function setRazonSocial($razonSocial)
     {
-        $this->telefono = $telefono;
+        $this->razonSocial = $razonSocial;
 
         return $this;
     }
 
     /**
-     * Get telefono
+     * Get razonSocial
      *
      * @return string
      */
-    public function getTelefono()
+    public function getRazonSocial()
     {
-        return $this->telefono;
-    }
-     /**
-     * Set contacto
-     *
-     * @param string $contacto
-     *
-     * @return Cliente
-     */
-    public function setContacto($contacto)
-    {
-        $this->contacto = $contacto;
-
-        return $this;
-    }
-
-    /**
-     * Get contacto
-     *
-     * @return string
-     */
-    public function getContacto()
-    {
-        return $this->contacto;
+        return $this->razonSocial;
     }
     
-    /**
-     * Set direccion
+     /**
+     * Add image
      *
-     * @param string $direccion
+     * @param Image $direccion
      *
-     * @return Cliente
+     * @return Post
      */
-    public function setDireccion($direccion)
+    public function addDireccion(Direccion $direccion)
     {
-        $this->direccion = $direccion;
+        $this->direcciones->add($direccion);
 
         return $this;
     }
 
     /**
-     * Get direccion
+     * Remove image
      *
-     * @return string
+     * @param Image $direccion
      */
-    public function getDireccion()
+    public function removeDireccion(Direccion $direccion)
     {
-        return $this->direccion;
+        $this->direcciones->removeElement($direccion);
     }
 
+    /**
+     * Get direcciones
+     *
+     * @return ArrayCollection
+     */
+    public function getDirecciones()
+    {
+        return $this->direcciones;
+    }    
+ 
+     /**
+     * Add image
+     *
+     * @param Image $producto
+     *
+     * @return Post
+     */
+    public function addProducto(\ProductosBundle\Entity\Producto $producto)
+    {
+        $this->productos->add($producto);
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $producto
+     */
+    public function removeProducto(\ProductosBundle\Entity\Producto $producto)
+    {
+        $this->productos->removeElement($producto);
+    }
+
+    /**
+     * Get productos
+     *
+     * @return ArrayCollection
+     */
+    public function getProductos()
+    {
+        return $this->productos;
+    }  
+    
+
+     /**
+     * Add image
+     *
+     * @param Image $incidencias
+     *
+     * @return Post
+     */
+    public function addIncidencias(\IncidenciasBundle\Entity\Incidencia $incidencias)
+    {
+        $this->incidencias->add($incidencias);
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $incidencias
+     */
+    public function removeIncidencias(\IncidenciasBundle\Entity\Incidencia $incidencias)
+    {
+        $this->incidencias->removeElement($incidencias);
+    }
+
+    /**
+     * Get incidencias
+     *
+     * @return ArrayCollection
+     */
+    public function getIncidencias()
+    {
+        return $this->incidencias;
+    }  
+    
     /**
      * Set poblacion
      *

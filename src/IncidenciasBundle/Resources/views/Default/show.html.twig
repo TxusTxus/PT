@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+{# Muestra la barra superior #}
+{% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Incidencia</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ incidencia.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ incidencia.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Importe</th>
+                <td>{{ incidencia.importe }}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ incidencia.observaciones }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('incidencia_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('incidencia_edit', { 'id': incidencia.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

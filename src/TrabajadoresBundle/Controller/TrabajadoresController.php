@@ -20,12 +20,12 @@ class TrabajadoresController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->dameEmpresaUsuario();
-        $trabajadores = $em->getRepository('TrabajadoresBundle:Trabajadores')->findAll();
+        $trabajadores = $em->getRepository('TrabajadoresBundle:Trabajadores')->dameTrabajadoresEmpresa($empresa->getId());
 
         return $this->render('TrabajadoresBundle:Default:index.html.twig', array(
             'trabajadores' => $trabajadores,
-            'accionBuscar'  => 'buscaTrabajador',
-            'nombreEmpresa' => $empresa->getNombre()
+            'accionBuscar'  => 'trabajadores_busca',
+            'empresa' => $empresa
         ));
     }
 
@@ -52,6 +52,7 @@ class TrabajadoresController extends Controller
 
         return $this->render('TrabajadoresBundle:Default:new.html.twig', array(
             'trabajadores' => $trabajadores,
+            'empresa' => $empresa,
             'form' => $form->createView(),
         ));
     }
@@ -69,8 +70,8 @@ class TrabajadoresController extends Controller
         return $this->render('TrabajadoresBundle:Default:show.html.twig', array(
             'trabajadores' => $trabajadores,
             'delete_form' => $deleteForm->createView(),
-            'nombreEmpresa' => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaTrabajador',
+            'empresa' => $empresa,
+            'accionBuscar'  => 'trabajadores_busca',
             'ficha'         => $ficha,
             'btnPri' => $posicion['primero'],
             'btnAnt' => $posicion['anterior'],
@@ -88,7 +89,7 @@ class TrabajadoresController extends Controller
         $deleteForm = $this->createDeleteForm($trabajadores);
         $editForm = $this->createForm('TrabajadoresBundle\Form\TrabajadoresType', $trabajadores);
         $editForm->handleRequest($request);
-
+        $empresa = $this->dameEmpresaUsuario();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
@@ -97,6 +98,8 @@ class TrabajadoresController extends Controller
 
         return $this->render('TrabajadoresBundle:Default:edit.html.twig', array(
             'trabajadore' => $trabajadores,
+            'empresa' => $empresa,
+            'accionBuscar'  => 'trabajadores_busca',
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -155,8 +158,8 @@ class TrabajadoresController extends Controller
 
         return $this->render('TrabajadoresBundle:Default:index.html.twig', array(
             'trabajadores'      => $trabajadores,
-            'nombreEmpresa' => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaTrabajador',
+            'empresa' => $empresa,
+            'accionBuscar'  => 'trabajadores_busca',
             'filtro'        => true
             )); 
     }  

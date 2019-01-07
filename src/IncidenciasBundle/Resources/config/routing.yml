@@ -1,0 +1,7 @@
+incidencias_incidencia:
+    resource: "@IncidenciasBundle/Resources/config/routing/incidencia.yml"
+    prefix:   /
+
+incidencias_homepage:
+    path:     /
+    defaults: { _controller: IncidenciasBundle:Incidencia:index }

@@ -1,3 +1,11 @@
+incidencias:
+    resource: "@IncidenciasBundle/Resources/config/routing.yml"
+    prefix:   /incidencias
+
+productos:
+    resource: "@ProductosBundle/Resources/config/routing.yml"
+    prefix:   /productos
+
 comunicacion:
     resource: "@ComunicacionBundle/Resources/config/routing.yml"
     prefix:   /comunicacion

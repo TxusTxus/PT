@@ -33,3 +33,9 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+ 
+    Intercambio:
+        class: AppBundle\Services\Intercambio
+        arguments: ["null"]
+        public: true

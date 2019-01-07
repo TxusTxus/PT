@@ -29,9 +29,9 @@ class Provincia
     private $provincia;
 
      /**
-     * @ORM\OneToMany(targetEntity="Cliente", mappedBy="provincia")
+     * @ORM\OneToMany(targetEntity="Direccion", mappedBy="provincia")
      */
-    protected $cliente;
+    protected $direccion;
     
 
     /**
@@ -72,41 +72,41 @@ class Provincia
      */
     public function __construct()
     {
-        $this->cliente = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->direccion = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add cliente
+     * Add direccion
      *
-     * @param \\ClientesBundle\Entity\Cliente $cliente
+     * @param \\ClientesBundle\Entity\Direccion $direccion
      *
      * @return Provincia
      */
-    public function addCliente(\ClientesBundle\Entity\Cliente $cliente)
+    public function addDireccion(\ClientesBundle\Entity\Direccion $direccion)
     {
-        $this->cliente[] = $cliente;
+        $this->direccion[] = $direccion;
 
         return $this;
     }
 
     /**
-     * Remove cliente
+     * Remove direccion
      *
-     * @param \ClientesBundle\Entity\Cliente $cliente
+     * @param \ClientesBundle\Entity\Direccion $direccion
      */
-    public function removeEmpresa(\ClientesBundle\Entity\Cliente $cliente)
+    public function removeDireccion(\ClientesBundle\Entity\Direccion $direccion)
     {
-        $this->cliente->removeElement($cliente);
+        $this->cliente->removeElement($direccion);
     }
 
     /**
-     * Get cliente
+     * Get direccion
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCliente()
+    public function getDireccion()
     {
-        return $this->cliente;
+        return $this->direccion;
     }
     
     

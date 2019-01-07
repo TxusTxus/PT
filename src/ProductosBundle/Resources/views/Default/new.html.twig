@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+{# Muestra la barra superior #}
+{% embed "barranavegacion.html.twig" %}{% endembed %}
+
+<div class="container">                  
+    <h1>{{ titulo }}</h1>
+    <div class="container" style="margin-top: 20px;">
+        {{ form_start(form) }}
+
+        <div class="row" style="margin-bottom: 20px;"> 
+                <div class="col-lg-12">
+                    <b><i class="fa fa-user"></i> {{ form_label(form.modelo) }}</b>
+                    {{ form_widget(form.modelo) }}
+                </div>
+                <div class="col-lg-12">
+                    <b><i class="fa fa-map-pin"></i> {{ form_label(form.seleccionDireccion) }}</b>
+                        {{ form_widget(form.seleccionDireccion) }}
+                     {#{{ form_widget(form.selecionDireccion) }}#}
+{#                    <select name="seleccionDireccion" class="form-control"> 
+                        {% for direccion in direcciones %}
+                            <option value="{{ direccion.id }}">{{direccion.direccion}} - {{direccion.poblacion}} </option>
+                        {% endfor %}
+                    </select> #}              
+                   
+                </div>
+                <div class="col-lg-3">
+                        <b><i class="fa fa-calendar"></i> {{ form_label(form.instalacion) }}</b>
+                        {{ form_widget(form.instalacion) }}
+                    </div>
+                    <div class="col-lg-3">
+                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaMantenimiento) }}</b>
+                        {{ form_widget(form.fechaMantenimiento) }}
+                    </div>
+                    <div class="col-lg-2">
+                        <b> {{ form_label(form.periodicidad) }}</b>
+                        {{ form_widget(form.periodicidad) }}
+                    </div>
+                    <div class="col-lg-3">
+                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaNuevoMantenimiento) }}</b>
+                        {{ form_widget(form.fechaNuevoMantenimiento) }}
+                    </div>
+                <script type="text/javascript">
+                    function calculaFechaMantenimiento(){
+                        var fechaIni = document.getElementById("productosbundle_producto_fechaMantenimiento").value;
+                        var anyo = fechaIni.substring(0,4);
+                        var mes = fechaIni.substring(5,7);
+                        var dia = fechaIni.substring(8,10);
+                        var fecha = new Date(anyo,mes-1,dia);
+                        
+                        var dias = parseInt(document.getElementById("productosbundle_producto_periodicidad").value);
+                        if (!isNaN(dias)){
+                            fecha.setDate(fecha.getDate() + dias);
+
+                            var date = fecha.getFullYear()+"-"+(("0" + (fecha.getMonth() + 1)).slice(-2))+"-"+(("0" + fecha.getDate()).slice(-2));
+
+                            document.getElementById("productosbundle_producto_fechaNuevoMantenimiento").value =date;
+                        }
+                    }
+                    
+                    function setFormato(fecha){
+                        var dia = ("0" + fecha.getDate()).slice(-2);
+                        var mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
+                        var date = (mes)+"-"+(dia)+"-"+fecha.getFullYear();
+                        return date;
+                    }
+                    
+                    function ponUltimoMantenimiento(){
+                        var fechaIni = document.getElementById("productosbundle_producto_instalacion").value;
+                        var fechaUltimo = document.getElementById("productosbundle_producto_fechaMantenimiento").value;
+                        if ( fechaUltimo== null || fechaUltimo==0 ){
+                            document.getElementById("productosbundle_producto_fechaMantenimiento").value =fechaIni;
+                        }
+                    }
+
+                </script>
+                <div class="col-lg-3">
+                    <b><i class="fas fa-award"></i> Garantía Premium</b>
+                    {{ form_widget(form.premium) }}
+                </div>   
+                <div class="col-lg-3">
+                    <b><i class="fas fa-euro"></i> {{ form_label(form.base) }}</b>
+                    {{ form_widget(form.base) }}
+                </div> 
+                <div class="col-lg-3">
+                    <b><i class="fas fa-euro"></i> {{ form_label(form.IVA) }}</b>
+                    {{ form_widget(form.IVA) }}
+                </div>                
+                <div class="col-lg-12">
+                    <b> {{ form_label(form.observaciones) }}</b>
+                    {{ form_widget(form.observaciones) }}
+                </div>    
+                {{ form_widget(form) }}
+                <input type="submit" value="Guardar"  onclick="desmarcaCambio()" class="btn btn-primary" />
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <ul>
+        <li>
+            <a href="{{ path('producto_index') }}">Volver a la lista</a>
+        </li>
+    </ul>
+</div>
+{# 
+Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página
+#}
+{% embed "marcarcambios.html.twig" %}{% endembed %}
+
+{% endblock %}

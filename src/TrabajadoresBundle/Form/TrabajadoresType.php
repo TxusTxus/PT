@@ -17,7 +17,8 @@ class TrabajadoresType extends AbstractType
     {
         $builder->add('dni', TextType::class, array('label' => 'DNI/NIE'))
                 ->add('codigo', TextType::class, array('label' => 'Código'))
-                ->add('nombre', TextType::class, array('label' => 'Nombre'));
+                ->add('nombre', TextType::class, array('label' => 'Nombre'))
+                ->add('observaciones', TextType::class, array('label' => 'Observaciones'));
 //                ->add('empresa', EntityType::class, array(
 //                    'class' => 'EmpresasBundle:Empresa',
 //                    'label' => 'Empresa'

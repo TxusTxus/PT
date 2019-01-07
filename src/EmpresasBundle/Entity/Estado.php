@@ -28,6 +28,10 @@ class Estado
      */
     private $estado;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Empresa", mappedBy="estado")
+     */
+    private $empresa;
 
     /**
      * Get id

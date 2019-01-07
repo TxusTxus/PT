@@ -2,7 +2,10 @@
 
 namespace ClientesBundle\Controller;
 
+use Libreria;
+
 use ClientesBundle\Entity\Cliente;
+use ClientesBundle\Entity\Direccion;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,14 +21,13 @@ class ClienteController extends Controller
      */
     public function indexAction()
     {
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
 
-        $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->dameClientesEmpresa($empresa);
-
+        $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->dameClientesEmpresaDireccionPrincipal($empresa);
         return $this->render('ClientesBundle:Default:index.html.twig', array(
             'clientes'      => $clientes,
-            'nombreEmpresa' => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaCliente',
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
             'filtro'        => false
         ));
     }
@@ -36,7 +38,7 @@ class ClienteController extends Controller
      */
     public function newAction(Request $request)
     {
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $cliente = new Cliente();
         $form = $this->createForm('ClientesBundle\Form\ClienteType', $cliente);
         $form->handleRequest($request);
@@ -48,17 +50,50 @@ class ClienteController extends Controller
             $em->persist($cliente);
             $em->flush();
 
-            return $this->redirectToRoute('cliente_show', array('id' => $cliente->getId()));
+            return $this->redirectToRoute('cliente_nuevaDireccion', array('id' => $cliente));
         }
 
         return $this->render('ClientesBundle:Default:new.html.twig', array(
-            'cliente' => $cliente,
-            'form' => $form->createView(),
-            'nombreEmpresa' => $empresa->getNombre(),
+            'cliente'       => $cliente,
+            'form'          => $form->createView(),
+            'empresa'       => $empresa,
             'accionBuscar'  => ''
         ));
     }
 
+     /**
+     * Crea una nueva dirección del cliente.
+     *
+     */
+    public function nuevaDireccionAction(Request $request,Cliente $cliente)
+    {
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $direccion = new Direccion();
+        $form = $this->createForm('ClientesBundle\Form\DireccionType', $direccion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Añade la empresa del usuario que crea el cliente
+            $cliente->addDireccion($direccion);
+            $numDirecciones = count($cliente->getDirecciones());
+            if ($numDirecciones<=1) {
+                $direccion->setPrincipal(true);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($direccion);
+            $em->flush();
+
+            return $this->redirectToRoute('cliente_show', array('id' => $cliente->getId(),'ficha'=>'ficha'));
+        }
+
+        return $this->render('ClientesBundle:direccion:newDirection.html.twig', array(
+            'cliente'       => $cliente,
+            'form'          => $form->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => ''
+        ));
+    }
+    
     /**
      * Finds and displays a cliente entity.
      *
@@ -66,7 +101,7 @@ class ClienteController extends Controller
     public function showAction(Cliente $cliente,$ficha=null)
     {
 
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $empresaCliente = $cliente->getEmpresa();
         if ($empresa!=$empresaCliente) {
             print_r('Sin concordancia...'.$empresa.'->'.$empresaCliente.'<br>');
@@ -75,12 +110,12 @@ class ClienteController extends Controller
         $deleteForm = $this->createDeleteForm($cliente);
         // Obtiene el anterior y siguiente cliente para los manejadores
         $posicion =$this->dameAnteriorPosterior($empresa->getId(), $cliente->getId());
-
+        dump($cliente);
         return $this->render('ClientesBundle:Default:show.html.twig', array(
             'cliente'       => $cliente,
             'delete_form'   => $deleteForm->createView(),
-            'nombreEmpresa' => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaCliente',
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
             'ficha'         => $ficha,
             'btnPri' => $posicion['primero'],
             'btnAnt' => $posicion['anterior'],
@@ -116,7 +151,7 @@ class ClienteController extends Controller
      */
     public function editAction(Request $request, Cliente $cliente)
     {
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $deleteForm = $this->createDeleteForm($cliente);
         $editForm = $this->createForm('ClientesBundle\Form\ClienteType', $cliente);
         $editForm->handleRequest($request);
@@ -128,10 +163,10 @@ class ClienteController extends Controller
         }
 
         return $this->render('ClientesBundle:Default:edit.html.twig', array(
-            'cliente' => $cliente,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-            'nombreEmpresa' => $empresa->getNombre(),
+            'cliente'       => $cliente,
+            'edit_form'     => $editForm->createView(),
+            'delete_form'   => $deleteForm->createView(),
+            'empresa'       => $empresa,
             'accionBuscar'  => ''
         ));
     }
@@ -170,11 +205,6 @@ class ClienteController extends Controller
         ;
     }
     
-    private function dameEmpresaUsuario(){
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
-        return $empresa;
-    }
 
     /**
      * Busca clientes en todos sus campos según la cadena de búsqueda
@@ -182,15 +212,18 @@ class ClienteController extends Controller
      */    
     public function buscaClienteNombreAction(Request $request)
     {
-
         $cadena = $request->request->get("CadenaBusqueda");
-        $empresa = $this->dameEmpresaUsuario();        
-        $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->buscaClientesSegunTexto($cadena,$empresa->getId());
-
+        $empresa = Libreria::dameEmpresaUsuario(); 
+        
+        if (strlen($cadena)>=1){
+            $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->buscaClientesSegunTexto($cadena,$empresa->getId());
+        } else {
+            $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->dameClientesEmpresaDireccionPrincipal($empresa);
+        }
         return $this->render('ClientesBundle:Default:index.html.twig', array(
             'clientes'      => $clientes,
-            'nombreEmpresa' => $empresa->getNombre(),
-            'accionBuscar'  => 'buscaCliente',
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
             'filtro'        => true
             )); 
     }  

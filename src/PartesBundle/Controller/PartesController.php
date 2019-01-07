@@ -26,7 +26,7 @@ class PartesController extends Controller
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes' => $partes,
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre(),
+            'empresa' => $empresa,
             'fecha'         => ''
         ));
     }
@@ -47,7 +47,7 @@ class PartesController extends Controller
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes'        => $partes,
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre(),
+            'empresa' => $empresa,
             'fecha'         => $fecha
         ));
     }
@@ -74,7 +74,7 @@ class PartesController extends Controller
             'parte' => $parte,
             'form' => $form->createView(),
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre()
+            'empresa' => $empresa,
         ));
     }
 
@@ -90,7 +90,7 @@ class PartesController extends Controller
             'parte' => $parte,
             'delete_form' => $deleteForm->createView(),
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre()
+            'empresa' => $empresa,
         ));
     }
 
@@ -115,7 +115,7 @@ class PartesController extends Controller
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'accionBuscar'  => '',
-            'nombreEmpresa' => $empresa->getNombre()
+            'empresa' => $empresa,
         ));
     }
 

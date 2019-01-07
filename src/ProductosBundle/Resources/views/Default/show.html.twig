@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Producto</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ producto.id }}</td>
+            </tr>
+            <tr>
+                <th>Modelo</th>
+                <td>{{ producto.modelo }}</td>
+            </tr>
+            <tr>
+                <th>Instalacion</th>
+                <td>{% if producto.instalacion %}{{ producto.instalacion|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Periodicidad</th>
+                <td>{{ producto.periodicidad }}</td>
+            </tr>
+            <tr>
+                <th>Fechamantenimiento</th>
+                <td>{% if producto.fechaMantenimiento %}{{ producto.fechaMantenimiento|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ producto.observaciones }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('producto_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': producto.cliente.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
