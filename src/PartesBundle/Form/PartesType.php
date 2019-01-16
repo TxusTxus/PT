@@ -13,7 +13,16 @@ class PartesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('empresa')->add('cliente')->add('trabajador')->add('fechaParte')->add('fechaEntrada')->add('fechaSalida')->add('tiempo')->add('material')->add('firma')->add('observaciones');
+        $builder->add('empresa')
+                ->add('cliente')
+                ->add('trabajador')
+                ->add('fechaParte')
+                ->add('fechaEntrada')
+                ->add('fechaSalida')
+                ->add('tiempo')
+                ->add('material')
+                ->add('firma')
+                ->add('observaciones');
     }/**
      * {@inheritdoc}
      */

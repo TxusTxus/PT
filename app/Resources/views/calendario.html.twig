@@ -54,10 +54,20 @@
                             <div>
                                     {% set fechaMomento = day~'-'~mes~'-'~anyo %}
                                     {% if day == fecha|date('d') %}
-
                                         <div style="background: #1b507e; color:#FFF;"><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-primary btn-sm" title="Ver día">{{ "%02d" | format(day) }}</a></div>
                                     {%else %}
-                                        <div><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-secondary btn-sm" title="Ver día">{{ "%02d" | format(day) }}</a></div>
+                                        {% set hayPartes = false %}
+                                         {% for dia in dias %}
+                                            {% if day == dia.fechaParte|date('d') %}
+                                               
+                                                {% set hayPartes = true %}
+                                            {% endif %}
+                                         {% endfor %} 
+                                        {% if hayPartes %}  
+                                        <div><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-info btn-sm"title="Ver día">{{ "%02d" | format(day) }}</a></div>
+                                        {% else %}
+                                            <div><a href="{{ path('partes_diario', { 'fecha': fechaMomento}) }}" class="btn btn-secondary btn-sm" title="Ver día">{{ "%02d" | format(day) }}</a></div>
+                                        {% endif %}
                                     {% endif %}
 
                                     <div>
@@ -79,3 +89,4 @@
             </tr>
         </tbody>
     </table>
+ 

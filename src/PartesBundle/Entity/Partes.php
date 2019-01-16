@@ -47,6 +47,19 @@ class Partes
     private $trabajador;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ClientesBundle\Entity\Direccion", inversedBy="parte")
+     * @ORM\JoinColumn(name="direccion", referencedColumnName="id")
+     */
+    private $direccion;    
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductosBundle\Entity\Producto", inversedBy="parte")
+     * @ORM\JoinColumn(name="producto", referencedColumnName="id")
+     */
+    private $producto;       
+    
+    
+    /**
      * @var \Date
      *
      * @ORM\Column(name="fechaParte", type="date")
@@ -175,6 +188,31 @@ class Partes
         return $this;
     }
 
+    
+         /**
+     * Set direccion
+     *
+     * @param integer $direccion
+     *
+     * @return Partes
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return int
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+    
     /**
      * Get trabajador
      *

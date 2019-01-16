@@ -4,7 +4,7 @@
     
                 {#Muestra la barra superior#}
                 {% embed "barranavegacion.html.twig" %}{% endembed %}
-    <h1>Listado por distritos desde {{fechaInicio|date('d-m-Y')}} hasta {{fechaFin|date('d-m-Y')}}</h1>
+    <h3>Listado por distritos desde {{fechaInicio|date('d-m-Y')}} hasta {{fechaFin|date('d-m-Y')}}</h3>
        {{ form_start(form_buscar)}}
             <table>
                 <tbody>
@@ -51,7 +51,12 @@
                         {% for direccion in listado %}
                             {% if direccion.modelo|length > 0 %}
                                 <tr>
-                                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                                    <td> {% if direccion.planificada==true %}
+                                            <s>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}</s>
+                                        {% else %}
+                                            {{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                                        
+                                        {% endif %}
                                         {% if direccion.premium %}
                                             <i class="fas fa-award"></i>
                                         {% endif %}
@@ -70,6 +75,63 @@
                                 </tr>
                             {% endif %}
                             {% set direccionAnterior = direccion.direccion %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+         </div> 
+        <hr>
+{#        *******************************
+          ***       Incidencias       ***
+          *******************************       #}
+        
+                 <div class="container">
+             <div class="row">Ver incidencias
+                <div  style="text-align:center;">
+
+                    <img src="../imagenes/up.png" width=16px; id="FlechasIncidencias-up" class="imgcolexp"/>
+                    <img src="../imagenes/down.png"  width=16px; id="FlechasIncidencias-down" class="imgcolexp"/>
+                </div>
+             </div>
+            <div id="ListadoIncidencias"> 
+                <div>      
+
+                         
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha Aviso</th>
+                                <th>Distrito </th>
+                                <th>Descripción </th>
+                                <th>Modelo </th>
+                                <th>Cliente </th>
+                                <th>Direccion </th>
+                                <th>Teléfono </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for direccion in listadoIncidencias %}
+                            {% if direccion.modelo|length > 0 %}
+                                <tr>
+                                    <td>{% if direccion.planificada==true %}
+                                            <s>{{ direccion.fecha|date('d-m-Y') }}</s>
+                                        {% else %}
+                                            {{ direccion.fecha|date('d-m-Y') }}
+                                        {% endif %}
+                                        {% if direccion.premium %}
+                                            <i class="fas fa-award"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ direccion.distrito }}</td>
+                                    <td>{{ direccion.descripcion}}</td>
+                                    
+                                    <td>{{ direccion.modelo }}</td>
+                                    <td>{{ direccion.nombre }}</td>
+                                    <td>{{ direccion.direccion }}</td>
+                                    <td>{{ direccion.telefono }}</td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -132,12 +194,6 @@
         document.getElementById("clientesbundle_cliente_fechaHasta").value = ultimoDia.getFullYear()+"-"+(("0" + (ultimoDia.getMonth() + 1)).slice(-2))+"-"+(("0" + ultimoDia.getDate()).slice(-2));
         //document.getElementById("clientesbundle_cliente_mes").value;
     }
-
-</script>
-{% endblock %}
-
-{% block javascripts %}
-<script>
 $(document).ready(function(){
         // Ofertas Activas
         // oculta la segunda flecha y las ofertas. Estado inicial
@@ -145,7 +201,9 @@ $(document).ready(function(){
 	$("#FlechasActivas-up").css("display","none");
         $("#FlechasActivas-down").css("display","block");
         $("#RevisionesActivas").hide();
-
+	$("#FlechasIncidencias-up").css("display","none");
+        $("#FlechasIncidencias-down").css("display","block");
+        $("#ListadoIncidencias").hide();
         
 	$("#FlechasActivas-up,#FlechasActivas-down").click(function () {
 		$("#RevisionesActivas").slideToggle("slow");
@@ -161,8 +219,21 @@ $(document).ready(function(){
 			$("#FlechasActivas-down").css("display","none");
 		}
 	});
+	$("#FlechasIncidencias-up,#FlechasIncidencias-down").click(function () {
+		$("#ListadoIncidencias").slideToggle("slow");
 
+		if($("#FlechasIncidencias-up").css("display") == "block")
+		{
+			$("#FlechasIncidencias-up").css("display","none");
+			$("#FlechasIncidencias-down").css("display","block");
+		}
+		else
+		{
+			$("#FlechasIncidencias-up").css("display","block");
+			$("#FlechasIncidencias-down").css("display","none");
+		}
+	});
 });
 </script>
-
 {% endblock %}
+

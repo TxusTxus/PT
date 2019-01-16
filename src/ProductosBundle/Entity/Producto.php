@@ -108,6 +108,13 @@ class Producto
      */
     private $observaciones;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="planificada", type="boolean", nullable=true)
+     */
+    private $planificada;     
+    
 
     /**
      * Get id
@@ -381,6 +388,30 @@ class Producto
     public function getObservaciones()
     {
         return $this->observaciones;
+    }
+
+    /**
+     * Set planificada
+     *
+     * @param boolean $planificada
+     *
+     * @return Producto
+     */
+    public function setPlanificada($planificada)
+    {
+        $this->planificada = $planificada;
+
+        return $this;
+    }
+
+    /**
+     * Get planificada
+     *
+     * @return bool
+     */
+    public function getPlanificada()
+    {
+        return $this->planificada;
     }
     
      /**

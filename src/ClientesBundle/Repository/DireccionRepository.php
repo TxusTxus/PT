@@ -63,7 +63,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium')
+                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium', 'p.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.producto', 'p')
                     ->leftJoin('d.distrito', 'dist')
@@ -89,7 +89,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo')
+                            'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo','p.premium', 'i.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.incidencia', 'i')
                     ->leftJoin('d.producto', 'p')

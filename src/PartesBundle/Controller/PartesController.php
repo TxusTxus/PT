@@ -23,8 +23,10 @@ class PartesController extends Controller
         // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
         $fecha = new \DateTime;
         $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$fecha->format('Y-m-d'));
+        $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha->format('d-m-Y'));
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes' => $partes,
+            'dias'          => $dias,
             'accionBuscar'  => '',
             'empresa' => $empresa,
             'fecha'         => ''
@@ -41,18 +43,26 @@ class PartesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->dameEmpresaUsuario();
         // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
-        $fechaConsulta = $this->convierteFecha($fecha);
 
-        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$fechaConsulta);
+
+        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$this->convierteFecha($fecha));
+        $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
+        dump($dias);
+        dump($partes);
+        
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes'        => $partes,
+            'dias'          => $dias,
             'accionBuscar'  => '',
             'empresa' => $empresa,
             'fecha'         => $fecha
         ));
     }
+    
+
     /**
-     * Creates a new parte entity.
+     * Crear un nuevo parte de trabajo.
+     * Valores -> Cliente, Direccion, Producto.
      *
      */
     public function newAction(Request $request)

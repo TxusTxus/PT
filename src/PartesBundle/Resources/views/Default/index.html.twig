@@ -10,48 +10,61 @@
         {% endif %}
     </h1>
     <div class="row">
+        {#  Muestra el calendario para seleccionar el día  #}
         <div style="margin-left: 20px; text-align: center;" class="card border-info">
             {% embed "calendario.html.twig" %}{% endembed %}
         </div>
-        <div style="margin-left: 20px;" class="card border-info">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Cliente</th>
-                        <th>Trabajador</th>
-                        <th>Fecha</th>
-                        <th>Entrada</th>
-                        <th>Salida</th>
-                        <th>Tiempo</th>
-                        <th>Material</th>
-                        <th>Observaciones</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for parte in partes %}
-                    <tr>
-                        <td>{{ parte.id }}</td>
-                        <td>{{ parte.cliente }}</td>
-                        <td>{{ parte.trabajador }}</td>
-                        <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
-                        <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
-                        <td>{% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</td>
-                        <td>{{ parte.tiempo }}</td>
-                        <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>
-         {#               <td>{{ parte.firma }}</td>#}
-                        <td>{{ parte.observaciones }}</td>
-                        <td>
-                             <div class="btn-group mr-2" role="group" aria-label="Second group">
-                               <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
-                               <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
-                             </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        {# Muestra los partes del día seleccionado #}
+        <div style="margin-left: 20px;  width: 75%;">
+        {% set trabajador = '' %}
+        {% set cabecera = false %}
+                    {% for parte in partes %}
+                        {% if parte.trabajador!= trabajador %}
+                            {% if cabecera  %}
+                                    <tbody>
+                                </table>
+                                </div>
+                            {% endif %}
+                            <div style="margin-left: 20px;" class="card border-info">
+                                <b> Técnico : {{ parte.trabajador }}  </b>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Entrada</th>
+                                        <th>Cliente</th>                       
+                                        <th>Observaciones</th>
+                                        <th>Dirección</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% set cabecera = true %}
+                        {% endif %}
+                        <tr>
+                            <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
+                            <td>{{ parte.cliente }}</td>                    
+{#                            <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>#}
+                            <td>{{ parte.observaciones }}</td>
+                            <td>{{ parte.direccion }}<br>
+                                {{ parte.direccion.poblacion }} - {{ parte.direccion.provincia }} <br>
+                                {{ parte.direccion.contacto }} - {{ parte.direccion.telefono }} <br>
+                                {{ parte.direccion.distrito }}</td>
+                            <td>
+                                 <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                   <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
+                                   <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
+                                 </div>
+                            </td>
+                        </tr>
+                        {% set trabajador = parte.trabajador %}
+                    {% endfor %}
+                    {% if trabajador == '' %}
+                        No se ha generado ningún parte en esta fecha
+                    {% else %} 
+                                </tbody>
+                        </table>
+                    {% endif %}
+
+             </div> </div>
         </div>
     </div>
 {% endblock %}

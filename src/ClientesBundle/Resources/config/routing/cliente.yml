@@ -55,6 +55,6 @@ actualiza_direccion_principal:
     methods:  [GET, POST]
     
 listado_distritos:
-    path:     /distritos
+    path:     /planificador
     defaults: { _controller: "ClientesBundle:Direccion:listadoDistritos" }
     methods:  [GET, POST]

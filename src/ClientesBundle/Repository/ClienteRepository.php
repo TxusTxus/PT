@@ -134,7 +134,6 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
                             )); 
                     $consulta->addCriteria($criterio);
             $consulta->getQuery();
-            dump($consulta);
 
             return $consulta->getQuery()->getResult();
     }    

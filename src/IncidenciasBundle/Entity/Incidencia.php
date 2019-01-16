@@ -80,7 +80,14 @@ class Incidencia
      */
     private $observaciones;
 
-
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="planificada", type="boolean", nullable=true)
+     */
+    private $planificada;    
+    
     /**
      * Get id
      *
@@ -258,6 +265,35 @@ class Incidencia
         return $this->importe;
     }
 
+    /**
+     * Set planificada
+     *
+     * @param boolean $planificada
+     *
+     * @return Incidencia
+     */
+    public function setPlanificada($planificada)
+    {
+        $this->planificada = $planificada;
+
+        return $this;
+    }
+
+    /**
+     * Get planificada
+     *
+     * @return bool
+     */
+    public function getPlanificada()
+    {
+        return $this->planificada;
+    }
+    
+    function __toString()
+    {
+        return $this->nombre;
+    }    
+    
     /**
      * Set observaciones
      *
