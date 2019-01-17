@@ -1,16 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Parte creation</h1>
-
+    
+                {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Nueva cita</h1>
+<div class="container">
+    {% set break = false %}
+    {% for item in direccion if not break  %}
+        <div class="card border-info" style="margin-bottom: 20px;">
+            <div class="card-header">
+                Cliente: {{item.nombre}}<br>
+            </div>
+                <div class="card-body">  
+                Direccion: {{item.direccion}} - {{item.poblacion}} - {{item.codigoPostal}} - {{item.distrito}}<br>
+                {% if item.observaciones|length > 0 %} Observaciones: {{item.observaciones}}<br> {% endif %}
+            {% set break = true %}
+    {% endfor %}
+    {% for item in direccion %} 
+                - Producto: {{item.modelo}}<br>
+                {% if tipo==1 %}
+                    {% if item.observacionesProducto|length > 0 %} - Observaciones: {{item.observacionesProducto}}<br> {% endif %}
+                {% else %}
+                    {% if item.descripcion|length > 0 %} - <b>Incidencia</b>: {{item.descripcion}}<br> {% endif %}
+                    {% if item.observacionesIncidencia|length > 0 %} - Observaciones: {{item.observacionesIncidencia}}<br> {% endif %}
+                {% endif %}
+    {% endfor %}
+            </div>
+        </div>
     {{ form_start(form) }}
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-lg-6">
+                    <b><i class="fa fa-user"></i> {{ form_label(form.trabajador) }}</b>
+                    {{ form_widget(form.trabajador) }}
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">  
+                <div class="col-lg-3">
+                    <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaParte) }}</b>
+                    {{ form_widget(form.fechaParte) }}
+                </div>
+                <div class="col-lg-2">
+                    <b> {{ form_label(form.fechaEntrada) }}</b>
+                    {{ form_widget(form.fechaEntrada) }}
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px;"> 
+                <div class="col-lg-3">
+                    <b><i class="fa fa-people-carry"></i> Material</b>
+                    {{ form_widget(form.material) }}
+                </div>
+                <div class="col-lg-8">
+                    <b>{{ form_label(form.observaciones) }}</b>
+                    {{ form_widget(form.observaciones) }}
+                </div>
+            </div>
+        
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <input type="submit" value="Guardar en ruta." class="btn btn-primary btn-flat" />
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('partes_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    </div>
+</div>
 {% endblock %}

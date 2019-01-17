@@ -124,6 +124,7 @@ class Direccion
     {
         $this->cliente = new \Doctrine\Common\Collections\ArrayCollection();
         $this->producto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->incidencia = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     
@@ -415,6 +416,37 @@ class Direccion
     {
         return $this->producto;
     }   
+ 
+     /**
+     * Add incidencia
+     *
+     * @param \IncidenciasBundle\Entity\Incidencia $incidencia
+     *
+     * @return Direccion
+     */
+    public function addIncidencia(\IncidenciasBundle\Entity\Incidencia $incidencia)
+    {
+        $this->incidencia[] = $incidencia;
+        return $this;
+    }
+    /**
+     * Remove incidencia
+     *
+     * @param \IncidenciasBundle\Entity\Incidencia $incidencia
+     */
+    public function removeIncidencia(\IncidenciasBundle\Entity\Incidencia $incidencia)
+    {
+        $this->incidencia->removeElement($incidencia);
+    }
+    /**
+     * Get incidencia
+     *
+     * @return ArrayCollection
+     */
+    public function getIncidencia()
+    {
+        return $this->incidencia;
+    }       
     
      /**
      * Set principal

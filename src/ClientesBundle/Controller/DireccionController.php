@@ -2,6 +2,8 @@
 
 namespace ClientesBundle\Controller;
 
+use Libreria;
+
 use ClientesBundle\Entity\Direccion;
 use \ClientesBundle\Entity\Distrito;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -109,20 +111,20 @@ class DireccionController extends Controller
         $buscarForm->handleRequest($request);
 //        $fin = new \DateTime;
 //        $fecha = new \DateTime;
-       $inicio =date("Y-m-d",mktime(0,0,0,11,1,2018));
+        $inicio =date("Y-m-d",mktime(0,0,0,11,1,2018));
         if ($buscarForm->isSubmitted() && $buscarForm->isValid()) {
-            $datos = $this->dameFechas($buscarForm->get('mes')->getData(),$buscarForm->get('fechaDesde')->getData(),$buscarForm->get('fechaHasta')->getData());
+            $datos = Libreria::dameFechas($buscarForm->get('mes')->getData(),$buscarForm->get('fechaDesde')->getData(),$buscarForm->get('fechaHasta')->getData());
 
         } else {
-            $datos = $this->dameFechas(null,null,null);
+            // Mes actual
+            $datos = Libreria::dameFechas(null,null,null);
         }
             
 
         $listado = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionEntreFechas($datos['inicio'], $datos['fin']);
         $listadoIncidencias = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionIncidenciasEntreFechas($datos['inicio'], $datos['fin']);
         
-        $listadoAnteriores = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionEntreFechas($inicio, $datos['inicio']);
-        dump($listadoIncidencias);
+        $listadoAnteriores = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameMantenimientosAnteriores($inicio, $datos['inicio']);
         return $this->render('ClientesBundle:distritos:listado.html.twig', array(
             'form_buscar'       => $buscarForm->createView(),
             'listado'           => $listado,
@@ -135,29 +137,29 @@ class DireccionController extends Controller
             'accionBuscar'      => 'cliente_busca'
         ));
     }
-    private function dameFechas($mes,$inicio,$fin){
-        $datos=[];
-        $fecha = new \DateTime;
-        $anio = $fecha->format("Y");
-        
-            if (is_null($mes)) {
-                if (!is_null($inicio)) {
-                    $datos['inicio'] = $inicio->format("Y-m-d");
-                    if (!is_null($fin)) {
-                        $datos['fin']= $fin->format("Y-m-d");
-                    }
-                } else {
-                    $mes = $fecha->format("m");
-                    $datos['inicio'] =date("Y-m-d",mktime(0,0,0,$mes,1,$anio));
-                    $datos['fin'] =date("Y-m-d",mktime(0,0,0,$mes+1,0,$anio));                    
-                }
-
-            } else {
-                $datos['inicio'] =date("Y-m-d",mktime(0,0,0,$mes,1,$anio));
-                $datos['fin'] =date("Y-m-d",mktime(0,0,0,$mes+1,0,$anio));
-            }
-        return $datos;
-    }
+//    private function dameFechas($mes,$inicio,$fin){
+//        $datos=[];
+//        $fecha = new \DateTime;
+//        $anio = $fecha->format("Y");
+//        
+//            if (is_null($mes)) {
+//                if (!is_null($inicio)) {
+//                    $datos['inicio'] = $inicio->format("Y-m-d");
+//                    if (!is_null($fin)) {
+//                        $datos['fin']= $fin->format("Y-m-d");
+//                    }
+//                } else {
+//                    $mes = $fecha->format("m");
+//                    $datos['inicio'] =date("Y-m-d",mktime(0,0,0,$mes,1,$anio));
+//                    $datos['fin'] =date("Y-m-d",mktime(0,0,0,$mes+1,0,$anio));                    
+//                }
+//
+//            } else {
+//                $datos['inicio'] =date("Y-m-d",mktime(0,0,0,$mes,1,$anio));
+//                $datos['fin'] =date("Y-m-d",mktime(0,0,0,$mes+1,0,$anio));
+//            }
+//        return $datos;
+//    }
 
 
 

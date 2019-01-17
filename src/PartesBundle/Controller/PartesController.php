@@ -22,7 +22,7 @@ class PartesController extends Controller
         $empresa = $this->dameEmpresaUsuario();
         // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
         $fecha = new \DateTime;
-        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$fecha->format('Y-m-d'));
+        $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha->format('d-m-Y'));
         $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha->format('d-m-Y'));
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes' => $partes,
@@ -42,13 +42,11 @@ class PartesController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->dameEmpresaUsuario();
-        // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
 
 
-        $partes = $em->getRepository('PartesBundle:Partes')->damePartesEmpresa($empresa->getId(),$this->convierteFecha($fecha));
-        $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
-        dump($dias);
+        $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha);
         dump($partes);
+        $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
         
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes'        => $partes,
@@ -65,26 +63,51 @@ class PartesController extends Controller
      * Valores -> Cliente, Direccion, Producto.
      *
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, $id,$tipo,$fecha)
     {
-        $parte = new Parte();
+        $parte = new Partes();
         $empresa = $this->dameEmpresaUsuario();
+        $em = $this->getDoctrine()->getManager();
+        switch ($tipo){
+            case 1:
+                // Selecciona el producto para el mantenimiento
+                $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
+                break;
+            case 2:
+                // Selecciona la incidencia 
+                $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
+                // Incluye la descripción de la incidencia como observación del parte de trabajo.
+                $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
+                dump($direccion);
+                break;
+        }
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $parte->setEmpresa($empresa->getId());
+            $parte->setCliente($this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']));
+            $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
             $em->persist($parte);
             $em->flush();
+            if ($tipo = 1) {
+                $this->marcaProductoPlanificado($direccion['0']['producto']);
+            } else {
+                $this->marcaIncidenciaPlanificado($direccion['0']['incidecia']);
+            }
+            
 
             return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
         }
-
+        //$this->marcaProductoPlanificado($direccion);
         return $this->render('PartesBundle:Default:new.html.twig', array(
-            'parte' => $parte,
-            'form' => $form->createView(),
+            'tipo'          => $tipo,
+            'parte'         => $parte,
+            'direccion'     => $direccion,
+            'form'          => $form->createView(),
             'accionBuscar'  => '',
-            'empresa' => $empresa,
+            'empresa'       => $empresa,
         ));
     }
 
@@ -169,9 +192,31 @@ class PartesController extends Controller
         return $empresa;
     }
     
-    private function convierteFecha(String $fecha){
-        
-        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),intval(substr($fecha,0,2)),intval(substr($fecha,6,4))));
+    private function marcaProductoPlanificado($array){
+        $em = $this->getDoctrine()->getManager();
+        // Marca los productos como planificados 
+        foreach ( $array as $item) {
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']);
+            $producto->setPlanificada(true);
+            $em->flush($producto);
+            
+        }
         
     }
+
+    private function marcaIndicenciaPlanificado($array){
+        $em = $this->getDoctrine()->getManager();
+        // Marca la incidencia como planificada
+        foreach ( $array as $item) {
+            $incidencia = $this->getDoctrine()->getRepository('IncidenciasBundle:Incidencia')->find($item['incidencia']);
+            $incidencia->setPlanificada(true);
+            $em->flush($incidencia);  
+        }      
+    }
+    
+//    private function convierteFecha(String $fecha){
+//        
+//        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),intval(substr($fecha,0,2)),intval(substr($fecha,6,4))));
+//        
+//    }
 }

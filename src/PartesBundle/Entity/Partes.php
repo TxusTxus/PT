@@ -76,14 +76,14 @@ class Partes
     /**
      * @var \Time
      *
-     * @ORM\Column(name="fechaSalida", type="time")
+     * @ORM\Column(name="fechaSalida", type="time", nullable=true)
      */
     private $fechaSalida;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tiempo", type="decimal", precision=10, scale=0)
+     * @ORM\Column(name="tiempo", type="decimal", precision=10, scale=0, nullable=true)
      */
     private $tiempo;
 
@@ -129,11 +129,11 @@ class Partes
     /**
      * Set empresa
      *
-     * @param \EmpresasBundle\Entity\Empresa $empresa
+     * @param int $empresa
      *
      * @return Cliente
      */
-    public function setEmpresa(\EmpresasBundle\Entity\Empresa $empresa)
+    public function setEmpresa($empresa)
     {
         $this->empresa = $empresa;
         return $this;
@@ -174,6 +174,31 @@ class Partes
         return $this->cliente;
     }
 
+     /**
+     * Set producto
+     *
+     * @param \ProductosBundle\Entity\Producto $producto
+     *
+     * @return Partes
+     */
+    public function setProducto(\ProductosBundle\Entity\Producto $producto)
+    {
+        $this->producto = $producto;
+
+        return $this;
+    }
+
+    /**
+     * Get producto
+     *
+     * @return int
+     */
+    public function getProducto()
+    {
+        return $this->producto;
+    }
+    
+    
     /**
      * Set trabajador
      *

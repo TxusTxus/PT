@@ -97,7 +97,16 @@ class funciones {
         
     }
     
-    
+    public function damefechaInicial(String $fecha){
+        
+        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),1,intval(substr($fecha,6,4))));
+        
+    }
+    public function damefechaFinal(String $fecha){
+        
+        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2))+1,0,intval(substr($fecha,6,4))));
+        
+    }    
     
 }
 

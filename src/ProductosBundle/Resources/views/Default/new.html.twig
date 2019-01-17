@@ -27,21 +27,21 @@
                    
                 </div>
                 <div class="col-lg-3">
-                        <b><i class="fa fa-calendar"></i> {{ form_label(form.instalacion) }}</b>
-                        {{ form_widget(form.instalacion) }}
-                    </div>
-                    <div class="col-lg-3">
-                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaMantenimiento) }}</b>
-                        {{ form_widget(form.fechaMantenimiento) }}
-                    </div>
-                    <div class="col-lg-2">
-                        <b> {{ form_label(form.periodicidad) }}</b>
-                        {{ form_widget(form.periodicidad) }}
-                    </div>
-                    <div class="col-lg-3">
-                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaNuevoMantenimiento) }}</b>
-                        {{ form_widget(form.fechaNuevoMantenimiento) }}
-                    </div>
+                    <b><i class="fa fa-calendar"></i> {{ form_label(form.instalacion) }}</b>
+                    {{ form_widget(form.instalacion) }}
+                </div>
+                <div class="col-lg-3">
+                    <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaMantenimiento) }}</b>
+                    {{ form_widget(form.fechaMantenimiento) }}
+                </div>
+                <div class="col-lg-2">
+                    <b> {{ form_label(form.periodicidad) }}</b>
+                    {{ form_widget(form.periodicidad) }}
+                </div>
+                <div class="col-lg-3">
+                    <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.fechaNuevoMantenimiento) }}</b>
+                    {{ form_widget(form.fechaNuevoMantenimiento) }}
+                </div>
                 <script type="text/javascript">
                     function calculaFechaMantenimiento(){
                         var fechaIni = document.getElementById("productosbundle_producto_fechaMantenimiento").value;

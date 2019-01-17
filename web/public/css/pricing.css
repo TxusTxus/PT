@@ -86,3 +86,7 @@
     height: 20px;
     width:20px;
 }
+
+.container {
+     max-width: 1300px; 
+}

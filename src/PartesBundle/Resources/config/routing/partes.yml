@@ -8,13 +8,13 @@ partes_show:
     defaults: { _controller: "PartesBundle:Partes:show" }
     methods:  GET
 
-partes_new:
-    path:     /new
+partes_nuevo:
+    path:     /nuevo/{id}/{tipo}/{fecha}
     defaults: { _controller: "PartesBundle:Partes:new" }
     methods:  [GET, POST]
 
 partes_edit:
-    path:     /{id}/edit
+    path:     /{id}/editar
     defaults: { _controller: "PartesBundle:Partes:edit" }
     methods:  [GET, POST]
 

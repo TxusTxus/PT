@@ -2,6 +2,8 @@
 
 namespace ClientesBundle\Repository;
 
+use Libreria;
+
 /**
  * DireccionRepository
  *
@@ -32,7 +34,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
     }
     
     public function dameDistritoDireccion(){
-            // Devuelve los campos para el listado de dirtritos
+            // Devuelve los campos para el listado de distritos
 
             $consulta = $this->getQueryBuilder();
             
@@ -53,13 +55,78 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
 
             return $lista;
     }
+    
+    /* 
+    * Devuelve los campos para los partes nuevos de los productos con mantenimiento
+    *  en el mes de la fecha.
+    * - $Id Es la id de la dirección
+    */
 
+    public function dameProductosPorDireccion($id,$fecha){
+
+        $inicio = Libreria::dameFechaInicial($fecha);
+        $fin = Libreria::dameFechaFinal($fecha);
+        $consulta = $this->getQueryBuilder();     
+        $consulta->select('d.id','d.direccion','c.id as cliente','c.nombre',
+                        'd.telefono','d.poblacion','d.codigoPostal',
+                        'd.observaciones','dist.distrito',
+                        'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto','p.periodicidad','p.premium')
+                 ->leftJoin('d.cliente', 'c')
+                 ->leftJoin('d.producto', 'p')
+                 ->leftJoin('d.distrito', 'dist')
+                 ->Where ('d.id = :id')
+                 ->andWhere('p.fechaNuevoMantenimiento BETWEEN :inicio AND :fin')
+                 ->setParameter('inicio', $inicio) 
+                 ->setParameter('fin', $fin)
+                 ->setParameter('id', $id);
+        $consulta->orderby('d.distrito', 'ASC')
+                 ->addOrderBy('p.fechaNuevoMantenimiento', 'DESC')
+                 ->getQuery();
+
+
+        $lista= $consulta->getQuery()->getResult();
+
+        return $lista;
+    }
+    
+    /* 
+    * Devuelve los campos para los partes nuevos de las incidencias
+    *  en el mes de la fecha.
+    * - $Id Es la id de la dirección
+    */
+    public function dameIndicenciasPorDireccion($id){
+        // Devuelve los campos para los partes nuevos
+
+        $consulta = $this->getQueryBuilder();
+
+        $consulta->select('d.id','d.direccion','c.id as cliente','d.telefono','d.poblacion','d.codigoPostal','d.observaciones',
+                        'dist.distrito',
+                        'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia',
+                        'c.nombre', 'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium')
+                 ->leftJoin('d.cliente', 'c')
+                 ->leftJoin('d.producto', 'p')
+                 ->leftJoin('d.incidencia', 'i')
+                 ->leftJoin('d.distrito', 'dist')
+                 ->Where ('d.id = :id')
+//                 ->andWhere('i.planificada = false')
+                 ->setParameter('id', $id);
+        $consulta->orderby('d.distrito', 'ASC')
+                 ->addOrderBy('i.fecha', 'DESC')
+                 ->getQuery();
+
+
+        $lista= $consulta->getQuery()->getResult();
+
+        return $lista;
+    }
+
+    
     public function dameDistritoDireccionEntreFechas($inicio, $fin){
-            // Devuelve los campos para el listado de dirtritos
+            // Devuelve los campos para el listado de distritos
 
             $consulta = $this->getQueryBuilder();
             
-            $consulta->select('d.direccion',
+            $consulta->select('d.id','d.direccion','c.id as cliente',
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
@@ -80,12 +147,39 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
             return $lista;
     }
 
-    public function dameDistritoDireccionIncidenciasEntreFechas($inicio, $fin){
-            // Devuelve los campos para el listado de dirtritos
+    public function dameMantenimientosAnteriores($inicio, $fin){
+            // Devuelve los campos para el listado de distritos
 
             $consulta = $this->getQueryBuilder();
             
-            $consulta->select('d.direccion',
+            $consulta->select('d.id','d.direccion','c.id as cliente',
+                            'd.telefono',
+                            'd.observaciones',
+                            'dist.distrito',
+                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium', 'p.planificada')
+                    ->leftJoin('d.cliente', 'c')
+                    ->leftJoin('d.producto', 'p')
+                    ->leftJoin('d.distrito', 'dist')
+                    ->Where('p.fechaNuevoMantenimiento BETWEEN :inicio AND :fin') 
+                    ->andWhere('p.planificada IS NULL')
+                    ->setParameter('inicio', $inicio) 
+                    ->setParameter('fin', $fin);
+            $consulta->orderby('d.distrito', 'ASC')
+                     ->addOrderBy('p.fechaNuevoMantenimiento', 'DESC')
+                     ->getQuery();
+            
+
+            $lista= $consulta->getQuery()->getResult();
+
+            return $lista;
+    }
+    
+    public function dameDistritoDireccionIncidenciasEntreFechas($inicio, $fin){
+            // Devuelve los campos para el listado de distritos
+
+            $consulta = $this->getQueryBuilder();
+            
+            $consulta->select('d.id','d.direccion',
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
@@ -117,4 +211,6 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb;
     }
+    
+ 
 }

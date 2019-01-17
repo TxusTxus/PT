@@ -2,6 +2,8 @@
 
 namespace PartesBundle\Repository;
 
+use Libreria;
+
 /**
  * PartesRepository
  *
@@ -14,12 +16,13 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
     /* 
     * Obtiene el listado de los partes de una empresa en una fecha dada
     */
-    public function damePartesEmpresa($empresa,$fecha){
-            // Listado completo de trabajadores
-
+    public function damePartesDia($empresa,$fecha){
+            // Listado completo de trabajadores en un día determinado
+            $fecha = Libreria::convierteFecha($fecha);
             $consulta = $this->getQueryBuilder();
 
             $consulta->leftJoin('p.direccion', 'd')
+                    ->leftJoin('p.producto', 'prod')
                     ->Where("p.empresa =:empresa") 
                     ->setParameter('empresa', $empresa);
             $consulta->andWhere("p.fechaParte =:fecha")
@@ -88,8 +91,8 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
 
 
     public function dameFechasPartes($empresa, $fecha){
-        $inicio = $this->dameFechaInicial($fecha);
-        $fin = $this->dameFechaFinal($fecha);
+        $inicio = Libreria::dameFechaInicial($fecha);
+        $fin = Libreria::dameFechaFinal($fecha);
         $consulta = $this->getQueryBuilder();
         $consulta
                 ->Select('distinct p.fechaParte')
@@ -115,15 +118,15 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb;
     }
-    
-    private function damefechaInicial(String $fecha){
-        
-        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),1,intval(substr($fecha,6,4))));
-        
-    }
-    private function damefechaFinal(String $fecha){
-        
-        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2))+1,0,intval(substr($fecha,6,4))));
-        
-    }
+//    
+//    private function damefechaInicial(String $fecha){
+//        
+//        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),1,intval(substr($fecha,6,4))));
+//        
+//    }
+//    private function damefechaFinal(String $fecha){
+//        
+//        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2))+1,0,intval(substr($fecha,6,4))));
+//        
+//    }
 }
