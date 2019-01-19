@@ -42,17 +42,14 @@ class PartesController extends Controller
         
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->dameEmpresaUsuario();
-
-
         $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha);
-        dump($partes);
         $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
         
         return $this->render('PartesBundle:Default:index.html.twig', array(
             'partes'        => $partes,
             'dias'          => $dias,
             'accionBuscar'  => '',
-            'empresa' => $empresa,
+            'empresa'       => $empresa,
             'fecha'         => $fecha
         ));
     }
@@ -60,49 +57,40 @@ class PartesController extends Controller
 
     /**
      * Crear un nuevo parte de trabajo.
+     * Para producto
      * Valores -> Cliente, Direccion, Producto.
      *
      */
-    public function newAction(Request $request, $id,$tipo,$fecha)
+    public function nuevoMantenimientoAction(Request $request, $id,$fecha)
     {
         $parte = new Partes();
         $empresa = $this->dameEmpresaUsuario();
         $em = $this->getDoctrine()->getManager();
-        switch ($tipo){
-            case 1:
-                // Selecciona el producto para el mantenimiento
-                $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
-                break;
-            case 2:
-                // Selecciona la incidencia 
-                $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
-                // Incluye la descripción de la incidencia como observación del parte de trabajo.
-                $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
-                dump($direccion);
-                break;
-        }
+        // Selecciona el producto para el mantenimiento
+        $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
+        $parte->setIVA($direccion['0']['IVA']);
+
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $parte->setEmpresa($empresa->getId());
             $parte->setCliente($this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']));
             $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
-            $em->persist($parte);
-            $em->flush();
-            if ($tipo = 1) {
-                $this->marcaProductoPlanificado($direccion['0']['producto']);
-            } else {
-                $this->marcaIncidenciaPlanificado($direccion['0']['incidecia']);
+            foreach ( $direccion as $item) {
+                // Asigna los productos al parte
+                $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']));
             }
             
-
+            $em->persist($parte);
+            $em->flush();
+            dump($direccion);
+            $this->marcaProductoPlanificado($direccion);
             return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
         }
         //$this->marcaProductoPlanificado($direccion);
         return $this->render('PartesBundle:Default:new.html.twig', array(
-            'tipo'          => $tipo,
+            'tipo'          => 'Mantenimiento',
             'parte'         => $parte,
             'direccion'     => $direccion,
             'form'          => $form->createView(),
@@ -111,6 +99,50 @@ class PartesController extends Controller
         ));
     }
 
+    /**
+     * Crear un nuevo parte de trabajo.
+     * Para una incidencia
+     * Valores -> Cliente, Direccion, Producto.
+     *
+     */
+    public function nuevaIncidenciaAction(Request $request, $id)
+    {
+        $parte = new Partes();
+        $empresa = $this->dameEmpresaUsuario();
+        $em = $this->getDoctrine()->getManager();
+        // Selecciona la incidencia 
+        $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
+        // Incluye la descripción de la incidencia como observación del parte de trabajo.
+        $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
+        $parte->setIVA($direccion['0']['IVA']);
+        $parte->setImporte($direccion['0']['importe']);
+
+        $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $parte->setEmpresa($empresa->getId());
+            $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
+            $parte->setCliente($this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']));
+            $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
+            $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($direccion['0']['producto']));
+            $em->persist($parte);
+            $em->flush();
+            $this->marcaIncidenciaPlanificado($direccion['0']['incidencia']);
+
+            return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
+        }
+        //$this->marcaProductoPlanificado($direccion);
+        return $this->render('PartesBundle:Default:new.html.twig', array(
+            'tipo'          => 'Incidencia',
+            'parte'         => $parte,
+            'direccion'     => $direccion,
+            'form'          => $form->createView(),
+            'accionBuscar'  => '',
+            'empresa'       => $empresa,
+        ));
+    }    
+    
     /**
      * Finds and displays a parte entity.
      *
@@ -195,23 +227,20 @@ class PartesController extends Controller
     private function marcaProductoPlanificado($array){
         $em = $this->getDoctrine()->getManager();
         // Marca los productos como planificados 
+        dump($array);
         foreach ( $array as $item) {
             $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']);
             $producto->setPlanificada(true);
             $em->flush($producto);
-            
         }
-        
     }
 
-    private function marcaIndicenciaPlanificado($array){
+    private function marcaIncidenciaPlanificado($id){
         $em = $this->getDoctrine()->getManager();
         // Marca la incidencia como planificada
-        foreach ( $array as $item) {
-            $incidencia = $this->getDoctrine()->getRepository('IncidenciasBundle:Incidencia')->find($item['incidencia']);
+            $incidencia = $this->getDoctrine()->getRepository('IncidenciasBundle:Incidencia')->find($id);
             $incidencia->setPlanificada(true);
-            $em->flush($incidencia);  
-        }      
+            $em->flush($incidencia);      
     }
     
 //    private function convierteFecha(String $fecha){

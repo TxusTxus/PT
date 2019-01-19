@@ -49,9 +49,9 @@
                                 {{ parte.direccion.poblacion }} - {{ parte.direccion.provincia }} <br>
                                 {{ parte.direccion.contacto }} - {{ parte.direccion.telefono }} <br>
                                 {{ parte.direccion.distrito }}</td>
-                            {{ parte.producto }}
+
                             <td>
-                                {% for item in parte.direccion.producto %}
+                                {% for item in parte.producto %}
                                     {{ item.modelo }}<br>
                                     {{ item.observaciones }}<br>
                                 {% endfor %}

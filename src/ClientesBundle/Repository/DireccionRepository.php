@@ -70,7 +70,8 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
         $consulta->select('d.id','d.direccion','c.id as cliente','c.nombre',
                         'd.telefono','d.poblacion','d.codigoPostal',
                         'd.observaciones','dist.distrito',
-                        'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto','p.periodicidad','p.premium')
+                        'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto',
+                        'p.periodicidad','p.premium','p.base as importe','p.IVA')
                  ->leftJoin('d.cliente', 'c')
                  ->leftJoin('d.producto', 'p')
                  ->leftJoin('d.distrito', 'dist')
@@ -101,8 +102,8 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
 
         $consulta->select('d.id','d.direccion','c.id as cliente','d.telefono','d.poblacion','d.codigoPostal','d.observaciones',
                         'dist.distrito',
-                        'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia',
-                        'c.nombre', 'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium')
+                        'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia','i.importe',
+                        'c.nombre', 'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium','p.IVA')
                  ->leftJoin('d.cliente', 'c')
                  ->leftJoin('d.producto', 'p')
                  ->leftJoin('d.incidencia', 'i')

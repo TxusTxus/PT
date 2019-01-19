@@ -52,12 +52,31 @@ class Partes
      */
     private $direccion;    
     
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductosBundle\Entity\Producto", inversedBy="parte")
-     * @ORM\JoinColumn(name="producto", referencedColumnName="id")
-     */
-    private $producto;       
     
+     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="\ProductosBundle\Entity\Producto", inversedBy="parte", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="parte_productos",
+     *                      joinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")},
+     *                      inverseJoinColumns={@ORM\JoinColumn(name="parte_id", referencedColumnName="id")})
+     */
+    private $producto;      
+    
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="importe", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $importe;
+
+     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="IVA", type="decimal",precision = 3, scale=2)
+     */
+    private $IVA;
     
     /**
      * @var \Date
@@ -95,6 +114,20 @@ class Partes
     private $material;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="cobrar", type="boolean", nullable=true)
+     */
+    private $cobrar;    
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="incidencia", type="integer", nullable=true)
+     */
+    private $incidencia;    
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="firma", type="string", length=255, nullable=true)
@@ -115,6 +148,21 @@ class Partes
      * @ORM\Column(name="terminado", type="boolean", nullable=true)
      */
     private $terminado;
+    
+    
+     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->producto = new \Doctrine\Common\Collections\ArrayCollection();  
+    }    
+    
+    
+    
+    
+    
+    
     
     /**
      * Get id
@@ -175,30 +223,87 @@ class Partes
     }
 
      /**
-     * Set producto
+     * Add image
      *
-     * @param \ProductosBundle\Entity\Producto $producto
+     * @param Image $producto
      *
-     * @return Partes
+     * @return Post
      */
-    public function setProducto(\ProductosBundle\Entity\Producto $producto)
+    public function addProducto(\ProductosBundle\Entity\Producto $producto)
     {
-        $this->producto = $producto;
+        $this->producto->add($producto);
 
         return $this;
     }
 
     /**
-     * Get producto
+     * Remove image
      *
-     * @return int
+     * @param Image $producto
+     */
+    public function removeProducto(\ProductosBundle\Entity\Producto $producto)
+    {
+        $this->producto->removeElement($producto);
+    }
+
+    /**
+     * Get productos
+     *
+     * @return ArrayCollection
      */
     public function getProducto()
     {
         return $this->producto;
+    }  
+    
+
+    /**
+     * Set importe
+     *
+     * @param string $importe
+     *
+     * @return Partes
+     */
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+
+        return $this;
     }
-    
-    
+
+    /**
+     * Get importe
+     *
+     * @return string
+     */
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+
+     /**
+     * Set IVA
+     *
+     * @param decimal $IVA
+     *
+     * @return Partes
+     */
+    public function setIVA($IVA)
+    {
+        $this->IVA = $IVA;
+        return $this;
+    }
+   
+
+    /**
+     * Get IVA
+     *
+     * @return decimal
+     */
+    public function getIVA()
+    {
+        return $this->IVA;
+    }      
     /**
      * Set trabajador
      *
@@ -368,6 +473,55 @@ class Partes
         return $this->material;
     }
 
+     /**
+     * Set cobrar
+     *
+     * @param boolean $cobrar
+     *
+     * @return Partes
+     */
+    public function setCobrar($cobrar)
+    {
+        $this->cobrar = $cobrar;
+
+        return $this;
+    }
+
+    /**
+     * Get cobrar
+     *
+     * @return bool
+     */
+    public function getCobrar()
+    {
+        return $this->cobrar;
+    }
+    
+    
+    /**
+     * Set incidencia
+     *
+     * @param intefer $incidencia
+     *
+     * @return Partes
+     */
+    public function setIncidencia($incidencia)
+    {
+        $this->incidencia = $incidencia;
+
+        return $this;
+    }
+
+    /**
+     * Get incidencia
+     *
+     * @return int
+     */
+    public function getIncidencia()
+    {
+        return $this->incidencia;
+    }    
+    
     /**
      * Set firma
      *

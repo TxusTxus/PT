@@ -19,7 +19,7 @@
     {% endfor %}
     {% for item in direccion %} 
                 - Producto: {{item.modelo}}<br>
-                {% if tipo==1 %}
+                {% if tipo=='Mantenimiento' %}
                     {% if item.observacionesProducto|length > 0 %} - Observaciones: {{item.observacionesProducto}}<br> {% endif %}
                 {% else %}
                     {% if item.descripcion|length > 0 %} - <b>Incidencia</b>: {{item.descripcion}}<br> {% endif %}
@@ -44,6 +44,18 @@
                     <b> {{ form_label(form.fechaEntrada) }}</b>
                     {{ form_widget(form.fechaEntrada) }}
                 </div>
+                <div class="col-lg-2">
+                    <b><i class="fa fa-calendar-check-o"></i> {{ form_label(form.importe) }}</b>
+                    {{ form_widget(form.importe) }}
+                </div>
+                <div class="col-lg-1">
+                    <b> {{ form_label(form.IVA) }}</b>
+                    {{ form_widget(form.IVA) }}
+                </div>                    
+                <div class="col-lg-3">
+                    <b> Pago al contado</b>
+                    {{ form_widget(form.cobrar) }}
+                </div>  
             </div>
             <div class="row" style="margin-bottom: 20px;"> 
                 <div class="col-lg-3">
@@ -57,8 +69,13 @@
             </div>
         
         {{ form_widget(form) }}
-        <input type="submit" value="Guardar en ruta." class="btn btn-primary btn-flat" />
+        <input type="submit" value="Guardar en ruta" class="btn btn-primary btn-flat" onclick="desmarcaCambio()"  />
     {{ form_end(form) }}
     </div>
 </div>
+{# 
+Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página
+#}
+{% embed "marcarcambios.html.twig" %}{% endembed %}
+
 {% endblock %}

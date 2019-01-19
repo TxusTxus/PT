@@ -4,17 +4,61 @@
     {#Muestra la barra superior#}
     {% embed "barranavegacion.html.twig" %}{% endembed %}
     <h1>Modificar Parte</h1>
+    <div class="container"> 
+        Cliente: {{parte.cliente}}<br>
+        Dirección: {{parte.direccion}} - {{parte.direccion.poblacion}}<br>
+        {% for item in parte.producto %}
+            - {{ item.modelo }}<br>
+            - {{ item.observaciones }}<br>
+        {% endfor %}
+        {#Producto: {{parte.producto}}<br>#}
+        {{ form_start(edit_form) }}
+                <div class="row" style="margin-bottom: 20px;">
+                    <div class="col-lg-6">
+                        <b><i class="fa fa-user"></i> {{ form_label(edit_form.trabajador) }}</b>
+                        {{ form_widget(edit_form.trabajador) }}
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 20px;">  
+                    <div class="col-lg-2">
+                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(edit_form.fechaParte) }}</b>
+                        {{ form_widget(edit_form.fechaParte) }}
+                    </div>
+                    <div class="col-lg-2">
+                        <b> {{ form_label(edit_form.fechaEntrada) }}</b>
+                        {{ form_widget(edit_form.fechaEntrada) }}
+                    </div>
+                    <div class="col-lg-2">
+                        <b><i class="fa fa-calendar-check-o"></i> {{ form_label(edit_form.importe) }}</b>
+                        {{ form_widget(edit_form.importe) }}
+                    </div>
+                    <div class="col-lg-1">
+                        <b> {{ form_label(edit_form.IVA) }}</b>
+                        {{ form_widget(edit_form.IVA) }}
+                    </div>                    
+                    <div class="col-lg-3">
+                        <b> cobrar</b>
+                        {{ form_widget(edit_form.cobrar) }}
+                    </div>                     
+                </div>
+                <div class="row" style="margin-bottom: 20px;"> 
+                    <div class="col-lg-3">
+                        <b><i class="fa fa-people-carry"></i> Material</b>
+                        {{ form_widget(edit_form.material) }}
+                    </div>
+                    <div class="col-lg-8">
+                        <b>{{ form_label(edit_form.observaciones) }}</b>
+                        {{ form_widget(edit_form.observaciones) }}
+                    </div>
+                </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+            <input type="submit" value="Modificar" onclick="desmarcaCambio()" class="btn btn-primary" />
+        {{ form_end(edit_form) }}
+    </div>
 
-    <ul>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+{# 
+Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página
+#}
+{% embed "marcarcambios.html.twig" %}{% endembed %}
+
 {% endblock %}

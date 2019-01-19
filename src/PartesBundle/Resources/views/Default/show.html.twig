@@ -3,27 +3,45 @@
 {% block body %}
     {#Muestra la barra superior#}
     {% embed "barranavegacion.html.twig" %}{% endembed %}
-    <h1>Parte</h1>
+    <h1>Parte: {{parte.id}}</h1>
 
       <div class="container" style="margin-top: 20px;">
         <div class="row my-flex-card" style="">  
             <div class="col-lg-6">
                 <div class="card border-info">
-                    <div class="card-header">Parte: {{ parte.id }} </div>
+                    <div class="card-header"> {{ parte.cliente }} </div>
                     <div class="card-body">
+                        {% if parte.cliente.observaciones|length>0 %}<i class="fa fa-comment"></i> {{ parte.cliente.observaciones }}{% endif %}
                         <ul style="list-style:none;">
-                            <li><i class="fa fa-user-circle"></i> {{ parte.trabajador }}</li>
-                            <li><i class="fa fa-at"></i> {{ parte.cliente }}</li>
+                            <li><i class="fa fa-map"></i> {{ parte.direccion }} - {{ parte.direccion.codigoPostal }} - {{ parte.direccion.poblacion }}  - {{ parte.direccion.provincia }}</li>
+                            <li><i class="fa fa-phone"></i> {{ parte.direccion.telefono }}</li>
+                            {% if parte.direccion.observaciones|length>0 %}<li><i class="fa fa-comment"></i> {{ parte.direccion.observaciones }}</li>{% endif %}
+                            
+
                         </ul>
                     </div>
 
                 </div>
-            </div>  
+            </div> 
             <div class="col-lg-6">            
                 <div class="card border-info">
-                    <div class="card-header"><i class="fa fa-map-marker"></i> Horario</div>
+                    <div class="card-header"><i class="fa fa-tint"></i> Producto</div>
+                    <div class="card-body">
+                        <ul>
+                            {% for item in parte.producto %}
+                                <li> {{ item.modelo }}</li>
+                                {% if item.observaciones|length>0 %}<li> - {{ item.observaciones }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">            
+                <div class="card border-info">
+                    <div class="card-header"><i class="fa fa-calendar"></i> Horario</div>
                     <div class="card-body">
                         <ul style="list-style:none;">
+                            <li><i class="fa fa-user-circle"></i> Técinco: {{ parte.trabajador }}</li>
                             <li><i class="fa fa-calendar"></i> {% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</li>
                             <li><i class="fa fa-hourglass-start"></i> {% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</li>
                             <li><i class="fa fa-hourglass-end"></i> {% if parte.fechaSalida %}{{ parte.fechaSalida|date('H:i') }}{% endif %}</li>
@@ -34,25 +52,28 @@
             </div>
             <div class="col-lg-6">            
                 <div class="card border-info">
-                    <div class="card-header"><i class="fa fa-map-marker"></i> Observaciones</div>
+                    <div class="card-header"><i class="fa fa-comment"></i> Observaciones</div>
                     <div class="card-body">
                         <ul style="list-style:none;">
                             <li><i class="fa fa-people-carry"></i> {% if parte.material %}Requiere material{% else %}No requiere material{% endif %}</li>
-                            <li><i class="fa fa-times-circle"></i> {{ parte.observaciones }}</li>
+                            <li> {{ parte.observaciones }}</li>
                         </ul>
+                        <br><br> 
+                        {% if parte.cobrar %}
+                            {% if parte.IVA > 0 %}
+                                {% set total = parte.importe * (1+parte.IVA) %}
+                                {% set IVA = parte.IVA * 100 %}
+                                <i class="fa fa-arrow-right"></i> Importe: {{parte.importe}}€ IVA: {{IVA}}%  - <b>Total a cobrar : {{ total }}€</b><br>
+                            {% else %}
+                                <i class="fa fa-euro"></i> Importe a cobrar: {{ parte.importe }} €<br>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>                        
 
 
-    <ul>
-        <li>
-            <a href="{{ path('partes_edit', { 'id': parte.id }) }}">Modificar</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Borrar">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-flat">Modificar</a>
+
+ 
 {% endblock %}

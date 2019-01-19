@@ -106,11 +106,8 @@ class DireccionController extends Controller
 
     public function listadoDistritosAction(Request $request){
         $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
-//        $listado = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccion();
         $buscarForm = $this->createForm('ClientesBundle\Form\ListadoRevisionesType');
         $buscarForm->handleRequest($request);
-//        $fin = new \DateTime;
-//        $fecha = new \DateTime;
         $inicio =date("Y-m-d",mktime(0,0,0,11,1,2018));
         if ($buscarForm->isSubmitted() && $buscarForm->isValid()) {
             $datos = Libreria::dameFechas($buscarForm->get('mes')->getData(),$buscarForm->get('fechaDesde')->getData(),$buscarForm->get('fechaHasta')->getData());

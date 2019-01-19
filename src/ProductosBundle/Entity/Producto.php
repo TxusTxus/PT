@@ -45,6 +45,11 @@ class Producto
     private $incidencia;
     
     /**
+    * @ORM\ManyToMany(targetEntity="\PartesBundle\Entity\Partes", mappedBy="producto")
+    */
+    private $parte;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="instalacion", type="date", nullable=true)
