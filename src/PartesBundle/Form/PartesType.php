@@ -59,13 +59,17 @@ class PartesType extends AbstractType
                             "onchange" => "javascript:marcaCambio();")
                     ))
                 ->add('IVA',PercentType::class,array('label' => '% IVA',
-                        'required'  => false
+                        'required'  => false,
+                        'attr'  => array("onchange" => "javascript:marcaCambio();")
                     ))
 //                ->add('firma')
                 ->add('observaciones', TextType::class, array(
                         'label' => 'Observaciones',
-                        'required'  => false,
-                        'attr' => array("onchange" => "javascript:marcaCambio();")
+                        'required'  => false, 
+                        'attr' => array(
+                            'rows' => '5',
+                            'cols' => '10',
+                            "onchange" => "javascript:marcaCambio();")
                     ));
     }/**
      * {@inheritdoc}

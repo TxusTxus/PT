@@ -9,14 +9,18 @@
 
         {{ form_start(edit_form) }}
         <div class="row" style="margin-bottom: 20px;">             
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <b><i class="fa fa-user"></i> {{ form_label(edit_form.nombre) }}</b>
                 {{ form_widget(edit_form.nombre) }}
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <b> {{ form_label(edit_form.razonSocial) }}</b>
                 {{ form_widget(edit_form.razonSocial) }}
             </div>
+            <div class="col-lg-2">
+                <b> {{ form_label(edit_form.tipoPago) }}</b>
+                {{ form_widget(edit_form.tipoPago) }}
+            </div> 
         </div>
         <div class="row" style="margin-bottom: 20px;">  
             <div class="col-lg-12">

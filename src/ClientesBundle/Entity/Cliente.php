@@ -107,6 +107,12 @@ class Cliente
 //     * @ORM\Column(name="email", type="string", length=255, nullable=true)
 //     */
 //    private $email;
+
+    /**
+     * @ORM\ManytoOne(targetEntity="TipoPago", inversedBy="cliente")
+     * @ORM\JoinColumn(name="TipoPago", referencedColumnName="id")
+     */
+    private $tipoPago;
     
     /**
      * @var string
@@ -137,6 +143,7 @@ class Cliente
         $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->productos = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->incidencias = new \Doctrine\Common\Collections\ArrayCollection(); 
+        $this->tipoPago =  new \Doctrine\Common\Collections\ArrayCollection(); 
     }
     
     /**
@@ -325,27 +332,27 @@ class Cliente
     }
 
     /**
-     * Set provincia
+     * Set tipoPago
      *
-     * @param integer $provincia
+     * @param integer $tipoPago
      *
      * @return Cliente
      */
-    public function setProvincia($provincia)
+    public function setTipoPago($tipoPago)
     {
-        $this->provincia = $provincia;
+        $this->tipoPago = $tipoPago;
 
         return $this;
     }
 
     /**
-     * Get provincia
+     * Get tipoPago
      *
      * @return int
      */
-    public function getProvincia()
+    public function getTipoPago()
     {
-        return $this->provincia;
+        return $this->tipoPago;
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace PartesBundle\Controller;
 
 use PartesBundle\Entity\Partes;
+use ClientesBundle\Entity\Cliente;
+use EmpresasBundle\Entity\Empresa;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -68,15 +70,15 @@ class PartesController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Selecciona el producto para el mantenimiento
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
-        $parte->setIVA($direccion['0']['IVA']);
+        $cliente = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']);
+        // Asigna campos iniciales
+        $parte = $this->actualizaValoresParte($parte, $direccion, $cliente, $empresa, 1);
 
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $parte->setEmpresa($empresa->getId());
-            $parte->setCliente($this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']));
-            $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
+
             foreach ( $direccion as $item) {
                 // Asigna los productos al parte
                 $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']));
@@ -96,6 +98,7 @@ class PartesController extends Controller
             'form'          => $form->createView(),
             'accionBuscar'  => '',
             'empresa'       => $empresa,
+            'cliente'       => $cliente
         ));
     }
 
@@ -112,20 +115,14 @@ class PartesController extends Controller
         $em = $this->getDoctrine()->getManager();
         // Selecciona la incidencia 
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
-        // Incluye la descripción de la incidencia como observación del parte de trabajo.
-        $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
-        $parte->setIVA($direccion['0']['IVA']);
-        $parte->setImporte($direccion['0']['importe']);
+        $cliente = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']);
+        // Asigna campos iniciales
+        $parte = $this->actualizaValoresParte($parte, $direccion, $cliente, $empresa,2);
 
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $parte->setEmpresa($empresa->getId());
-            $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
-            $parte->setCliente($this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']));
-            $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
-            $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($direccion['0']['producto']));
             $em->persist($parte);
             $em->flush();
             $this->marcaIncidenciaPlanificado($direccion['0']['incidencia']);
@@ -140,6 +137,7 @@ class PartesController extends Controller
             'form'          => $form->createView(),
             'accionBuscar'  => '',
             'empresa'       => $empresa,
+            'cliente'       => $cliente,
         ));
     }    
     
@@ -216,6 +214,30 @@ class PartesController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+    
+    
+    private function actualizaValoresParte(Partes $parte, $direccion, Cliente $cliente, Empresa $empresa, $tipo){
+        // Incluye la descripción de la incidencia como observación del parte de trabajo.
+        $empresa = $this->dameEmpresaUsuario();
+        $parte->setEmpresa($empresa->getId());
+        $parte->setCliente($cliente);
+        $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
+        if ($tipo==2) {
+            $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
+            $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($direccion['0']['producto']));
+            $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
+        } else {
+            
+        }
+        $parte->setIVA($direccion['0']['IVA']);
+        $parte->setImporte($direccion['0']['importe']);
+        if ($cliente->getTipoPago() == 'Pago al contado'){
+            $parte->setCobrar(true);
+        } else {
+            $parte->setCobrar(false);
+        }
+        return $parte;
     }
     
     private function dameEmpresaUsuario(){
