@@ -51,8 +51,12 @@
                         {{ form_widget(edit_form.observaciones) }}
                     </div>
                 </div>
-
-            <input type="submit" value="Modificar" onclick="desmarcaCambio()" class="btn btn-primary" />
+                <div class="row" style="margin-bottom: 20px;"> 
+                    {{ form_widget(edit_form.save) }}
+                    {{ form_widget(edit_form.eliminar) }}
+                </div>
+{#            <input type="submit" value="Modificar" name="modificar" onclick="desmarcaCambio()" class="btn btn-primary" />
+            <input type="submit" value="Eliminar" name="eliminar" onclick="desmarcaCambio()" class="btn btn-primary" />#}
         {{ form_end(edit_form) }}
     </div>
 

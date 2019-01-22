@@ -58,8 +58,8 @@ class Partes
      *
      * @ORM\ManyToMany(targetEntity="\ProductosBundle\Entity\Producto", inversedBy="parte", cascade={"persist", "remove"})
      * @ORM\JoinTable(name="parte_productos",
-     *                      joinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")},
-     *                      inverseJoinColumns={@ORM\JoinColumn(name="parte_id", referencedColumnName="id")})
+     *                      joinColumns={@ORM\JoinColumn(name="parte_id", referencedColumnName="id")},
+     *                      inverseJoinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")})
      */
     private $producto;      
     

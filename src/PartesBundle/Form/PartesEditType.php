@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class PartesType extends AbstractType
+class PartesEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -72,18 +72,18 @@ class PartesType extends AbstractType
                             'cols' => '10',
                             "onchange" => "javascript:marcaCambio();")
                     ))
-//                ->add('save', SubmitType::class, array(
-//                    'label' => 'Guardar en ruta',
-//                    'attr'  => array(
-//                        "onchange" => "javascript:desmarcaCambio();",
-//                        "class" => "btn btn-primary"),
-//                    ))
-//                 ->add('eliminar', SubmitType::class, array(
-//                     'label' => 'Eliminar',
-//                     'attr'  => array(
-//                        "onchange" => "javascript:desmarcaCambio();",
-//                        "class" => "btn btn-primary"),
-//                    ))
+                ->add('save', SubmitType::class, array(
+                    'label' => 'Modificar',
+                    'attr'  => array(
+                        "onchange" => "javascript:desmarcaCambio();",
+                        "class" => "btn btn-primary"),
+                    ))
+                 ->add('eliminar', SubmitType::class, array(
+                     'label' => 'Eliminar',
+                     'attr'  => array(
+                        "onchange" => "javascript:desmarcaCambio();",
+                        "class" => "btn btn-primary"),
+                    ))
                 ;
     }/**
      * {@inheritdoc}

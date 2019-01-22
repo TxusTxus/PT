@@ -33,6 +33,11 @@ partes_diario:
     path:     /{fecha}/muestraPartes
     defaults: { _controller: "PartesBundle:Partes:diarioPartes" }
     methods:  GET
+    
+partes_eliminar:
+    path:     /{id}/eliminarParte
+    defaults: { _controller: "PartesBundle:Partes:delete" }
+    methods:  GET
 #
 #partes_busca:
 #    path:     /buscaParte

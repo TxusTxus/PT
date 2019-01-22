@@ -65,29 +65,22 @@ class PartesController extends Controller
      */
     public function nuevoMantenimientoAction(Request $request, $id,$fecha)
     {
-        $parte = new Partes();
+        
         $empresa = $this->dameEmpresaUsuario();
         $em = $this->getDoctrine()->getManager();
         // Selecciona el producto para el mantenimiento
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
         $cliente = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']);
         // Asigna campos iniciales
-        $parte = $this->actualizaValoresParte($parte, $direccion, $cliente, $empresa, 1);
+        $parte = $this->actualizaValoresParte($direccion, $cliente, $empresa, 1);
 
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            foreach ( $direccion as $item) {
-                // Asigna los productos al parte
-                $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']));
-            }
-            
+        if ($form->isSubmitted() && $form->isValid()) {            
             $em->persist($parte);
             $em->flush();
-            dump($direccion);
-            $this->marcaProductoPlanificado($direccion);
+            $this->procesaProductoParaPlanificarlas($direccion,true);
             return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
         }
         //$this->marcaProductoPlanificado($direccion);
@@ -110,14 +103,13 @@ class PartesController extends Controller
      */
     public function nuevaIncidenciaAction(Request $request, $id)
     {
-        $parte = new Partes();
         $empresa = $this->dameEmpresaUsuario();
         $em = $this->getDoctrine()->getManager();
         // Selecciona la incidencia 
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
         $cliente = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->find($direccion['0']['cliente']);
         // Asigna campos iniciales
-        $parte = $this->actualizaValoresParte($parte, $direccion, $cliente, $empresa,2);
+        $parte = $this->actualizaValoresParte( $direccion, $cliente, $empresa,2);
 
         $form = $this->createForm('PartesBundle\Form\PartesType', $parte);
         $form->handleRequest($request);
@@ -125,7 +117,7 @@ class PartesController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($parte);
             $em->flush();
-            $this->marcaIncidenciaPlanificado($direccion['0']['incidencia']);
+            $this->marcaIncidenciaPlanificado($direccion['0']['incidencia'],true);
 
             return $this->redirectToRoute('partes_show', array('id' => $parte->getId()));
         }
@@ -163,20 +155,22 @@ class PartesController extends Controller
      */
     public function editAction(Request $request, Partes $parte)
     {
-        $deleteForm = $this->createDeleteForm($parte);
-        $editForm = $this->createForm('PartesBundle\Form\PartesType', $parte);
+        $editForm = $this->createForm('PartesBundle\Form\PartesEditType', $parte);
         $editForm->handleRequest($request);
+
         $empresa = $this->dameEmpresaUsuario();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('partes_edit', array('id' => $parte->getId()));
+            if ($editForm->get('save')->isClicked()){
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('partes_edit', array('id' => $parte->getId()));
+            } else {
+                return $this->redirectToRoute('partes_eliminar', array('id' => $parte->getId()));
+            }
         }
 
         return $this->render('PartesBundle:Default:edit.html.twig', array(
             'parte' => $parte,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'accionBuscar'  => '',
             'empresa' => $empresa,
         ));
@@ -188,16 +182,34 @@ class PartesController extends Controller
      */
     public function deleteAction(Request $request, Partes $parte)
     {
-        $form = $this->createDeleteForm($parte);
-        $form->handleRequest($request);
+        $deleteForm = $this->createDeleteForm($parte);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $empresa = $this->dameEmpresaUsuario();
+        $deleteForm->handleRequest($request);
+
+        if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
+            $producto = $parte->getProducto();
+            $this->marcaProductoPlanificado($producto,true);
+            foreach ( $producto as $item) {
+                // Asigna los productos al parte
+                dump($item);
+            }
+            $incidencia = $parte->getIncidencia();
+            if ($incidencia!=null){
+                $this->marcaIncidenciaPlanificado($incidencia,true);
+            }
+            die();
             $em = $this->getDoctrine()->getManager();
-            $em->remove($parte);
-            $em->flush();
+//            $em->remove($parte);
+//            $em->flush();
         }
 
-        return $this->redirectToRoute('partes_listado');
+        return $this->render('PartesBundle:Default:eliminar.html.twig', array(
+            'parte' => $parte,
+            'delete_form' => $deleteForm->createView(),
+            'accionBuscar'  => '',
+            'empresa' => $empresa,
+        ));
     }
 
     /**
@@ -217,18 +229,19 @@ class PartesController extends Controller
     }
     
     
-    private function actualizaValoresParte(Partes $parte, $direccion, Cliente $cliente, Empresa $empresa, $tipo){
+    private function actualizaValoresParte($direccion, Cliente $cliente, Empresa $empresa, $tipo){
         // Incluye la descripción de la incidencia como observación del parte de trabajo.
-        $empresa = $this->dameEmpresaUsuario();
+        $parte = new Partes();
         $parte->setEmpresa($empresa->getId());
         $parte->setCliente($cliente);
         $parte->setDireccion($this->getDoctrine()->getRepository('ClientesBundle:Direccion')->find($direccion['0']['id']));
+        foreach ( $direccion as $item) {
+            // Asigna los productos al parte
+            $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']));
+        }
         if ($tipo==2) {
             $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
-            $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($direccion['0']['producto']));
             $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
-        } else {
-            
         }
         $parte->setIVA($direccion['0']['IVA']);
         $parte->setImporte($direccion['0']['importe']);
@@ -246,22 +259,26 @@ class PartesController extends Controller
         return $empresa;
     }
     
-    private function marcaProductoPlanificado($array){
-        $em = $this->getDoctrine()->getManager();
-        // Marca los productos como planificados 
-        dump($array);
+    private function procesaProductoParaPlanificarlas($array,$valor){
+        // recorre todo el array de productos de la dirección
         foreach ( $array as $item) {
-            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']);
-            $producto->setPlanificada(true);
-            $em->flush($producto);
+            $this->marcaProductoPlanificado($item['producto'],$valor);
         }
     }
-
-    private function marcaIncidenciaPlanificado($id){
+    
+    private function marcaProductoPlanificado($id,$valor){
+        $em = $this->getDoctrine()->getManager();
+        // Marca los productos como planificados 
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($id);
+            $producto->setPlanificada($valor);
+            $em->flush($producto);
+    }
+    
+    private function marcaIncidenciaPlanificado($id,$valor){
         $em = $this->getDoctrine()->getManager();
         // Marca la incidencia como planificada
             $incidencia = $this->getDoctrine()->getRepository('IncidenciasBundle:Incidencia')->find($id);
-            $incidencia->setPlanificada(true);
+            $incidencia->setPlanificada($valor);
             $em->flush($incidencia);      
     }
     
