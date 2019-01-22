@@ -8,12 +8,29 @@ echo "<img src='".$imagen."' border='0' height='50'>";
 
 ?>
 
+   <style type="text/css">
+        @page {
+            margin: 0;
+        }
+        * { padding: 0; margin: 5; }
+        @font-face {
+            font-family: "source_sans_proregular";           
+            src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+
+        }        
+        body{
+            font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;            
+        }
+    </style>
+</head><body>';
     <table  width=100%><tr>
-        <th style="text-align: left;" width="50%"> Impresión de ruta día :21/01/2019</th>
+        <th style="text-align: left;" width="50%"> Ruta: 21/01/2019</th>
         <th style="text-align:right;" > Técnico: <?php echo $partes[0]->getTrabajador()->getNombre(); ?></th>
         </tr></table><hr><br>
 <?php
-echo '<table><tr><th>Entrada</th><th>Cliente</th><th>Observaciones</th><th>Direccion</th><th>Producto</th></tr>';
+echo '<table width=100%><tr><th>Entrada</th><th>Cliente</th><th>Observaciones</th><th>Direccion</th><th>Producto</th></tr>';
         foreach ( $partes as $item) {
             echo "<tr style='border-bottom: 1px solid #666;'>";
             echo "<td style='border-bottom: 1px solid #666;'>";
@@ -42,9 +59,9 @@ echo '<table><tr><th>Entrada</th><th>Cliente</th><th>Observaciones</th><th>Direc
         }
     echo "</table>";       
 
-//generate some PDFs!
+//generación del PDF
 
-$dompdf = new DOMPDF(); //if you use namespaces you may use new \DOMPDF()
+$dompdf = new DOMPDF(); 
 $dompdf->set_paper('letter', 'landscape'); 
 $dompdf->loadHtml(ob_get_clean());
 $dompdf->render();
