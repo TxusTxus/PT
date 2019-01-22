@@ -149,6 +149,24 @@ class PartesController extends Controller
         ));
     }
 
+     /**
+     * Hoja de ruta a PDF.
+     *
+     */
+    public function rutaPDFAction($fecha, $tecnico)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $empresa = $this->dameEmpresaUsuario();
+        $partes = $em->getRepository('PartesBundle:Partes')->dameRutaTrabajador($empresa->getId(),$tecnico,$fecha);
+
+        return $this->render('PartesBundle:Default:pdf.html.php', array(
+            'tecnico'       => $tecnico,
+            'partes'        => $partes,
+            'empresa'       => $empresa,
+            'fecha'         => $fecha
+        ));
+    }
+    
     /**
      * Displays a form to edit an existing parte entity.
      *

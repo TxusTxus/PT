@@ -33,6 +33,27 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
 
             return $consulta->getQuery()->getResult();
     }
+ 
+    public function dameRutaTrabajador($empresa,$trabajador,$fecha){
+        
+
+            $dia = Libreria::convierteFecha($fecha);
+            $consulta = $this->getQueryBuilder();
+
+            $consulta->leftJoin('p.direccion', 'd')
+                    ->leftJoin('p.producto', 'prod')
+                    ->Where("p.empresa =:empresa") 
+                    ->setParameter('empresa', $empresa)
+                    ->andWhere("p.fechaParte =:fecha")
+                    ->setParameter('fecha', $dia)
+                    ->andWhere("p.trabajador =:trabajador") 
+                    ->setParameter('trabajador', $trabajador)
+                    ->orderby('p.trabajador', 'ASC')
+                    ->addOrderBy('p.fechaEntrada', 'ASC')
+            ->getQuery();
+
+            return $consulta->getQuery()->getResult();    
+    }
     
 //    public function damePartesEntreFechas($inicio, $fin){
 //        $consulta = $this->getQueryBuilder();

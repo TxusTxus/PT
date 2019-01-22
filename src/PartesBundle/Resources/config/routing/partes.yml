@@ -8,6 +8,11 @@ partes_show:
     defaults: { _controller: "PartesBundle:Partes:show" }
     methods:  GET
 
+partes_ruta:
+    path:     /{fecha}/ruta/{tecnico}
+    defaults: { _controller: "PartesBundle:Partes:rutaPDF" }
+    methods:  GET
+
 partes_nuevo_mantenimiento:
     path:     /nuevo/{id}/{fecha}
     defaults: { _controller: "PartesBundle:Partes:nuevoMantenimiento" }

@@ -29,7 +29,7 @@ framework:
     #serializer: { enable_annotations: true }
     serializer: { enabled: true }
     templating:
-        engines: ['twig']
+        engines: ['twig','php']
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
