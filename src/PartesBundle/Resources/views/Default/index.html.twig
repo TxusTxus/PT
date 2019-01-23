@@ -45,7 +45,13 @@
                         {% endif %}
                         <tr>
                             <td>{% if parte.fechaEntrada %}{{ parte.fechaEntrada|date('H:i') }}{% endif %}</td>
-                            <td>{{ parte.cliente }}</td>                    
+                            {# Mira en los productos si es un cliente es un cliente Premium#}
+                            {%set clientePremium = false %}
+                            {% for item in parte.producto %}
+                                {% if item.premium %}{%set clientePremium = true %}{% endif %}
+                            {% endfor %}
+                            
+                            <td>{{ parte.cliente }} {% if clientePremium %}<br><b><i class="fas fa-award"></i> Premium </b>{% endif %}</td>                    
 {#                            <td>{% if parte.material %}Sí{% else %}No{% endif %}</td>#}
                             <td>{{ parte.observaciones }}</td>
                             <td>{{ parte.direccion }}<br>

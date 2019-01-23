@@ -1,10 +1,14 @@
 <?php
+
+$dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 use Dompdf\Dompdf;
 ob_start();
 
 $imagen = 'imagenes/logo/'.$empresa->getImagen();
 
-echo "<img src='".$imagen."' border='0' height='50'>"; 
+echo "<img src='".$imagen."' border='0' height='50' align='left'>"; 
+echo "Calle Palleter 62 bajo izq. (46008) Valencia<br>";
+echo 'Telf: 622 207 130 - 963 235 287<br><br>';
 
 ?>
 
@@ -24,9 +28,13 @@ echo "<img src='".$imagen."' border='0' height='50'>";
             font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;            
         }
     </style>
-</head><body>';
+</head><body>
     <table  width=100%><tr>
-        <th style="text-align: left;" width="50%"> Ruta: 21/01/2019</th>
+        <th style="text-align: left;" width="50%"> Ruta: 
+            <?php 
+            echo $dias[$partes[0]->getFechaParte()->format('w')].', ';  
+            echo $partes[0]->getFechaParte()->format('d/m'); 
+            ?></th>
         <th style="text-align:right;" > Técnico: <?php echo $partes[0]->getTrabajador()->getNombre(); ?></th>
         </tr></table><hr><br>
 <?php

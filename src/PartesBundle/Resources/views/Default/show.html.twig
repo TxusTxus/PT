@@ -9,7 +9,7 @@
         <div class="row my-flex-card" style="">  
             <div class="col-lg-6">
                 <div class="card border-info">
-                    <div class="card-header"> {{ parte.cliente }} </div>
+                    <div class="card-header"> {{ parte.cliente }}  </div>
                     <div class="card-body">
                         {% if parte.cliente.observaciones|length>0 %}<i class="fa fa-comment"></i> {{ parte.cliente.observaciones }}{% endif %}
                         <ul style="list-style:none;">
@@ -25,13 +25,17 @@
             </div> 
             <div class="col-lg-6">            
                 <div class="card border-info">
-                    <div class="card-header"><i class="fa fa-tint"></i> Producto</div>
+                    <div class="card-header"><i class="fa fa-tint"></i> Producto </div>
                     <div class="card-body">
                         <ul>
+                            {%set clientePremium = false %}
                             {% for item in parte.producto %}
                                 <li> {{ item.modelo }}</li>
-                                {% if item.observaciones|length>0 %}<li> - {{ item.observaciones }}</li>{% endif %}
+                                {% if item.observaciones|length>0 %}<li> -<i> {{ item.observaciones }}</i></li>{% endif %}
+                                {% if item.premium %}{%set clientePremium = true %}{% endif %}
+
                             {% endfor %}
+                            {% if clientePremium %}<b><i class="fas fa-award"></i> Cliente Premium </b>{% endif %}
                         </ul>
                     </div>
                 </div>
