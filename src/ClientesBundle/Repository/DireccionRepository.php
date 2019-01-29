@@ -105,9 +105,11 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                         'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia','i.importe',
                         'c.nombre', 'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium','p.IVA')
                  ->leftJoin('d.cliente', 'c')
-                 ->leftJoin('d.producto', 'p')
                  ->leftJoin('d.incidencia', 'i')
                  ->leftJoin('d.distrito', 'dist')
+                 ->leftJoin('i.producto', 'p')
+                 
+                 
                  ->Where ('d.id = :id')
 //                 ->andWhere('i.planificada = false')
                  ->setParameter('id', $id);
@@ -187,7 +189,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo','p.premium', 'i.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.incidencia', 'i')
-                    ->leftJoin('d.producto', 'p')
+                    ->leftJoin('i.producto', 'p')
                     ->leftJoin('d.distrito', 'dist')
                     ->Where('i.fecha BETWEEN :inicio AND :fin')
                     ->andWhere('i.fechaResuelta IS NULL')

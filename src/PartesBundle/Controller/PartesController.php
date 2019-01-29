@@ -249,6 +249,7 @@ class PartesController extends Controller
     
     private function actualizaValoresParte($direccion, Cliente $cliente, Empresa $empresa, $tipo){
         // Incluye la descripción de la incidencia como observación del parte de trabajo.
+        $textoIncidencia='';
         $parte = new Partes();
         $parte->setEmpresa($empresa->getId());
         $parte->setCliente($cliente);
@@ -256,10 +257,15 @@ class PartesController extends Controller
         foreach ( $direccion as $item) {
             // Asigna los productos al parte
             $parte->addProducto($this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']));
+            // Asigna la incidencia como observación
+         if ($tipo==2) {
+            $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
+            $textoIncidencia = $textoIncidencia.' - '.$item['descripcion'].PHP_EOL;
+        }           
         }
         if ($tipo==2) {
             $parte->setIncidencia($direccion['0']['incidencia']); // guarda el número de la incidencia
-            $parte->setObservaciones('Incidencia:'.$direccion['0']['descripcion']);
+            $parte->setObservaciones('Incidencia:'.PHP_EOL.$textoIncidencia);
         }
         $parte->setIVA($direccion['0']['IVA']);
         $parte->setImporte($direccion['0']['importe']);

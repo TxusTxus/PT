@@ -160,7 +160,7 @@
         {% for direccion in anteriores %}
             {% if direccion.modelo|length > 0 %}
                 <tr>
-                    <td>{{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}
+                    <td><a href="{{ path('partes_nuevo_mantenimiento', { 'id': direccion.id, 'fecha':direccion.fechaNuevoMantenimiento|date('d-m-Y')}) }}" title="Poner en ruta"><i class="fa fa-angle-double-right"></i> {{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}</a>
                         {% if direccion.premium %}
                             <i class="fas fa-award"></i>
                         {% endif %}

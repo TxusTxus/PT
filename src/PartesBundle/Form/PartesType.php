@@ -64,7 +64,7 @@ class PartesType extends AbstractType
                         'attr'  => array("onchange" => "javascript:marcaCambio();")
                     ))
 //                ->add('firma')
-                ->add('observaciones', TextType::class, array(
+                ->add('observaciones', TextareaType::class, array(
                         'label' => 'Observaciones',
                         'required'  => false, 
                         'attr' => array(
