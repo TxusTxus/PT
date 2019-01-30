@@ -474,6 +474,30 @@ class Partes
     }
 
      /**
+     * Set terminado
+     *
+     * @param boolean $terminado
+     *
+     * @return Partes
+     */
+    public function setTerminado($terminado)
+    {
+        $this->terminado = $terminado;
+
+        return $this;
+    }
+
+    /**
+     * Get terminado
+     *
+     * @return bool
+     */
+    public function getTerminado()
+    {
+        return $this->terminado;
+    }
+    
+     /**
      * Set cobrar
      *
      * @param boolean $cobrar

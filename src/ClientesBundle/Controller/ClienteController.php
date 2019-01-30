@@ -104,13 +104,12 @@ class ClienteController extends Controller
         $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $empresaCliente = $cliente->getEmpresa();
         if ($empresa!=$empresaCliente) {
-            print_r('Sin concordancia...'.$empresa.'->'.$empresaCliente.'<br>');
+            print_r('Sin concordancia...Avise al administrador'.$empresa.'->'.$empresaCliente.'<br>');
             die();
         }
         $deleteForm = $this->createDeleteForm($cliente);
         // Obtiene el anterior y siguiente cliente para los manejadores
         $posicion =$this->dameAnteriorPosterior($empresa->getId(), $cliente->getId());
-        dump($cliente);
         return $this->render('ClientesBundle:Default:show.html.twig', array(
             'cliente'       => $cliente,
             'delete_form'   => $deleteForm->createView(),

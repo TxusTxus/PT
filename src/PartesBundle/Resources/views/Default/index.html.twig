@@ -68,7 +68,11 @@
                             <td>
                                  <div class="btn-group mr-2" role="group" aria-label="Second group">
                                    <a href="{{ path('partes_show', { 'id': parte.id}) }}" class="btn btn-primary btn-sm" title="Ver parte"><i class="fa fa-eye"></i></a>
-                                   <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a>                    
+                                   {% if parte.terminado !=true %}
+
+                                   <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Modificar datos"><i class="fa fa-edit"></i></a> 
+                                   <a href="{{ path('partes_eliminar', { 'id': parte.id }) }}" class="btn btn-primary btn-sm" title="Devolver al planificador"><i class="fa fa-eraser"></i></a> 
+                                   {% endif %}
                                  </div>
                             </td>
                         </tr>

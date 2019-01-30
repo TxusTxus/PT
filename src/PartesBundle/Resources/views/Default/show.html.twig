@@ -76,8 +76,10 @@
                 </div>
             </div>                        
 
-
-            <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-flat">Modificar</a>
+            {% if parte.terminado !=true %}
+                <a href="{{ path('partes_edit', { 'id': parte.id }) }}" class="btn btn-primary btn-flat">Modificar</a>
+            {% endif %}
+             <a class="btn btn-primary btn-flat" href="javascript:window.history.go(-1);">Volver</a>   
 
  
 {% endblock %}

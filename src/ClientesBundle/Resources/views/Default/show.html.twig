@@ -269,14 +269,18 @@
                             <th>Importe</th>
                             <th>Producto</th>
                             <th>Fecha Resuelta</th>
+                            <th>Técnico</th>
+                            <th>Observaciones</th>
                         </tr>
                       {% for incidencia in cliente.incidencias %}
                         <tr>
                             <td>{% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
                             <td>{{ incidencia.descripcion}}</td>
-                            <td align="right">{{ incidencia.importe}} € &nbsp;</td>
+                            <td align="right">{% if incidencia.importe>0 %}{{ incidencia.importe}} €{% endif %} &nbsp;</td>
                             <td> {{ incidencia.producto}}</td>
                             <td>{% if incidencia.fechaResuelta %}{{ incidencia.fechaResuelta|date('d-m-Y') }}{% endif %}</td>
+                            <td>{% if incidencia.tecnico %}{{ incidencia.tecnico }}{% endif %}</td>
+                            <td>{% if incidencia.observaciones %}{{ incidencia.observaciones }}{% endif %}</td>
                         </tr>
                       {% endfor %}
                     </table>

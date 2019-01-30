@@ -201,25 +201,26 @@ class PartesController extends Controller
     public function deleteAction(Request $request, Partes $parte)
     {
         $deleteForm = $this->createDeleteForm($parte);
-
+        $terminado = $parte->getTerminado();
         $empresa = $this->dameEmpresaUsuario();
         $deleteForm->handleRequest($request);
 
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
-            $producto = $parte->getProducto();
-            $this->marcaProductoPlanificado($producto,true);
-            foreach ( $producto as $item) {
+            $producto = $parte->getProducto();           
+            foreach ($producto as $item) {
                 // Asigna los productos al parte
-                dump($item);
+                $this->marcaProductoPlanificado($item,false);
+                // Borra el producto
+                $parte->removeProducto($item);
             }
             $incidencia = $parte->getIncidencia();
             if ($incidencia!=null){
-                $this->marcaIncidenciaPlanificado($incidencia,true);
+                $this->marcaIncidenciaPlanificado($incidencia,false);
             }
-            die();
+            // Elimina el parte
             $em = $this->getDoctrine()->getManager();
-//            $em->remove($parte);
-//            $em->flush();
+            $em->remove($parte);
+            $em->flush();
         }
 
         return $this->render('PartesBundle:Default:eliminar.html.twig', array(
@@ -286,14 +287,14 @@ class PartesController extends Controller
     private function procesaProductoParaPlanificarlas($array,$valor){
         // recorre todo el array de productos de la dirección
         foreach ( $array as $item) {
-            $this->marcaProductoPlanificado($item['producto'],$valor);
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($item['producto']);
+            $this->marcaProductoPlanificado($producto,$valor);
         }
     }
     
-    private function marcaProductoPlanificado($id,$valor){
-        $em = $this->getDoctrine()->getManager();
+    private function marcaProductoPlanificado($producto,$valor){
+        $em = $this->getDoctrine()->getManager();   
         // Marca los productos como planificados 
-            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')->find($id);
             $producto->setPlanificada($valor);
             $em->flush($producto);
     }

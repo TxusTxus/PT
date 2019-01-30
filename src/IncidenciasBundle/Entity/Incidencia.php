@@ -170,6 +170,30 @@ class Incidencia
         return $this->producto;
     }
 
+        /**
+     * Set tecnico
+     *
+     * @param integer $tecnico
+     *
+     * @return Incidencia
+     */
+    public function setTecnico($tecnico)
+    {
+        $this->tecnico = $tecnico;
+
+        return $this;
+    }
+
+    /**
+     * Get tecnico
+     *
+     * @return int
+     */
+    public function getTecnico()
+    {
+        return $this->tecnico;
+    }
+    
     /**
      * Set fecha
      *
