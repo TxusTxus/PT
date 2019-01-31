@@ -40,6 +40,12 @@ class Producto
     private $direccion;
 
      /**
+     * @ORM\ManytoOne(targetEntity="Familia", inversedBy="producto")
+     * @ORM\JoinColumn(name="familia", referencedColumnName="id")
+     */
+    private $familia;
+    
+     /**
      * @ORM\OneToMany(targetEntity="\IncidenciasBundle\Entity\Incidencia", mappedBy="producto")
      */
     private $incidencia;
@@ -449,8 +455,34 @@ class Producto
     {
         return $this->cliente;
     }  
+
+
+     /**
+     * Set familia
+     *
+     * @param integer $familia
+     *
+     * @return Producto
+     */
+    public function setFamilia($familia)
+    {
+        $this->familia = $familia;
+
+        return $this;
+    }
+
+    /**
+     * Get familia
+     *
+     * @return int
+     */
+    public function getFamilia()
+    {
+        return $this->familia;
+    }
+
     
-        function __toString()
+    function __toString()
     {
         return $this->modelo;
     }

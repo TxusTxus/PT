@@ -202,7 +202,7 @@
                                 <div class="card-header"> 
                                     <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': cliente.id }) }}" class="btn-esquina" title="Editar"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-edit"></i></span></a>
                                     <a href="{{ path('incidencia_nueva', { 'cliente': cliente.id, 'direccion': producto.direccion.id, 'producto': producto.id  }) }}" class="btn-esquina" title="Incidencia"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-ambulance"></i></span></a>
-                                    {{ producto.modelo }}
+                                    {{ producto.familia }}: {{ producto.modelo }}
                                 </div>
                                 <div class="card-body">
                                     <ul style="list-style:none;">
@@ -274,13 +274,28 @@
                         </tr>
                       {% for incidencia in cliente.incidencias %}
                         <tr>
-                            <td>{% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
-                            <td>{{ incidencia.descripcion}}</td>
+                            <td> {% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
+                            <td>
+                                {% if incidencia.descripcion|length > 20 %}
+                                    <i class="fa fa-comment" title="{{ incidencia.descripcion }}"></i> {{ incidencia.descripcion|slice(0,20) }}...
+                                {% else %}
+                                    {{ incidencia.descripcion }}
+                                {% endif %} 
+                            </td>
                             <td align="right">{% if incidencia.importe>0 %}{{ incidencia.importe}} €{% endif %} &nbsp;</td>
-                            <td> {{ incidencia.producto}}</td>
+                            <td> {{ incidencia.producto}} </td>
                             <td>{% if incidencia.fechaResuelta %}{{ incidencia.fechaResuelta|date('d-m-Y') }}{% endif %}</td>
                             <td>{% if incidencia.tecnico %}{{ incidencia.tecnico }}{% endif %}</td>
-                            <td>{% if incidencia.observaciones %}{{ incidencia.observaciones }}{% endif %}</td>
+                            <td>{% if incidencia.observaciones %}
+                                    {% if incidencia.observaciones|length > 20 %}
+                                        <i class="fa fa-comment" title="{{ incidencia.observaciones }}"></i> {{ incidencia.observaciones|slice(0,20) }}...
+                                    {% else %}
+                                        {{ incidencia.observaciones }}
+                                    {% endif %}   
+                                {% endif %}</td>
+                            <td><i class="fas fa-map" title="{{ incidencia.direccion}}"></i> 
+                                <a href="{{ path('incidencia_edit', { 'id': incidencia.id }) }}"><i class="fas fa-edit" title="Modificar"></i></a>
+                            </td>
                         </tr>
                       {% endfor %}
                     </table>

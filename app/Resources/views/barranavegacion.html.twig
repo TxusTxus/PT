@@ -42,6 +42,12 @@
             <li class="nav-item">
                 <a href="{{ path('listado_distritos') }}" class="nav-link"> Planificador</a>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Configuración</a>
+                <div class="dropdown-menu">
+                    <a href="{{ path('partes_listado') }}" class="dropdown-item"><i class="fa fa-eye"></i> Familias</a>
+                </div>
+            </li>
         </ul>
         {% if accionBuscar|length >0 %}
         <form class="form-inline my-2 my-lg-0" action="{{ path(accionBuscar) }}" method='POST'>

@@ -84,15 +84,15 @@ class IncidenciaController extends Controller
      */
     public function editAction(Request $request, Incidencia $incidencia)
     {
-        $empresa = $this->dameEmpresa();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $deleteForm = $this->createDeleteForm($incidencia);
-        $editForm = $this->createForm('IncidenciasBundle\Form\IncidenciaType', $incidencia);
+        $editForm = $this->createForm('IncidenciasBundle\Form\IncidenciaEditType', $incidencia);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('incidencia_edit', array('id' => $incidencia->getId()));
+            return $this->redirectToRoute('cliente_show', array('id' => $incidencia->getCliente()->getId(), 'ficha'=>'incidencias'));
         }
 
         return $this->render('IncidenciasBundle:Default:edit.html.twig', array(

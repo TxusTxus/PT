@@ -137,7 +137,7 @@ class Distrito
      */
     public function removeDireccion(\ClientesBundle\Entity\Direccion $direccion)
     {
-        $this->cliente->removeElement($direccion);
+        $this->direccion->removeElement($direccion);
     }
 
     /**

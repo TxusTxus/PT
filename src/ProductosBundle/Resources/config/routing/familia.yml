@@ -1,0 +1,24 @@
+familia_index:
+    path:     /
+    defaults: { _controller: "ProductosBundle:Familia:index" }
+    methods:  GET
+
+familia_show:
+    path:     /{id}/show
+    defaults: { _controller: "ProductosBundle:Familia:show" }
+    methods:  GET
+
+familia_new:
+    path:     /new
+    defaults: { _controller: "ProductosBundle:Familia:new" }
+    methods:  [GET, POST]
+
+familia_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ProductosBundle:Familia:edit" }
+    methods:  [GET, POST]
+
+familia_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ProductosBundle:Familia:delete" }
+    methods:  DELETE

@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IncidenciaType extends AbstractType
+class IncidenciaEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -19,6 +19,7 @@ class IncidenciaType extends AbstractType
     {
         $builder->add('fecha', DateType::class, array(
                         'label' => 'Fecha',
+                        'disabled' => true,
                         'attr' => array("onchange" => "javascript:marcaCambio();"),
                         'widget' => 'single_text'))
                 ->add('descripcion', TextareaType::class, array('label' => 'Descripción', 'attr' => array('rows' => '1', 'cols' => '10',"onchange" => "javascript:marcaCambio();")))
@@ -35,9 +36,7 @@ class IncidenciaType extends AbstractType
                     'label' => 'Observaciones', 
                     'attr' => array('rows' => '5', 'cols' => '10',"onchange" => "javascript:marcaCambio();"), 
                     'required'=>false));
-    }
-    
-    /**
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

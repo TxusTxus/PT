@@ -60,6 +60,11 @@ class ProductoType extends AbstractType
                 ->add('IVA',PercentType::class,array('label' => '% IVA',
                         'required'  => false
                     ))
+                ->add('familia', EntityType::class, array(
+                    'class' => 'ProductosBundle:Familia',
+                    'required'  => true,
+                    'label' => 'Familia',
+                    'attr' => array("onchange" => "javascript:marcaCambio();")))
                 ->add('observaciones', TextareaType::class, array(
                     'label' => 'Observaciones', 
                     'required' => false,

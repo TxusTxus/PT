@@ -212,7 +212,7 @@ class ClienteController extends Controller
     public function buscaClienteNombreAction(Request $request)
     {
         $cadena = $request->request->get("CadenaBusqueda");
-        $empresa = Libreria::dameEmpresaUsuario(); 
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         
         if (strlen($cadena)>=1){
             $clientes = $this->getDoctrine()->getRepository('ClientesBundle:Cliente')->buscaClientesSegunTexto($cadena,$empresa->getId());
