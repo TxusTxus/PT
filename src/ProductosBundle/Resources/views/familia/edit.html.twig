@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+                {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Modificar Familia</h1>
+    <div class="container" style="margin-top: 20px;">
+        {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}
+            <input type="submit" value="Guardar cambios" class="btn btn-primary btn-flat" />
+            <a href="{{ path('listado_familias') }}" class="btn btn-primary btn-flat" >Volver a la lista</a>
+        {{ form_end(edit_form) }}
+        
+    </di>
+{# 
+Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página
+#}
+{% embed "marcarcambios.html.twig" %}{% endembed %}
+
+{% endblock %}

@@ -43,6 +43,8 @@ echo '<table width=100%><tr><th>Entrada</th><th>Cliente</th><th>Observaciones</t
             echo "<tr style='border-bottom: 1px solid #666;'>";
             echo "<td style='border-bottom: 1px solid #666;'>";
                 echo $item->getFechaEntrada()->format('H:i');
+                If ($item->getTrabajador()->getId()==1) { echo '<br>Sin asignar'; }
+
             echo "</td>";
             echo "<td style='border-bottom: 1px solid #666;'>";
                 echo $item->getCliente()->getNombre();
@@ -58,7 +60,7 @@ echo '<table width=100%><tr><th>Entrada</th><th>Cliente</th><th>Observaciones</t
             echo "</td>";            
             echo "<td style='border-bottom: 1px solid #666;'>";
                 foreach ( $item->getProducto() as $productos) {
-                    echo '- '.$productos->getModelo(). '<br><i>'.$productos->getObservaciones().'</i><br>';
+                    echo '- '.$productos->getFamilia().': '.$productos->getModelo(). '<br><i>'.$productos->getObservaciones().'</i><br>';
                 }
             echo "</td>";  
             echo "</tr>"; 

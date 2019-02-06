@@ -18,7 +18,7 @@
             {% set break = true %}
     {% endfor %}
     {% for item in direccion %} 
-                - Producto: {{item.modelo}}<br>
+                - Producto: {{item.familia}}: {{item.modelo}}<br>
                 {% if tipo=='Mantenimiento' %}
                     {% if item.observacionesProducto|length > 0 %} - Observaciones: {{item.observacionesProducto}}<br> {% endif %}
                 {% else %}
@@ -70,6 +70,7 @@
                 
         {{ form_widget(form) }}
         <input type="submit" value="Guardar en ruta" class="btn btn-primary btn-flat" onclick="desmarcaCambio()"  />
+        <a class="btn btn-primary" href="javascript:window.history.go(-1);">Volver</a>
     {{ form_end(form) }}
     </div>
 </div>

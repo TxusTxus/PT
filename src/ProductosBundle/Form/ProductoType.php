@@ -48,8 +48,23 @@ class ProductoType extends AbstractType
                     'mapped'    => false))
                 ->add('fechaNuevoMantenimiento', DateType::class, array('label' => 'Próximo mantenimiento','required'  => false,'widget' => 'single_text'))
                 ->add('modelo', TextType::class, array('label' => 'Modelo','attr' => array("onchange" => "javascript:marcaCambio();")))
-                ->add('premium',CheckboxType::class, array('required'  => false))
+//                ->add('premium',CheckboxType::class, array('required'  => false))
                 ->add('base', MoneyType::class,array('label' => 'Base',
+                        'scale' => 2,
+                        'grouping' => true,
+                        'required'  => false,
+                        'attr'  => array(
+                            'data-thousands' =>'.',
+                            'data-decimal' =>',')
+                    ))
+                ->add('contrato', EntityType::class, array(
+                    'class' => 'ProductosBundle:TipoContrato',
+                    'required'  => true,
+                    'label' => 'Contrato',
+                    'attr' => array("onchange" => "javascript:marcaCambio();")))
+                ->add('fechaContrato', DateType::class, array('label' => 'Fecha Contrato','required'  => false,'widget' => 'single_text'))
+                ->add('fechaFinalizacionContrato', DateType::class, array('label' => 'Fecha finalización Contrato','required'  => false,'widget' => 'single_text'))
+                ->add('costeContrato', MoneyType::class,array('label' => 'Importe Contrato',
                         'scale' => 2,
                         'grouping' => true,
                         'required'  => false,

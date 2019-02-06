@@ -13,93 +13,88 @@ use Symfony\Component\HttpFoundation\Request;
 class FamiliaController extends Controller
 {
     /**
-     * Lists all familium entities.
+     * Lists all familia entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $familias = $em->getRepository('ProductosBundle:Familia')->findAll();
 
-        return $this->render('familia/index.html.twig', array(
+        return $this->render('ProductosBundle:familia:index.html.twig', array(
             'familias' => $familias,
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
         ));
     }
 
     /**
-     * Creates a new familium entity.
+     * Creates a new familia entity.
      *
      */
     public function newAction(Request $request)
     {
-        $familium = new Familium();
-        $form = $this->createForm('ProductosBundle\Form\FamiliaType', $familium);
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $familia = new Familia();
+        $form = $this->createForm('ProductosBundle\Form\FamiliaType', $familia);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($familium);
+            $em->persist($familia);
             $em->flush();
 
-            return $this->redirectToRoute('familia_show', array('id' => $familium->getId()));
+            return $this->redirectToRoute('familia_show', array('id' => $familia->getId()));
         }
 
-        return $this->render('familia/new.html.twig', array(
-            'familium' => $familium,
+        return $this->render('ProductosBundle:familia:new.html.twig', array(
+            'familia' => $familia,
             'form' => $form->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
         ));
     }
 
-    /**
-     * Finds and displays a familium entity.
-     *
-     */
-    public function showAction(Familia $familium)
-    {
-        $deleteForm = $this->createDeleteForm($familium);
-
-        return $this->render('familia/show.html.twig', array(
-            'familium' => $familium,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
 
     /**
-     * Displays a form to edit an existing familium entity.
+     * Displays a form to edit an existing familia entity.
      *
      */
-    public function editAction(Request $request, Familia $familium)
+    public function editAction(Request $request, Familia $familia)
     {
-        $deleteForm = $this->createDeleteForm($familium);
-        $editForm = $this->createForm('ProductosBundle\Form\FamiliaType', $familium);
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $deleteForm = $this->createDeleteForm($familia);
+        $editForm = $this->createForm('ProductosBundle\Form\FamiliaType', $familia);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('familia_edit', array('id' => $familium->getId()));
+            return $this->redirectToRoute('listado_familias');
         }
 
-        return $this->render('familia/edit.html.twig', array(
-            'familium' => $familium,
+        return $this->render('ProductosBundle:familia:edit.html.twig', array(
+            'familia' => $familia,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
         ));
     }
 
     /**
-     * Deletes a familium entity.
+     * Deletes a familia entity.
      *
      */
-    public function deleteAction(Request $request, Familia $familium)
+    public function deleteAction(Request $request, Familia $familia)
     {
-        $form = $this->createDeleteForm($familium);
+        $form = $this->createDeleteForm($familia);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($familium);
+            $em->remove($familia);
             $em->flush();
         }
 
@@ -107,16 +102,16 @@ class FamiliaController extends Controller
     }
 
     /**
-     * Creates a form to delete a familium entity.
+     * Creates a form to delete a familia entity.
      *
-     * @param Familia $familium The familium entity
+     * @param Familia $familia The familia entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Familia $familium)
+    private function createDeleteForm(Familia $familia)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('familia_delete', array('id' => $familium->getId())))
+            ->setAction($this->generateUrl('familia_delete', array('id' => $familia->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

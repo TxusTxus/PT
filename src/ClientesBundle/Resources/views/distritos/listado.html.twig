@@ -60,16 +60,16 @@
                                                 <a href="{{ path('partes_nuevo_mantenimiento', { 'id': direccion.id, 'fecha':direccion.fechaNuevoMantenimiento|date('d-m-Y')}) }}" title="Poner en ruta"><i class="fa fa-angle-double-right"></i> {{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}</a>
                                             {% endif %}
                                         {% endif %}
-                                        {% if direccion.premium %}
+                                        {% if direccion.tipoContrato == 'Premium' %}
                                             <i class="fas fa-award"></i>
                                         {% endif %}
                                     </td>
                                     <td>{{ direccion.periodicidad}}</td>
                                     <td>{{ direccion.distrito }}</td>
                                     {% if direccionAnterior == direccion.direccion %}
-                                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
+                                        <td><i class="fas fa-arrow-up"></i> {{ direccion.familia }} {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
                                     {% else %}
-                                        <td>{{ direccion.modelo }}</td>
+                                        <td>{{ direccion.familia }}: {{ direccion.modelo }}</td>
                                         <td>{{ direccion.nombre }}</td>
                                         <td>{{ direccion.direccion }}</td>
                                         <td>{{ direccion.telefono }}</td>
@@ -122,14 +122,14 @@
                                         {% else %}
                                             <a href="{{ path('partes_nueva_incidencia', { 'id': direccion.id,}) }}" title="Poner en ruta"><i class="fa fa-angle-double-right"></i> {{ direccion.fecha|date('d-m-Y') }}</a>
                                         {% endif %}
-                                        {% if direccion.premium %}
+                                        {% if direccion.tipoContrato == 'Premium' %}
                                             <i class="fas fa-award"></i>
                                         {% endif %}
                                     </td>
                                     <td>{{ direccion.distrito }}</td>
                                     <td>{{ direccion.descripcion}}</td>
                                     
-                                    <td>{{ direccion.modelo }}</td>
+                                    <td> {{ direccion.familia }}: {{ direccion.modelo }}</td>
                                     <td>{{ direccion.nombre }}</td>
                                     <td>{{ direccion.direccion }}</td>
                                     <td>{{ direccion.telefono }}</td>
@@ -161,16 +161,16 @@
             {% if direccion.modelo|length > 0 %}
                 <tr>
                     <td><a href="{{ path('partes_nuevo_mantenimiento', { 'id': direccion.id, 'fecha':direccion.fechaNuevoMantenimiento|date('d-m-Y')}) }}" title="Poner en ruta"><i class="fa fa-angle-double-right"></i> {{ direccion.fechaNuevoMantenimiento|date('d-m-Y') }}</a>
-                        {% if direccion.premium %}
+                        {% if direccion.tipoContrato == 'Premium' %}
                             <i class="fas fa-award"></i>
                         {% endif %}
                     </td>
                     <td>{{ direccion.periodicidad}}</td>
                     <td>{{ direccion.distrito }}</td>
                     {% if direccionAnterior == direccion.direccion %}
-                        <td><i class="fas fa-arrow-up"></i> {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
+                        <td><i class="fas fa-arrow-up"></i>{{ direccion.familia }}: {{ direccion.modelo }}</td><td><i class="fas fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td><td><i class="fa fa-arrow-up"></i> </td>
                     {% else %}
-                        <td>{{ direccion.modelo }}</td>
+                        <td>{{ direccion.familia }}:{{ direccion.modelo }}</td>
                         <td>{{ direccion.nombre }}</td>
                         <td>{{ direccion.direccion }}</td>
                         <td>{{ direccion.telefono }}</td>

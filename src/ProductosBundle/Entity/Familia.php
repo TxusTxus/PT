@@ -36,7 +36,7 @@ class Familia
     private $acciones;
 
      /**
-     * @ORM\OneToMany(targetEntity="Producto", mappedBy="distrito")
+     * @ORM\OneToMany(targetEntity="Producto", mappedBy="familia")
      */
     protected $producto; 
 

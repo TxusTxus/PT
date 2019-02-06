@@ -80,10 +80,25 @@
                     }
 
                 </script>
-                <div class="col-lg-3">
-                    <b><i class="fas fa-award"></i> Garantía Premium</b>
-                    {{ form_widget(form.premium) }}
-                </div>   
+                <div class="col-lg-12 "><hr></div>
+                    
+                    <div class="col-lg-3 ">
+                        <b><i class="fas fa-award"></i> {{ form_label(form.contrato) }}</b>
+                        {{ form_widget(form.contrato) }}
+                    </div>                      
+                    <div class="col-lg-3">
+                        <b><i class="fas fa-calendar"></i> {{ form_label(form.fechaContrato) }}</b>
+                        {{ form_widget(form.fechaContrato) }}
+                    </div>                       
+                    <div class="col-lg-3">
+                        <b><i class="fas fa-calendar"></i> {{ form_label(form.fechaFinalizacionContrato) }}</b>
+                        {{ form_widget(form.fechaFinalizacionContrato) }}
+                    </div>  
+                    <div class="col-lg-3">
+                        <b><i class="fas fa-money"></i> {{ form_label(form.costeContrato) }}</b>
+                        {{ form_widget(form.costeContrato) }}
+                    </div>
+                <div class="col-lg-12 "><hr></div>
                 <div class="col-lg-3">
                     <b><i class="fas fa-euro"></i> {{ form_label(form.base) }}</b>
                     {{ form_widget(form.base) }}
@@ -98,14 +113,10 @@
                 </div>    
                 {{ form_widget(form) }}
                 <input type="submit" value="Guardar"  onclick="desmarcaCambio()" class="btn btn-primary" />
+                <a href="{{ path('producto_index') }}"  class="btn btn-primary">Volver a la lista</a>
         </div>
         {{ form_end(form) }}
     </div>
-    <ul>
-        <li>
-            <a href="{{ path('producto_index') }}">Volver a la lista</a>
-        </li>
-    </ul>
 </div>
 {# 
 Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página

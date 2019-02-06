@@ -29,7 +29,7 @@
                     <div class="card-body">
                         <ul>
                             {% for item in parte.producto %}
-                                <li> {{ item.modelo }}</li>
+                                <li> {{ item.familia }}: {{ item.modelo }}</li>
                                 {% if item.observaciones|length>0 %}<li> - {{ item.observaciones }}</li>{% endif %}
                             {% endfor %}
                         </ul>
@@ -73,6 +73,7 @@
             </div>                        
 
             {{ form_start(delete_form) }}
-                <input type="submit" value="Eliminar" name="eliminar" onclick="desmarcaCambio()" class="btn btn-danger btn-flat" title="Esta accion no se puee deshacer." />        
+                <input type="submit" value="Eliminar" name="eliminar" onclick="desmarcaCambio()" class="btn btn-danger btn-flat" title="Esta accion no se puee deshacer." /> 
+                <a class="btn btn-primary btn-flat" href="javascript:window.history.go(-1);">Volver</a> 
             {{ form_end(delete_form) }} 
 {% endblock %}

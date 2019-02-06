@@ -59,6 +59,11 @@ class Cliente
      * @ORM\OneToMany(targetEntity="\IncidenciasBundle\Entity\Incidencia", mappedBy="cliente")
      */
     private $incidencias;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="\PartesBundle\Entity\Partes", mappedBy="cliente")
+     */
+    private $partes;
 //
 //    /**
 //     * @var string
@@ -142,6 +147,7 @@ class Cliente
     {
         $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->productos = new \Doctrine\Common\Collections\ArrayCollection(); 
+        $this->partes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidencias = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->tipoPago =  new \Doctrine\Common\Collections\ArrayCollection(); 
     }
@@ -305,6 +311,40 @@ class Cliente
     public function getIncidencias()
     {
         return $this->incidencias;
+    }  
+
+     /**
+     * Add image
+     *
+     * @param Image $partes
+     *
+     * @return Post
+     */
+    public function addPartes(\PartesBundle\Entity\Partes $partes)
+    {
+        $this->partes->add($partes);
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $partes
+     */
+    public function removePartes(\PartesBundle\Entity\Partes $partes)
+    {
+        $this->partes->removeElement($partes);
+    }
+
+    /**
+     * Get partes
+     *
+     * @return ArrayCollection
+     */
+    public function getPartes()
+    {
+        return $this->partes;
     }  
     
     /**

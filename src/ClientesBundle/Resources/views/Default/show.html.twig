@@ -202,7 +202,10 @@
                                 <div class="card-header"> 
                                     <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': cliente.id }) }}" class="btn-esquina" title="Editar"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-edit"></i></span></a>
                                     <a href="{{ path('incidencia_nueva', { 'cliente': cliente.id, 'direccion': producto.direccion.id, 'producto': producto.id  }) }}" class="btn-esquina" title="Incidencia"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-ambulance"></i></span></a>
-                                    {{ producto.familia }}: {{ producto.modelo }}
+                                        {% if producto.contrato == 'Premium' %}
+                                            <i class="fas fa-award"></i>
+                                        {% endif %}
+                                    {{ producto.familia }}: {{ producto.modelo }}  
                                 </div>
                                 <div class="card-body">
                                     <ul style="list-style:none;">
@@ -248,58 +251,78 @@
 
         {% if ficha=='partes' %}
             <div class="tab-pane fade active show" id="Partes">
-                <p>Listado de Partes</p>
-            </div>
         {% else %}
             <div class="tab-pane fade" id="Partes">
-                <p>Listado de Partes</p>
-            </div> {# cierra el TAB -> partes #}
         {% endif %}
+                <table class="table table-striped table-sm" width="100%"><tr  align="center">
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Importe</th>
+                        <th>Producto</th>
+                        <th>Estado</th>
+                        <th>Técnico</th>
+                        <th></th>
+                    </tr>
+                {% for parte in cliente.partes %}
+                    <tr>
+                        <td>{% if parte.fechaParte %}{{ parte.fechaParte|date('d-m-Y') }}{% endif %}</td>
+                        <td>{{parte.observaciones}}</td>
+                        <td>{{parte.importe}}</td>
+                        <td>
+                            {% for item in parte.producto %}
+                                {{ item.familia }}: {{ item.modelo }}<br>
+                            {% endfor %}
+                        </td>                            
+                        <td>{% if parte.terminado %}Terminado{% else %}Pendiente{% endif %}</td>
+                        <td>{{parte.trabajador}}</td>
+                        <td><a href="{{ path('partes_edit', { 'id': parte.id }) }}" title="Modificar datos"><i class="fa fa-edit"></i></a> </td>                    
+                    </tr>
+                {% endfor %} 
+                </table>
+            </div> {# cierra el TAB -> partes #}      
 
         {% if ficha=='incidencias' %}
             <div class="tab-pane fade active show" id="Incidencias">
         {% else %}
             <div class="tab-pane fade" id="Incidencias">
         {% endif %}
-                <div class="container" style="margin-top: 20px;">
-                    <p>Listado de incidencias</p>
-                    <table width="100%"><tr  align="center">
-                            <th>Fecha</th>
-                            <th>Descripción</th>
-                            <th>Importe</th>
-                            <th>Producto</th>
-                            <th>Fecha Resuelta</th>
-                            <th>Técnico</th>
-                            <th>Observaciones</th>
-                        </tr>
-                      {% for incidencia in cliente.incidencias %}
-                        <tr>
-                            <td> {% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
-                            <td>
-                                {% if incidencia.descripcion|length > 20 %}
-                                    <i class="fa fa-comment" title="{{ incidencia.descripcion }}"></i> {{ incidencia.descripcion|slice(0,20) }}...
+                <table class="table table-striped table-sm" width="100%"><tr  align="center">
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Importe</th>
+                        <th>Producto</th>
+                        <th>Fecha Resuelta</th>
+                        <th>Técnico</th>
+                        <th>Observaciones</th>
+                        <th></th>
+                    </tr>
+                  {% for incidencia in cliente.incidencias %}
+                    <tr>
+                        <td> {% if incidencia.fecha %}{{ incidencia.fecha|date('d-m-Y') }}{% endif %}</td>
+                        <td>
+                            {% if incidencia.descripcion|length > 20 %}
+                                <i class="fa fa-comment" title="{{ incidencia.descripcion }}"></i> {{ incidencia.descripcion|slice(0,20) }}...
+                            {% else %}
+                                {{ incidencia.descripcion }}
+                            {% endif %} 
+                        </td>
+                        <td align="right">{% if incidencia.importe>0 %}{{ incidencia.importe}} €{% endif %} &nbsp;</td>
+                        <td> {{ incidencia.producto}} </td>
+                        <td>{% if incidencia.fechaResuelta %}{{ incidencia.fechaResuelta|date('d-m-Y') }}{% endif %}</td>
+                        <td>{% if incidencia.tecnico %}{{ incidencia.tecnico }}{% endif %}</td>
+                        <td>{% if incidencia.observaciones %}
+                                {% if incidencia.observaciones|length > 20 %}
+                                    <i class="fa fa-comment" title="{{ incidencia.observaciones }}"></i> {{ incidencia.observaciones|slice(0,20) }}...
                                 {% else %}
-                                    {{ incidencia.descripcion }}
-                                {% endif %} 
-                            </td>
-                            <td align="right">{% if incidencia.importe>0 %}{{ incidencia.importe}} €{% endif %} &nbsp;</td>
-                            <td> {{ incidencia.producto}} </td>
-                            <td>{% if incidencia.fechaResuelta %}{{ incidencia.fechaResuelta|date('d-m-Y') }}{% endif %}</td>
-                            <td>{% if incidencia.tecnico %}{{ incidencia.tecnico }}{% endif %}</td>
-                            <td>{% if incidencia.observaciones %}
-                                    {% if incidencia.observaciones|length > 20 %}
-                                        <i class="fa fa-comment" title="{{ incidencia.observaciones }}"></i> {{ incidencia.observaciones|slice(0,20) }}...
-                                    {% else %}
-                                        {{ incidencia.observaciones }}
-                                    {% endif %}   
-                                {% endif %}</td>
-                            <td><i class="fas fa-map" title="{{ incidencia.direccion}}"></i> 
-                                <a href="{{ path('incidencia_edit', { 'id': incidencia.id }) }}"><i class="fas fa-edit" title="Modificar"></i></a>
-                            </td>
-                        </tr>
-                      {% endfor %}
-                    </table>
-                </div>
+                                    {{ incidencia.observaciones }}
+                                {% endif %}   
+                            {% endif %}</td>
+                        <td><i class="fas fa-map" title="{{ incidencia.direccion}}"></i> 
+                            <a href="{{ path('incidencia_edit', { 'id': incidencia.id }) }}"><i class="fas fa-edit" title="Modificar"></i></a>
+                        </td>
+                    </tr>
+                  {% endfor %}
+                </table>
             </div> {# cierra el TAB -> incidencias #}
     </div> {# Cierra el contenedor de fichas #}
 <script>

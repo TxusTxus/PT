@@ -30,9 +30,9 @@
                         <ul>
                             {%set clientePremium = false %}
                             {% for item in parte.producto %}
-                                <li> {{ item.modelo }}</li>
+                                <li> {{ item.familia }}: {{ item.modelo }}</li>
                                 {% if item.observaciones|length>0 %}<li> -<i> {{ item.observaciones }}</i></li>{% endif %}
-                                {% if item.premium %}{%set clientePremium = true %}{% endif %}
+                                {% if item.contrato == 'Premium' %}{%set clientePremium = true %}{% endif %}
 
                             {% endfor %}
                             {% if clientePremium %}<b><i class="fas fa-award"></i> Cliente Premium </b>{% endif %}

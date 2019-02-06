@@ -8,7 +8,7 @@
         Cliente: {{parte.cliente}}<br>
         Dirección: {{parte.direccion}} - {{parte.direccion.poblacion}}<br>
         {% for item in parte.producto %}
-            - {{ item.modelo }}<br>
+            - {{ item.familia }}: {{ item.modelo }}<br>
             - {{ item.observaciones }}<br>
         {% endfor %}
         {#Producto: {{parte.producto}}<br>#}
@@ -54,6 +54,7 @@
                 <div class="row" style="margin-bottom: 20px;"> 
                     {{ form_widget(edit_form.save) }}
                     {{ form_widget(edit_form.eliminar) }}
+                    <a class="btn btn-primary btn-flat" href="javascript:window.history.go(-1);">Volver</a> 
                 </div>
 {#            <input type="submit" value="Modificar" name="modificar" onclick="desmarcaCambio()" class="btn btn-primary" />
             <input type="submit" value="Eliminar" name="eliminar" onclick="desmarcaCambio()" class="btn btn-primary" />#}

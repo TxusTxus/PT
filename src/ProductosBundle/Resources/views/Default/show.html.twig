@@ -32,12 +32,8 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('producto_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': producto.cliente.id }) }}">Edit</a>
+
+            <a href="{{ path('producto_edit', { 'id': producto.id, 'cliente': producto.cliente.id }) }} class="btn btn-primary">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

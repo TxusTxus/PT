@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+         {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Configuración</h1>
+    <div class="container" style="margin-top: 20px;">
+        <div class="row my-flex-card" style="">  
+            <div class="col-lg-6">
+                <div class="card border-info">
+                    <div class="card-header">
+                        Listado de Familias
+                        <a href="{{ path('familia_new') }}" class="btn-esquina" title="Nueva familia"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-plus"></i></span></a>
+                    </div>
+                    <div class="card-body">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+
+                                    <th>Familia</th>
+                                    <th>Acciones</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for familium in familias %}
+                                <tr>
+                                    <td>{{ familium.familia }}</td>
+                                    <td>{{ familium.acciones }}</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-flat" href="{{ path('familia_edit', { 'id': familium.id }) }}"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+{% endblock %}

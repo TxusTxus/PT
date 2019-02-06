@@ -105,12 +105,19 @@ class Producto
      */
     private $baja; 
 
+//     /**
+//     * @var bool
+//     *
+//     * @ORM\Column(name="Premium", type="boolean", nullable=true)
+//     */
+//    private $premium;
+
      /**
-     * @var bool
-     *
-     * @ORM\Column(name="Premium", type="boolean", nullable=true)
+     * @ORM\ManytoOne(targetEntity="TipoContrato", inversedBy="producto")
+     * @ORM\JoinColumn(name="contrato", referencedColumnName="id")
      */
-    private $premium;
+    private $contrato; 
+
     
     /**
      * @var string
@@ -125,6 +132,27 @@ class Producto
      * @ORM\Column(name="planificada", type="boolean", nullable=true)
      */
     private $planificada;     
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fechaContrato", type="date", nullable=true)
+     */
+    private $fechaContrato;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="fechaFinalizacion", type="date", nullable=true)
+     */
+    private $fechaFinalizacionContrato;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="costeContrato", type="decimal", precision=10, scale=0, nullable=true)
+     */
+    private $costeContrato;
     
 
     /**
@@ -305,29 +333,29 @@ class Producto
     
   
 
-     /**
-     * Set premium
-     *
-     * @param boolean $premium
-     *
-     * @return Producto
-     */
-    public function setPremium($premium)
-    {
-        $this->premium = $premium;
-        return $this;
-    }
-   
-
-    /**
-     * Get premium
-     *
-     * @return bool
-     */
-    public function getPremium()
-    {
-        return $this->premium;
-    }  
+//     /**
+//     * Set premium
+//     *
+//     * @param boolean $premium
+//     *
+//     * @return Producto
+//     */
+//    public function setPremium($premium)
+//    {
+//        $this->premium = $premium;
+//        return $this;
+//    }
+//   
+//
+//    /**
+//     * Get premium
+//     *
+//     * @return bool
+//     */
+//    public function getPremium()
+//    {
+//        return $this->premium;
+//    }  
 
      /**
      * Set base
@@ -480,6 +508,105 @@ class Producto
     {
         return $this->familia;
     }
+
+     /**
+     * Set contrato
+     *
+     * @param integer $contrato
+     *
+     * @return Producto
+     */
+    public function setContrato($contrato)
+    {
+        $this->contrato = $contrato;
+
+        return $this;
+    }
+
+    /**
+     * Get contrato
+     *
+     * @return int
+     */
+    public function getContrato()
+    {
+        return $this->contrato;
+    }
+
+
+    /**
+     * Set fechaContrato
+     *
+     * @param \DateTime $fechaContrato
+     *
+     * @return Producto
+     */
+    public function setFechaContrato($fechaContrato)
+    {
+        $this->fechaContrato = $fechaContrato;
+
+        return $this;
+    }
+
+     /**
+     * Get fechaContrato
+     *
+     * @return \DateTime
+     */
+    public function getFechaContrato()
+    {
+        return $this->fechaContrato;
+    }
+    
+    /**
+     * Get fechaFinalizacionContrato
+     *
+     * @return \DateTime
+     */
+    public function getFechaFinalizacionContrato()
+    {
+        return $this->fechaFinalizacionContrato;
+    }
+
+    /**
+     * Set fechaFinalizacionContrato
+     *
+     * @param \DateTime fechaFinalizacionContrato
+     *
+     * @return Producto
+     */
+    public function setFechaFinalizacionContrato($fechaFinalizacionContrato)
+    {
+        $this->fechaFinalizacionContrato = $fechaFinalizacionContrato;
+
+        return $this;
+    }
+
+
+     /**
+     * Set costeContrato
+     *
+     * @param decimal $costeContrato
+     *
+     * @return Producto
+     */
+    public function setCosteContrato($costeContrato)
+    {
+        $this->costeContrato = $costeContrato;
+        return $this;
+    }
+   
+
+    /**
+     * Get costeContrato
+     *
+     * @return decimal
+     */
+    public function getCosteContrato()
+    {
+        return $this->costeContrato;
+    }  
+
 
     
     function __toString()

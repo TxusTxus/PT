@@ -22,3 +22,24 @@ producto_delete:
     path:     /{id}/delete
     defaults: { _controller: "ProductosBundle:Producto:delete" }
     methods:  DELETE
+
+listado_familias:
+    path:     /listadofamilias
+    defaults: { _controller: "ProductosBundle:Familia:index" }
+    methods:  GET
+    
+
+familia_new:
+    path:     /new
+    defaults: { _controller: "ProductosBundle:Familia:new" }
+    methods:  [GET, POST]
+
+familia_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ProductosBundle:Familia:edit" }
+    methods:  [GET, POST]
+
+familia_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ProductosBundle:Familia:delete" }
+    methods:  DELETE

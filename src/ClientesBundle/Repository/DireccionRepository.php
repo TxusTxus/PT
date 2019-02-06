@@ -42,9 +42,10 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium')
+                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato')
                      ->leftJoin('d.cliente', 'c')
                      ->leftJoin('d.producto', 'p')
+                     ->leftJoin('p.contrato', 't')
                      ->leftJoin('d.distrito', 'dist');
             $consulta->orderby('d.distrito', 'ASC')
                      ->addOrderBy('p.fechaNuevoMantenimiento', 'DESC')
@@ -70,11 +71,13 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
         $consulta->select('d.id','d.direccion','c.id as cliente','c.nombre',
                         'd.telefono','d.poblacion','d.codigoPostal',
                         'd.observaciones','dist.distrito',
-                        'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto',
-                        'p.periodicidad','p.premium','p.base as importe','p.IVA')
+                        'p.id as producto','p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto',
+                        'p.periodicidad','t.tipoContrato','p.base as importe','p.IVA')
                  ->leftJoin('d.cliente', 'c')
                  ->leftJoin('d.producto', 'p')
                  ->leftJoin('d.distrito', 'dist')
+                 ->leftJoin('p.familia', 'f')
+                 ->leftJoin('p.contrato', 't')
                  ->Where ('d.id = :id')
                  ->andWhere('p.fechaNuevoMantenimiento BETWEEN :inicio AND :fin')
                  ->setParameter('inicio', $inicio) 
@@ -103,13 +106,13 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
         $consulta->select('d.id','d.direccion','c.id as cliente','d.telefono','d.poblacion','d.codigoPostal','d.observaciones',
                         'dist.distrito',
                         'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia','i.importe',
-                        'c.nombre', 'p.id as producto','p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium','p.IVA')
+                        'c.nombre', 'p.id as producto','p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato','p.IVA')
                  ->leftJoin('d.cliente', 'c')
                  ->leftJoin('d.incidencia', 'i')
                  ->leftJoin('d.distrito', 'dist')
                  ->leftJoin('i.producto', 'p')
-                 
-                 
+                 ->leftJoin('p.familia', 'f')
+                 ->leftJoin('p.contrato', 't')
                  ->Where ('d.id = :id')
 //                 ->andWhere('i.planificada = false')
                  ->setParameter('id', $id);
@@ -133,9 +136,11 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium', 'p.planificada')
+                            'c.nombre', 'p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato', 'p.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.producto', 'p')
+                    ->leftJoin('p.familia', 'f')
+                    ->leftJoin('p.contrato', 't')
                     ->leftJoin('d.distrito', 'dist')
                     ->Where('p.fechaNuevoMantenimiento BETWEEN :inicio AND :fin') 
                     ->setParameter('inicio', $inicio) 
@@ -159,9 +164,11 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','p.premium', 'p.planificada')
+                            'c.nombre', 'p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato', 'p.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.producto', 'p')
+                    ->leftJoin('p.familia', 'f')
+                    ->leftJoin('p.contrato', 't')
                     ->leftJoin('d.distrito', 'dist')
                     ->Where('p.fechaNuevoMantenimiento BETWEEN :inicio AND :fin') 
                     ->andWhere('p.planificada IS NULL')
@@ -186,10 +193,12 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
                             'd.telefono',
                             'd.observaciones',
                             'dist.distrito',
-                            'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo','p.premium', 'i.planificada')
+                            'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo', 'f.familia','t.tipoContrato', 'i.planificada')
                     ->leftJoin('d.cliente', 'c')
                     ->leftJoin('d.incidencia', 'i')
                     ->leftJoin('i.producto', 'p')
+                    ->leftJoin('p.familia', 'f')
+                    ->leftJoin('p.contrato', 't')
                     ->leftJoin('d.distrito', 'dist')
                     ->Where('i.fecha BETWEEN :inicio AND :fin')
                     ->andWhere('i.fechaResuelta IS NULL')
