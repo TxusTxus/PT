@@ -120,7 +120,6 @@ class DireccionController extends Controller
 
         $listado = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionEntreFechas($datos['inicio'], $datos['fin']);
         $listadoIncidencias = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameDistritoDireccionIncidenciasEntreFechas($datos['inicio'], $datos['fin']);
-        dump($listado);
         
         $listadoAnteriores = $this->getDoctrine()->getRepository('ClientesBundle:Direccion')->dameMantenimientosAnteriores($inicio, $datos['inicio']);
         return $this->render('ClientesBundle:distritos:listado.html.twig', array(
