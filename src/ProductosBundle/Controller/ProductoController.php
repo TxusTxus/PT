@@ -64,7 +64,7 @@ class ProductoController extends Controller
             $em->persist($producto);
             $em->flush();
 
-            return $this->redirectToRoute('producto_show', array('id' => $producto->getId(),'cliente' => $cliente->getId()));
+            return $this->redirectToRoute('cliente_show', array('id' => $cliente->getId(), 'ficha' =>'productos'));
         }
 
         return $this->render('ProductosBundle:Default:new.html.twig', array(
@@ -73,6 +73,7 @@ class ProductoController extends Controller
             'form'          => $form->createView(),
             'empresa'       => $empresa,
             'direcciones'   => $direcciones,
+            'cliente'       => $cliente->getId(),
             'accionBuscar'  => 'cliente_busca',
         ));
     }
@@ -118,7 +119,7 @@ class ProductoController extends Controller
             }
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('producto_edit', array('id' => $producto->getId(),'cliente' => $cliente->getId()));
+            return $this->redirectToRoute('cliente_show', array('id' => $cliente->getId(), 'ficha' =>'productos'));
         }
 
         return $this->render('ProductosBundle:Default:new.html.twig', array(
@@ -127,6 +128,7 @@ class ProductoController extends Controller
             'empresa'       => $empresa,
             'direcciones'   => $direcciones,
             'accionBuscar'  => 'cliente_busca',
+            'cliente'       => $cliente->getId(),
             'form'          => $form->createView()
         ));
     }

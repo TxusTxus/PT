@@ -3,6 +3,7 @@
 namespace ProductosBundle\Controller;
 
 use ProductosBundle\Entity\Familia;
+use ProductosBundle\Entity\Acciones;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,7 +46,7 @@ class FamiliaController extends Controller
             $em->persist($familia);
             $em->flush();
 
-            return $this->redirectToRoute('familia_show', array('id' => $familia->getId()));
+            return $this->redirectToRoute('familia_edit', array('id' => $familia->getId()));
         }
 
         return $this->render('ProductosBundle:familia:new.html.twig', array(
@@ -116,4 +117,60 @@ class FamiliaController extends Controller
             ->getForm()
         ;
     }
+    
+    /**
+     * Crea una nueva accion sobre una familia entity.
+     *
+     */
+    public function nuevaAccionAction(Request $request, Familia $familia)
+    {
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $accion = new Acciones();
+        $accion->addFamilia($familia);
+        $form = $this->createForm('ProductosBundle\Form\AccionesType', $accion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($accion);
+            $em->flush($accion);
+            $familia->addAccion($accion);
+            $em->flush($familia);
+
+            return $this->redirectToRoute('familia_edit', array('id' => $familia->getId()));
+        }
+
+        return $this->render('ProductosBundle:familia:nuevaAccion.html.twig', array(
+            'familia' => $familia,
+            'form' => $form->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
+        ));
+    }
+
+    /**
+     * Crea una nueva accion sobre una familia entity.
+     *
+     */
+    public function modificaAccionAction(Request $request, Familia $familia, Acciones $accion)
+    {
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $form = $this->createForm('ProductosBundle\Form\AccionesType', $accion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush($accion);
+
+            return $this->redirectToRoute('familia_edit', array('id' => $familia->getId()));
+        }
+
+        return $this->render('ProductosBundle:familia:editaAccion.html.twig', array(
+            'familia' => $familia,
+            'form' => $form->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'cliente_busca',
+        ));
+    }
+    
 }

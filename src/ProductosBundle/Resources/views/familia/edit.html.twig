@@ -11,7 +11,24 @@
             <input type="submit" value="Guardar cambios" class="btn btn-primary btn-flat" />
             <a href="{{ path('listado_familias') }}" class="btn btn-primary btn-flat" >Volver a la lista</a>
         {{ form_end(edit_form) }}
-        
+        <hr>
+        <div class="row my-flex-card" style="">  
+            <div class="col-lg-6">
+                <div class="card border-info">
+                    <div class="card-header">Acciones
+                        <a href="{{ path('accion_nueva', { 'familia': familia.id }) }}" class="btn-esquina" title="Nueva acción"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-plus"></i></span></a>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                        {% for acciones in familia.accion %}
+                            <li>  <a href="{{ path('accion_edita', { 'familia': familia.id, 'accion':acciones.id }) }}" title="modifica acción">{{ acciones }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+
+                </div>
+            </div> 
+        </div>
     </di>
 {# 
 Script para revisar si hay cambios y que muestre el aviso antes de abandonar la página

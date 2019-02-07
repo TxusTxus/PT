@@ -27,7 +27,7 @@
                             {% for familium in familias %}
                                 <tr>
                                     <td>{{ familium.familia }}</td>
-                                    <td>{{ familium.acciones }}</td>
+                                    {#<td>{{ familium.acciones }}</td>#}
                                     <td>
                                         <a class="btn btn-primary btn-flat" href="{{ path('familia_edit', { 'id': familium.id }) }}"><i class="fa fa-edit"></i></a>
                                     </td>

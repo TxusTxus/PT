@@ -204,23 +204,26 @@ class PartesController extends Controller
         $terminado = $parte->getTerminado();
         $empresa = $this->dameEmpresaUsuario();
         $deleteForm->handleRequest($request);
-
+        $fecha = $parte->getFechaParte()->format('d-m-Y');
+        
         if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
             $producto = $parte->getProducto();           
             foreach ($producto as $item) {
                 // Asigna los productos al parte
-                $this->marcaProductoPlanificado($item,false);
+                $this->marcaProductoPlanificado($item,null);
                 // Borra el producto
                 $parte->removeProducto($item);
             }
             $incidencia = $parte->getIncidencia();
             if ($incidencia!=null){
-                $this->marcaIncidenciaPlanificado($incidencia,false);
+                $this->marcaIncidenciaPlanificado($incidencia,null);
             }
             // Elimina el parte
             $em = $this->getDoctrine()->getManager();
             $em->remove($parte);
             $em->flush();
+            
+            return $this->redirectToRoute('partes_diario', array('fecha' => $fecha));
         }
 
         return $this->render('PartesBundle:Default:eliminar.html.twig', array(

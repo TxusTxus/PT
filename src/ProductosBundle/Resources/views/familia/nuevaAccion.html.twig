@@ -4,12 +4,13 @@
     
          {#Muestra la barra superior#}
                 {% embed "barranavegacion.html.twig" %}{% endembed %}
-    <h1>Nueva familia</h1>
+    <h1>Nueva Acción</h1>
     <div class="container" style="margin-top: 20px;">
+        {{ familia }}
         {{ form_start(form) }}
             {{ form_widget(form) }}
             <input type="submit" value="Crear"  class="btn btn-primary btn-flat" />
-            <a href="{{ path('listado_familias') }}" class="btn btn-primary btn-flat">Volver a la lista de familias</a>
+            <a href="{{ path('familia_edit', { 'id': familia.id }) }}" class="btn btn-primary btn-flat">Volver a la Familia</a>
         {{ form_end(form) }}
         
     </div>

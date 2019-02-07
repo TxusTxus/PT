@@ -35,7 +35,7 @@ familia_new:
     methods:  [GET, POST]
 
 familia_edit:
-    path:     /{id}/edit
+    path:     /{id}/modificarfamilia
     defaults: { _controller: "ProductosBundle:Familia:edit" }
     methods:  [GET, POST]
 
@@ -43,3 +43,13 @@ familia_delete:
     path:     /{id}/delete
     defaults: { _controller: "ProductosBundle:Familia:delete" }
     methods:  DELETE
+
+accion_nueva:
+    path:     /{familia}/nuevaAccion
+    defaults: { _controller: "ProductosBundle:Familia:nuevaAccion" }
+    methods:  [GET, POST]    
+
+accion_edita:
+    path:     /{familia}/{accion}/modificaAccion
+    defaults: { _controller: "ProductosBundle:Familia:modificaAccion" }
+    methods:  [GET, POST] 

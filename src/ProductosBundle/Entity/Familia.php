@@ -28,13 +28,22 @@ class Familia
      */
     private $familia;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="acciones", type="string", length=255, nullable=true)
-     */
-    private $acciones;
+//    /**
+//     * @var string|null
+//     *
+//     * @ORM\Column(name="acciones", type="string", length=255, nullable=true)
+//     */
+//    private $acciones;
 
+     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Acciones", inversedBy="familia", cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="familia_accion",
+     *                      joinColumns={@ORM\JoinColumn(name="familia_id", referencedColumnName="id")},
+     *                      inverseJoinColumns={@ORM\JoinColumn(name="accion_id", referencedColumnName="id")})
+     */
+    private $accion;
      /**
      * @ORM\OneToMany(targetEntity="Producto", mappedBy="familia")
      */
@@ -47,6 +56,7 @@ class Familia
     public function __construct()
     {
         $this->producto = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->accion = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     
@@ -86,29 +96,29 @@ class Familia
         return $this->familia;
     }
 
-    /**
-     * Set acciones.
-     *
-     * @param string|null $acciones
-     *
-     * @return Familia
-     */
-    public function setAcciones($acciones = null)
-    {
-        $this->acciones = $acciones;
-
-        return $this;
-    }
-
-    /**
-     * Get acciones.
-     *
-     * @return string|null
-     */
-    public function getAcciones()
-    {
-        return $this->acciones;
-    }
+//    /**
+//     * Set acciones.
+//     *
+//     * @param string|null $acciones
+//     *
+//     * @return Familia
+//     */
+//    public function setAcciones($acciones = null)
+//    {
+//        $this->acciones = $acciones;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get acciones.
+//     *
+//     * @return string|null
+//     */
+//    public function getAcciones()
+//    {
+//        return $this->acciones;
+//    }
     
     /**
      * Add producto
@@ -144,6 +154,40 @@ class Familia
         return $this->producto;
     }
 
+    /**
+     * Add accion
+     *
+     * @param \ProductosBundle\Entity\Accion $accion
+     *
+     * @return Familia
+     */
+    public function addAccion(\ProductosBundle\Entity\Acciones $accion)
+    {
+        $this->accion[] = $accion;
+
+        return $this;
+    }
+
+    /**
+     * Remove accion
+     *
+     * @param \ProductosBundle\Entity\Accion $accion
+     */
+    public function removeAccion(\ProductosBundle\Entity\Acciones $accion)
+    {
+        $this->accion->removeElement($accion);
+    }
+
+    /**
+     * Get accion
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAccion()
+    {
+        return $this->accion;
+    }
+    
     
     function __toString()
     {
