@@ -303,7 +303,8 @@ class Partes
     public function getIVA()
     {
         return $this->IVA;
-    }      
+    }  
+    
     /**
      * Set trabajador
      *
@@ -318,8 +319,17 @@ class Partes
         return $this;
     }
 
+    /**
+     * Get trabajador
+     *
+     * @return int
+     */
+    public function getTrabajador()
+    {
+        return $this->trabajador;
+    }
     
-         /**
+    /**
      * Set direccion
      *
      * @param integer $direccion
@@ -343,15 +353,7 @@ class Partes
         return $this->direccion;
     }
     
-    /**
-     * Get trabajador
-     *
-     * @return int
-     */
-    public function getTrabajador()
-    {
-        return $this->trabajador;
-    }
+
 
     /**
      * Set fechaParte

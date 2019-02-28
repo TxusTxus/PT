@@ -64,6 +64,11 @@ class Cliente
      * @ORM\OneToMany(targetEntity="\PartesBundle\Entity\Partes", mappedBy="cliente")
      */
     private $partes;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="\AlbaranesBundle\Entity\Albaran", mappedBy="cliente")
+     */
+    private $albaranes;
 //
 //    /**
 //     * @var string
@@ -148,6 +153,7 @@ class Cliente
         $this->direcciones = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->productos = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->partes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->albaranes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->incidencias = new \Doctrine\Common\Collections\ArrayCollection(); 
         $this->tipoPago =  new \Doctrine\Common\Collections\ArrayCollection(); 
     }
@@ -512,6 +518,41 @@ class Cliente
     {
         return $this->baja;
     }
+
+     /**
+     * Add image
+     *
+     * @param Image $albaranes
+     *
+     * @return Post
+     */
+    public function addAlbaranes(\AlbaranesBundle\Entity\Albaran $albaranes)
+    {
+        $this->albaranes->add($albaranes);
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param Image $albaranes
+     */
+    public function removeAlbaranes(\AlbaranesBundle\Entity\Albaran $albaranes)
+    {
+        $this->albaranes->removeElement($albaranes);
+    }
+
+    /**
+     * Get albaranes
+     *
+     * @return ArrayCollection
+     */
+    public function getAlbaranes()
+    {
+        return $this->albaranes;
+    }  
+ 
     
     function __toString()
     {

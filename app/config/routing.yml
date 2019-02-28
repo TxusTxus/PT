@@ -1,3 +1,7 @@
+albaranes:
+    resource: "@AlbaranesBundle/Resources/config/routing.yml"
+    prefix:   /albaranes
+
 incidencias:
     resource: "@IncidenciasBundle/Resources/config/routing.yml"
     prefix:   /incidencias

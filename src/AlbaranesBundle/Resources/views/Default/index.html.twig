@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    {#Muestra la barra superior#}
+    {% embed "barranavegacion.html.twig" %}{% endembed %}
+    <h1>Listado Albaranes</h1>
+
+    <table width="100%">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Iva</th>
+                <th>Cobro</th>
+                <th>Tecnico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for albaran in albarans %}
+            <tr>
+                <td><a href="{{ path('albaran_show', { 'id': albaran.id }) }}">{{ albaran.id }}</a></td>
+                <td>{% if albaran.fecha %}{{ albaran.fecha|date('d-m-Y') }}{% endif %}</td>
+                <td>{{ albaran.cliente }}</td>
+                <td>{{ albaran.total }} €</td>
+                <td>{{ albaran.iVA }} %</td>
+                <td>{{ albaran.tipoPago }}</td>
+                <td>{{ albaran.trabajador }}</td>
+                <td>
+                    <a href="{{ path('albaran_show', { 'id': albaran.id }) }}" class="btn btn-primary btn-flat" title="Ver albarán"><i class="fa fa-eye"></i></a>
+                    {% if albaran.impreso !=1 %}
+                        <a href="{{ path('albaran_edit', { 'id': albaran.id }) }}"  class="btn btn-primary btn-flat" Title="Modificar albarán"><i class="fa fa-edit"></i></a>
+                    {% else %}
+                        <a href="{{ path('albaran_edit', { 'id': albaran.id }) }}"  class="btn btn-warning btn-flat" Title="Albaran ya impreso"><i class="fa fa-edit"></i></a>
+                    {% endif %}
+                    <a href="{{ path('albaran_imprime', { 'id': albaran.id }) }}" target="_blank" class="btn btn-primary btn-flat"><i class="fa fa-print"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

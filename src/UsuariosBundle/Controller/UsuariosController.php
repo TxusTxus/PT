@@ -5,11 +5,12 @@ namespace UsuariosBundle\Controller;
 use UsuariosBundle\Controller\librerias\funciones;
 
 use UsuariosBundle\Entity\User;
-use TrabajadoresBundle\Entity\Trabajadores;
-use ClientesBundle\Entity\Cliente;
+//use TrabajadoresBundle\Entity\Trabajadores;
+//use ClientesBundle\Entity\Cliente;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * User controller.
@@ -71,8 +72,6 @@ class UsuariosController extends Controller
             }
 
         } else {
-            // Opción NO LOGEADO
-            dump($error);
 
             return $this->render('UsuariosBundle:Default:index.html.twig', array(
               'last_username' => $lastUsername,

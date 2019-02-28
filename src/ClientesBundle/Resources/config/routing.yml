@@ -2,6 +2,6 @@ clientes_cliente:
     resource: "@ClientesBundle/Resources/config/routing/cliente.yml"
     prefix:   /
 
-clientes_inicio:
-    path:     /
-    defaults: { _controller: ClientesBundle:Default:index }
+#clientes_inicio:
+#    path:     /
+#    defaults: { _controller: ClientesBundle:Default:index }

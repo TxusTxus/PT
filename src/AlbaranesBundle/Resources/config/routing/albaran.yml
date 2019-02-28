@@ -1,0 +1,43 @@
+albaran_index:
+    path:     /
+    defaults: { _controller: "AlbaranesBundle:Albaran:index" }
+    methods:  GET
+
+albaran_show:
+    path:     /{id}/vista
+    defaults: { _controller: "AlbaranesBundle:Albaran:show" }
+    methods:  GET
+
+albaran_new:
+    path:     /nuevo
+    defaults: { _controller: "AlbaranesBundle:Albaran:new" }
+    methods:  [GET, POST]
+
+albaran_edit:
+    path:     /{id}/modificar
+    defaults: { _controller: "AlbaranesBundle:Albaran:edit" }
+    methods:  [GET, POST]
+
+albaran_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AlbaranesBundle:Albaran:delete" }
+    methods:  DELETE
+albaran_busca:
+    path:     /buscaAlbaran
+    defaults: { _controller: "AlbaranesBundle:Albaran:buscaAlbaranesNombre" }
+    methods:  [POST]
+
+albaran_imprime:
+    path:     /{id}/imprimir
+    defaults: { _controller: "AlbaranesBundle:Albaran:albaranPDF" }
+    methods:  [GET, POST]
+
+concepto_nuevo:
+    path:     /{albaran}/nuevoConcepto
+    defaults: { _controller: "AlbaranesBundle:Albaran:nuevoConcepto" }
+    methods:  [GET, POST]   
+    
+concepto_edita:
+    path:     /{albaran}/{concepto}/modificarConcepto
+    defaults: { _controller: "AlbaranesBundle:Albaran:editaConcepto" }
+    methods:  [GET, POST]

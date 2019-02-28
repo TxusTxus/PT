@@ -21,7 +21,7 @@ class PartesController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         // $partes = $em->getRepository('PartesBundle:Partes')->findAll();
         $fecha = new \DateTime;
         $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha->format('d-m-Y'));
@@ -43,7 +43,7 @@ class PartesController extends Controller
     {
         
         $em = $this->getDoctrine()->getManager();
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha);
         $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
         
@@ -66,7 +66,7 @@ class PartesController extends Controller
     public function nuevoMantenimientoAction(Request $request, $id,$fecha)
     {
         
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $em = $this->getDoctrine()->getManager();
         // Selecciona el producto para el mantenimiento
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameProductosPorDireccion($id,$fecha);
@@ -103,7 +103,7 @@ class PartesController extends Controller
      */
     public function nuevaIncidenciaAction(Request $request, $id)
     {
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $em = $this->getDoctrine()->getManager();
         // Selecciona la incidencia 
         $direccion = $em->getRepository('ClientesBundle:Direccion')->dameIndicenciasPorDireccion($id);
@@ -140,7 +140,7 @@ class PartesController extends Controller
     public function showAction(Partes $parte)
     {
         $deleteForm = $this->createDeleteForm($parte);
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         return $this->render('PartesBundle:Default:show.html.twig', array(
             'parte' => $parte,
             'delete_form' => $deleteForm->createView(),
@@ -156,7 +156,7 @@ class PartesController extends Controller
     public function rutaPDFAction($fecha, $tecnico)
     {
         $em = $this->getDoctrine()->getManager();
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $partes = $em->getRepository('PartesBundle:Partes')->dameRutaTrabajador($empresa->getId(),$tecnico,$fecha);
 
         return $this->render('PartesBundle:Default:pdf.html.php', array(
@@ -176,7 +176,7 @@ class PartesController extends Controller
         $editForm = $this->createForm('PartesBundle\Form\PartesEditType', $parte);
         $editForm->handleRequest($request);
 
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             if ($editForm->get('save')->isClicked()){
                 $this->getDoctrine()->getManager()->flush();
@@ -202,7 +202,7 @@ class PartesController extends Controller
     {
         $deleteForm = $this->createDeleteForm($parte);
         $terminado = $parte->getTerminado();
-        $empresa = $this->dameEmpresaUsuario();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $deleteForm->handleRequest($request);
         $fecha = $parte->getFechaParte()->format('d-m-Y');
         
@@ -281,11 +281,11 @@ class PartesController extends Controller
         return $parte;
     }
     
-    private function dameEmpresaUsuario(){
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
-        return $empresa;
-    }
+//    private function dameEmpresaUsuario(){
+//        $user = $this->get('security.token_storage')->getToken()->getUser();
+//        $empresa = $user->getEmpresa();
+//        return $empresa;
+//    }
     
     private function procesaProductoParaPlanificarlas($array,$valor){
         // recorre todo el array de productos de la dirección

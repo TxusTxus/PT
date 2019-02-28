@@ -33,6 +33,10 @@ class TipoPago
      */
     protected $cliente;
 
+     /**
+     * @ORM\OneToMany(targetEntity="Cliente", mappedBy="tipoPago")
+     */
+    protected $albaran;
     
      /**
      * Constructor

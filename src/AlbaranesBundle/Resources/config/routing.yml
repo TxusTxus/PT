@@ -1,0 +1,7 @@
+albaranes_albaran:
+    resource: "@AlbaranesBundle/Resources/config/routing/albaran.yml"
+    prefix:   /albaran
+
+albaranes_homepage:
+    path:     /
+    defaults: { _controller: AlbaranesBundle:Albaran:index }

@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new ComunicacionBundle\ComunicacionBundle(),
             new IncidenciasBundle\IncidenciasBundle(),
             //            new FOS\RestBundle\FOSRestBundle(),
+            new AlbaranesBundle\AlbaranesBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

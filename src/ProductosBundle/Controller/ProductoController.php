@@ -21,8 +21,7 @@ class ProductoController extends Controller
      */
     public function indexAction()
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         
         $em = $this->getDoctrine()->getManager();
 
@@ -41,8 +40,7 @@ class ProductoController extends Controller
      */
     public function newAction(Request $request,Cliente $cliente)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         
         $producto = new Producto();
 
@@ -84,8 +82,7 @@ class ProductoController extends Controller
      */
     public function showAction(Producto $producto)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $deleteForm = $this->createDeleteForm($producto);
 
         return $this->render('ProductosBundle:Default:show.html.twig', array(
@@ -102,8 +99,7 @@ class ProductoController extends Controller
      */
     public function editAction(Request $request, Producto $producto, Cliente $cliente)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $empresa = $user->getEmpresa();
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         
         $direcciones = $cliente->getDirecciones();
         $form = $this->createForm('ProductosBundle\Form\ProductoType', $producto, array('direcciones' => $direcciones));

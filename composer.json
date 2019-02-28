@@ -12,7 +12,8 @@
             "TrabajadoresBundle\\": "src/TrabajadoresBundle",
             "PartesBundle\\": "src/PartesBundle",
             "ComunicacionBundle\\": "src/ComunicacionBundle",
-            "IncidenciasBundle\\": "src/IncidenciasBundle"
+            "IncidenciasBundle\\": "src/IncidenciasBundle",
+            "AlbaranesBundle\\": "src/AlbaranesBundle"
         },
         "classmap": [
             "app/AppKernel.php",
