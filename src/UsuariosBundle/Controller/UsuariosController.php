@@ -3,6 +3,7 @@
 namespace UsuariosBundle\Controller;
 
 use UsuariosBundle\Controller\librerias\funciones;
+use UsuariosBundle\Controller\librerias\QR_BarCode;
 
 use UsuariosBundle\Entity\User;
 //use TrabajadoresBundle\Entity\Trabajadores;
@@ -25,9 +26,15 @@ class UsuariosController extends Controller
      * @Route("/", name="user_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        // Opción QR
+        $cadena = '';
+        dump($cadena);
+        
+        $muestra='';
+        // Fin opción QR
         $roles = $user->getRoles();
         if (isset($roles[0])) {
             switch ($roles[0]){
@@ -36,6 +43,22 @@ class UsuariosController extends Controller
                             $users = $em->getRepository('UsuariosBundle:User')->findAll();
                             return $this->render('UsuariosBundle:Default:listadoUsuarios.html.twig', array(
                                 'users'     => $users,
+                                'muestra'    => $muestra
+                            ));
+                    break;
+                case 'ROLE_QR':
+                            // opción código QR
+                            $cadena = $request->request->get("nombreQR");
+                            if (strlen($cadena)>0) {
+                                $fecha = new \DateTime;
+                                $cadena = 'Se ha generado un QR con el nombre: '.$cadena.' en el instante  '.$fecha->format('d-m-Y h:i:s');
+                                 $imagen = $this->generaQR($cadena);
+                                 $muestra = 'si';
+                            }
+                            // Fin QR
+                            return $this->render('UsuariosBundle:Default:QR.html.twig', array(
+                                'cadenaQR'  => $cadena,
+                                'muestra'    => $muestra
                             ));
                     break;
                 case 'ROLE_USER':
@@ -47,6 +70,14 @@ class UsuariosController extends Controller
 
     }
 
+    
+
+    public function generaQR($nombre)
+    {
+        $qr = new QR_BarCode();
+        $qr->text($nombre); 
+        $qr->qrCode(350,'QR-reunion.png');
+    }   
        
     /**
     * @Route("/login", name="login")

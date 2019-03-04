@@ -53,6 +53,7 @@ class TrabajadoresController extends Controller
         return $this->render('TrabajadoresBundle:Default:new.html.twig', array(
             'trabajadores' => $trabajadores,
             'empresa' => $empresa,
+            'accionBuscar'  => 'trabajadores_busca',
             'form' => $form->createView(),
         ));
     }

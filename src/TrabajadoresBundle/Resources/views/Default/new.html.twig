@@ -1,10 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    
+                {#Muestra la barra superior#}
+                {% embed "barranavegacion.html.twig" %}{% endembed %}
     <h1>Nuevo Trabajador</h1>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Guardar" />
-    {{ form_end(form) }}
-
+        <div class="container" style="margin-top: 20px;">
+            <div class="row my-flex-card" >  
+                <div class="col-lg-6">
+                    <div class="card border-info">
+                        <div class="card-header">Ficha trabajador</div>
+                        <div class="card-body">
+                            {{ form_start(form) }}
+                                <b><i class="fa fa-user"></i> {{ form_label(form.nombre) }}</b>
+                                {{ form_widget(form.nombre) }}
+                                <b><i class="fa fa-address-card"></i> {{ form_label(form.dni) }}</b>
+                                {{ form_widget(form.dni) }}
+                                <b><i class="fa fa-id-card-o"></i> {{ form_label(form.codigo) }}</b>
+                                {{ form_widget(form.codigo) }}                                
+                                <b>{{ form_label(form.observaciones) }}</b>
+                                {{ form_widget(form.observaciones) }}
+                                <hr>
+                                    <input type="submit" value="Guardar" class="btn btn-primary"/>
+                                    <a href="{{ path('trabajadores_lista') }}" class="btn btn-primary">Volver a la lista</a>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}
