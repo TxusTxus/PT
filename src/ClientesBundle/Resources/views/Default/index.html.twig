@@ -28,12 +28,15 @@
 
             {% for direcciones in cliente.direcciones %}
             <tr>
-                {% if clienteAnterior != cliente.nombre %}
-                    <td>{{ cliente.nombre }}</td>
+                <td>
+                {% if direcciones.sCliente|length>0  %}
+                    {{ direcciones.sCliente }}<br>
                 {% else %}
-                    <td></td>
+                {% if clienteAnterior != cliente.nombre %}
+                    {{ cliente.nombre }}
                 {% endif %}
-                
+                {% endif %}
+                </td>
                 {# Muestra las direcciones del cliente #}
                     
                     <td><i class="fa fa-location-arrow" title="{{ direcciones.direccion }} - {{ direcciones.poblacion }} - {{ direcciones.codigoPostal }} - {{ direcciones.provincia }}"></i> {{ direcciones.direccion }}</td>                   

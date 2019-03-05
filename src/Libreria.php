@@ -4,7 +4,7 @@
 class Libreria 
 {
 
-    // Compemdio de funciones comunes
+    // Compendio de funciones comunes
     // declarar el include -> use Libreria;
     
     

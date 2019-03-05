@@ -34,6 +34,13 @@ class Cliente
      * @ORM\Column(name="razonSocial", type="string", length=255, nullable=true)
      */
     private $razonSocial;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigoExterno", type="string", length=10, nullable=true)
+     */
+    private $codigoExterno;
     
      /**
      * @var ArrayCollection
@@ -195,7 +202,7 @@ class Cliente
      /**
      * Set razonSocial
      *
-     * @param string razonSocial
+     * @param string $razonSocial
      *
      * @return Cliente
      */
@@ -214,6 +221,30 @@ class Cliente
     public function getRazonSocial()
     {
         return $this->razonSocial;
+    }
+
+     /**
+     * Set codigoExterno
+     *
+     * @param string $codigoExterno
+     *
+     * @return Cliente
+     */
+    public function setCodigoExterno($codigoExterno)
+    {
+        $this->codigoExterno = $codigoExterno;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoExterno
+     *
+     * @return string
+     */
+    public function getCodigoExterno()
+    {
+        return $this->codigoExterno;
     }
     
      /**

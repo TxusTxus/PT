@@ -13,7 +13,7 @@
             <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-fast-backward"></i></a>
             <a href="" class="btn btn-secondary btn-sm"><i class="fa fa-caret-left"></i></a>
         {% endif %}
-        <a href="" class="btn page-link btn-sm" style="width:200px;" title="Nombre cliente"><i class="fa fa-user"></i> {{ cliente.nombre }}</a>
+        <a href="" class="btn page-link btn-sm" style="min-width: 200px;" title="Nombre cliente"><i class="fa fa-user"></i> {{ cliente.nombre }}</a>
         {% if btnPost>0 %}
             <a href="{{ path('cliente_show', { 'id': btnPost, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Siguiente" id="enlaceSiguiente"><i class="fa fa-caret-right"></i></a>
             <a href="{{ path('cliente_show', { 'id': btnUlt, 'ficha':ficha}) }}" class="btn btn-primary btn-sm" title="Último" id="enlaceUltimo"><i class="fa fa-fast-forward"></i></a>
@@ -77,7 +77,7 @@
         <div class="row my-flex-card" style="">  
             <div class="col-lg-6">
                 <div class="card border-info">
-                    <div class="card-header">{{ cliente.nombre }}</div>
+                    <div class="card-header">{{ cliente.nombre }} </div>
                     <div class="card-body">
                         <ul style="list-style:none;">
                         {% for direcciones in cliente.direcciones %}
@@ -148,6 +148,9 @@
 
                                             <a href="{{ path('cliente_editar_direccion', { 'id': direcciones.id }) }}" class="btn-esquina" title="Editar"><span aria-hidden="true" style="padding-left: 10px;"><i class="fa fa-edit"></i></span></a>
                                             <a href="{{ path('actualiza_direccion_principal', { 'id': direcciones.id,'id2': direccionPrincipal }) }}" class="btn-esquina" title="Establecer dirección principal"><span aria-hidden="true"><i class="fa fa-map-marker"></i></span></a>
+                                            {% if direcciones.sCliente|length>0  %}
+                                                <b>Cliente: </b>{{ direcciones.sCliente }} - 
+                                            {% endif %}
                                             <i class="fas fa-user-circle"></i> {{ direcciones.contacto }} - <i class="fas fa-phone"></i> {{ direcciones.telefono }}
                                         </div>
                                         <div class="card-body">
@@ -223,10 +226,14 @@
                                <div class="col-lg-6">
                                     <div class="card border-info">
                                         <div class="card-header">
-                                            Dirección <i class="fa fa-crosshairs" title="Distrito"></i> {{ direcciones.distrito }}
+                                            Dirección <i class="fa fa-crosshairs" title="Distrito"></i> {{ direcciones.distrito }} 
+
                                         </div>
                                         <div class="card-body">
                                             <ul style="list-style:none;">
+                                                {% if direcciones.sCliente|length>0  %}
+                                                    <li><b>Cliente: </b>{{ direcciones.sCliente }} </li>
+                                                {% endif %}
                                                 <li><i class="fa fa-user-circle"></i> {{ direcciones.contacto }} </li>
                                                 <li><i class="fa fa-phone"></i> {{ direcciones.telefono }}</li>
                                                 <li><i class="fa fa-at"></i> {{ direcciones.email }}</li>

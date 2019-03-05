@@ -3,9 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Volumes/Datos/WEB/partesTrabajo/web/public/css/pricing.css</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Controller/AlbaranController.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Resources/views/Default/edit.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Form/AlbaranType.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Resources/views/Default/nuevoConcepto.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Form/ClienteType.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Controller/DireccionController.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Resources/views/Default/new.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Entity/Cliente.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Resources/views/Default/new.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Controller/ClienteController.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Repository/ClienteRepository.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Resources/views/Default/show.html.twig</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Repository/DireccionRepository.php</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Resources/config/routing/albaran.yml</file>
+            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/ClientesBundle/Resources/views/distritos/listado.html.twig</file>
             <file>file:/Volumes/Datos/WEB/partesTrabajo/src/UsuariosBundle/Controller/UsuariosController.php</file>
-            <file>file:/Volumes/Datos/WEB/partesTrabajo/src/AlbaranesBundle/Resources/views/Default/index.html.twig</file>
         </group>
     </open-files>
 </project-private>

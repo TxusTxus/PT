@@ -50,7 +50,7 @@ class ClienteController extends Controller
             $em->persist($cliente);
             $em->flush();
 
-            return $this->redirectToRoute('cliente_nuevaDireccion', array('id' => $cliente));
+            return $this->redirectToRoute('cliente_nuevaDireccion', array('id' => $cliente->getId()));
         }
 
         return $this->render('ClientesBundle:Default:new.html.twig', array(

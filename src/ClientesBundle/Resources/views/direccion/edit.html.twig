@@ -56,7 +56,11 @@
                     });
                 </script>
         </div>
-        <div class="row" style="margin-bottom: 20px;">  
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-lg-6">
+                <b><i class="fa fa-user-circle"></i> {{ form_label(edit_form.sCliente) }}</b>
+                {{ form_widget(edit_form.sCliente) }}
+            </div>
             <div class="col-lg-3">
                 <b><i class="fa fa-phone"></i> {{ form_label(edit_form.telefono) }}</b>
                 {{ form_widget(edit_form.telefono) }}

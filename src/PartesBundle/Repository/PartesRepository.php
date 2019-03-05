@@ -156,15 +156,5 @@ class PartesRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb;
     }
-//    
-//    private function damefechaInicial(String $fecha){
-//        
-//        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2)),1,intval(substr($fecha,6,4))));
-//        
-//    }
-//    private function damefechaFinal(String $fecha){
-//        
-//        return date("Y-m-d",mktime(0,0,0,intval(substr($fecha,3,2))+1,0,intval(substr($fecha,6,4))));
-//        
-//    }
+
 }

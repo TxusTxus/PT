@@ -10,14 +10,18 @@
         <div class="row" style="margin-bottom: 20px;"> </div>
         <div class="row" style="margin-bottom: 20px;">  
             
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <b><i class="fa fa-user"></i> {{ form_label(form.nombre) }}</b>
                 {{ form_widget(form.nombre) }}
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <b> {{ form_label(form.razonSocial) }}</b>
                 {{ form_widget(form.razonSocial) }}
             </div>
+            <div class="col-lg-3">
+                <b> {{ form_label(form.codigoExterno) }}</b>
+                {{ form_widget(form.codigoExterno) }}
+            </div> 
             <div class="col-lg-2">
                 <b> {{ form_label(form.tipoPago) }}</b>
                 {{ form_widget(form.tipoPago) }}
@@ -30,7 +34,7 @@
                 {{ form_widget(form.observaciones) }}
             </div>
         </div>
-        <input type="submit" value="Siguiente" onclick="desmarcaCambio()" class="btn btn-primary" />
+        <input type="submit" value="Siguiente" onclick="desmarcaCambio();" class="btn btn-primary" />
     {{ form_end(form) }}
     </div>   
 </div>    

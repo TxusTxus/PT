@@ -7,6 +7,8 @@ use AlbaranesBundle\Entity\Conceptos;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+
+
 /**
  * Albaran controller.
  *
@@ -135,7 +137,33 @@ class AlbaranController extends Controller
             'accionBuscar'  => 'albaran_busca',
         ));
     }
-    
+
+     /**
+     * Muestra una nueva linea de concepto para el albaran
+     *
+     */
+    public function editaConceptoAction(Request $request, Albaran $albaran, Conceptos $concepto)
+    {
+        $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
+        $editForm = $this->createForm('AlbaranesBundle\Form\ConceptoType', $concepto);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush($concepto);
+            $importeTotal = $this->getDoctrine()->getRepository('AlbaranesBundle:Conceptos')->dameImporteTotalAlbaran($albaran->getId());
+            $albaran->setTotal($importeTotal);
+            $em->flush($albaran);
+            $editForm = $this->createForm('AlbaranesBundle\Form\ConceptoType', $concepto);
+            
+        } 
+        return $this->render('AlbaranesBundle:Default:nuevoConcepto.html.twig', array(
+            'venta' => $albaran,
+            'edit_form' => $editForm->createView(),
+            'empresa'       => $empresa,
+            'accionBuscar'  => 'albaran_busca',
+        ));
+    }
     
      /**
      * Busca albaranes en todos sus campos según la cadena de búsqueda
@@ -168,7 +196,9 @@ class AlbaranController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
-//        $partes = $em->getRepository('PartesBundle:Partes')->dameRutaTrabajador($empresa->getId(),$tecnico,$fecha);
+        // Marca el albaran como impreso
+        $albaran->setImpreso(true);
+        $em->flush();
 
         return $this->render('AlbaranesBundle:Default:albaranpdf.html.php', array(
             'albaran'       => $albaran,

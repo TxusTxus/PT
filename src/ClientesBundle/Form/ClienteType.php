@@ -22,6 +22,10 @@ class ClienteType extends AbstractType
                     'label' => 'Razón social',
                     'required' => false,
                     'attr' => array("onchange" => "javascript:marcaCambio();")))
+                ->add('codigoExterno', TextType::class, array(
+                    'label' => 'Código para exportar',
+                    'required' => false,
+                    'attr' => array("onchange" => "javascript:marcaCambio();")))
                 ->add('tipoPago', EntityType::class, array(
                     'class' => 'ClientesBundle:TipoPago',
                     'label' => 'Tipo de Pago',

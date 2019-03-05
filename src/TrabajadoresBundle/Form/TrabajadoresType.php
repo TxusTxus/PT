@@ -19,10 +19,7 @@ class TrabajadoresType extends AbstractType
                 ->add('codigo', TextType::class, array('label' => 'Código'))
                 ->add('nombre', TextType::class, array('label' => 'Nombre'))
                 ->add('observaciones', TextType::class, array('label' => 'Observaciones'));
-//                ->add('empresa', EntityType::class, array(
-//                    'class' => 'EmpresasBundle:Empresa',
-//                    'label' => 'Empresa'
-//                ));
+
     }/**
      * {@inheritdoc}
      */

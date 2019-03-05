@@ -40,6 +40,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
             
             $consulta->select('d.direccion',
                             'd.telefono',
+                            'd.sCliente',
                             'd.observaciones',
                             'dist.distrito',
                             'c.nombre', 'p.modelo', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato')
@@ -69,7 +70,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
         $fin = Libreria::dameFechaFinal($fecha);
         $consulta = $this->getQueryBuilder();     
         $consulta->select('d.id','d.direccion','c.id as cliente','c.nombre',
-                        'd.telefono','d.poblacion','d.codigoPostal',
+                        'd.telefono','d.poblacion','d.codigoPostal', 'd.sCliente',
                         'd.observaciones','dist.distrito',
                         'p.id as producto','p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.observaciones as observacionesProducto',
                         'p.periodicidad','t.tipoContrato','p.base as importe','p.IVA')
@@ -104,7 +105,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
         $consulta = $this->getQueryBuilder();
 
         $consulta->select('d.id','d.direccion','c.id as cliente','d.telefono','d.poblacion','d.codigoPostal','d.observaciones',
-                        'dist.distrito',
+                        'dist.distrito', 'd.sCliente',
                         'i.id as incidencia','i.descripcion','i.observaciones as observacionesIncidencia','i.importe',
                         'c.nombre', 'p.id as producto','p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato','p.IVA')
                  ->leftJoin('d.cliente', 'c')
@@ -133,7 +134,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
             $consulta = $this->getQueryBuilder();
             
             $consulta->select('d.id','d.direccion','c.id as cliente',
-                            'd.telefono',
+                            'd.telefono', 'd.sCliente',
                             'd.observaciones',
                             'dist.distrito',
                             'c.nombre', 'p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato', 'p.planificada')
@@ -161,7 +162,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
             $consulta = $this->getQueryBuilder();
             
             $consulta->select('d.id','d.direccion','c.id as cliente',
-                            'd.telefono',
+                            'd.telefono', 'd.sCliente',
                             'd.observaciones',
                             'dist.distrito',
                             'c.nombre', 'p.modelo', 'f.familia', 'p.fechaNuevoMantenimiento','p.periodicidad','t.tipoContrato', 'p.planificada')
@@ -190,7 +191,7 @@ class DireccionRepository extends \Doctrine\ORM\EntityRepository
             $consulta = $this->getQueryBuilder();
             
             $consulta->select('d.id','d.direccion',
-                            'd.telefono',
+                            'd.telefono', 'd.sCliente',
                             'd.observaciones',
                             'dist.distrito',
                             'c.nombre', 'i.fecha', 'i.descripcion', 'p.modelo', 'f.familia','t.tipoContrato', 'i.planificada')

@@ -89,6 +89,13 @@ class Direccion
      */
     private $contacto;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sCliente", type="string", length=255, nullable=true)
+     */
+    private $sCliente;    
+    
      /**
      * @var string
      *
@@ -305,6 +312,30 @@ class Direccion
     public function getContacto()
     {
         return $this->contacto;
+    }
+
+    /**
+     * Set sCliente
+     *
+     * @param string $sCliente
+     *
+     * @return Direccion
+     */
+    public function setSCliente($sCliente)
+    {
+        $this->sCliente = $sCliente;
+
+        return $this;
+    }
+
+    /**
+     * Get sCliente
+     *
+     * @return string
+     */
+    public function getSCliente()
+    {
+        return $this->sCliente;
     }
     
      /**

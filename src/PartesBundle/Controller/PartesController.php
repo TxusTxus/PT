@@ -45,6 +45,7 @@ class PartesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $empresa = $this->get('security.token_storage')->getToken()->getUser()->getEmpresa();
         $partes = $em->getRepository('PartesBundle:Partes')->damePartesDia($empresa->getId(),$fecha);
+        
         $dias = $em->getRepository('PartesBundle:Partes')->dameFechasPartes($empresa->getId(),$fecha);
         
         return $this->render('PartesBundle:Default:index.html.twig', array(

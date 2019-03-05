@@ -18,6 +18,7 @@ class DireccionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('telefono', TextType::class, array('label' => 'Teléfono','attr' => array("onchange" => "javascript:marcaCambio();")))
+                ->add('sCliente', TextType::class, array('label' => 'Cliente','attr' => array("onchange" => "javascript:marcaCambio();")))
                 ->add('contacto', TextType::class, array('label' => 'Contacto','attr' => array("onchange" => "javascript:marcaCambio();")))
                 // ->add('principal', CheckboxType::class, array('label' => 'Dirección principal','attr' => array("onchange" => "javascript:marcaCambio();")))
                 ->add('direccion', TextType::class, array('label' => 'Dirección','attr' => array("onchange" => "javascript:marcaCambio();")))

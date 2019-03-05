@@ -123,11 +123,13 @@ class ClienteRepository extends \Doctrine\ORM\EntityRepository
                     $criterio = Criteria::create()
                     ->andwhere(Criteria::expr()->ORX(
                             Criteria::expr()->contains('c.nombre',$cadena),
+                            Criteria::expr()->contains('c.codigoExterno',$cadena),
                             Criteria::expr()->contains('d.contacto',$cadena),
                             Criteria::expr()->contains('d.observaciones',$cadena),
                             Criteria::expr()->contains('c.observaciones',$cadena),
                             Criteria::expr()->contains('d.direccion',$cadena),
                             Criteria::expr()->contains('d.poblacion',$cadena),
+                            Criteria::expr()->contains('d.sCliente',$cadena),
                             Criteria::expr()->contains('p.provincia',$cadena),
                             Criteria::expr()->contains('dis.distrito',$cadena),
                             Criteria::expr()->contains('d.telefono',$cadena)
